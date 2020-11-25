@@ -1,48 +1,118 @@
-<!--
-COMMENTAIRES
--->
 <?php
+/**
+ * Title: CSUNVB
+ * USER: marwan.alhelo
+ * DATE: 13.02.2020
+ * Time: 11:29
+ *
+ **/
+/**
+ * Title: CSUNVB
+ * USER: David.Roulet
+ * DATE: 12.06.2020
+ * Time: 11:15
+ **/
+/**
+ * Title: CSUNVB - Controller
+ * USER: Gatien.Jayme
+ * DATE: 27.08.2020
+ **/
 
-/** Fonction qui permet l'affichage des semaines de tâches pour une base spécifique
- * @param $selectedBaseID : l'ID de la base dont les semaines sont à afficher
- */
-function homeWeeklyTasks($selectedBaseID){
-    $weeksNbrList = getClosedWeeks($selectedBaseID); // La liste des numéros de semaines qui sont fermées
-    $activeWeek = getOpenedWeeks($selectedBaseID);  // Le numero de la semaine active
+function createSheetToDo($base_id) {
+    // récupérer la valeur de $item puis transférer les valeurs
 
-    $baseList = getbases();
-    require_once VIEW . 'todo/homeWeeklyTasks.php';
+    $lastWeek = readLastWeek($base_id);
+    createTodoSheet($base_id, $lastWeek['last_week']);
+    unset($_POST['site']);
+    unset($_POST['base']);
+    todoListHomePage($base_id);
 }
 
-/**
- * Fonction qui affiche les tâches d'une semaine spécifique
- * @param $weekID : l'ID de la semaine à afficher
- * @param $weekNbr : Le numéro de la semaine à afficher
- */
-function showWeeklyTasks($weekID, $weekNbr){
-    $dates = getDatesFromWeekNumber($weekNbr);
-    // Récupération des dates par rapport à la semaine
-    require_once VIEW . 'todo/detailsWeeklyTasks.php';
+function todoListHomePage($selectedBase)
+{
+
+    $TodoListItemsread = readTodoSheets();
+    $todoSheets=readTodoSheetsForBase($selectedBase);
+    $bases= getbases();
+    $basedefault = $_SESSION["base"]['id'];
+    require_once VIEW . 'todo/todoHome.php';
 }
 
-/**
- * Fonction qui retourne les dates des jours de la semaine, à partir d'un numéro de semaine
- * @param $weekNumber : Le numéro de la semaine dont on veut connaitre les dates
- * @return array : les dates de la semaine
- */
-function getDatesFromWeekNumber($weekNumber){
-    $year = 2000 + intdiv($weekNumber,100);
-    $week = $weekNumber%100;
+function activateSheet($state) {
+    $activatestatus = activateTodoSheets($state);
+}
 
-    $dates = Array();
-    setlocale(LC_TIME, 'fr'); // Besoin de vérifier que cette ligne ne posera aucun problème !
-    $time = strtotime(sprintf("%4dW%02d", $year, $week));
+function edittodopage($sheetid)
+{
+    for ($daynight=0; $daynight <= 1; $daynight++) {
+        for ($dayofweek = 1; $dayofweek <= 7; $dayofweek++) {
+            $todoThings[$daynight][$dayofweek] = readTodoThingsForDay($sheetid,$daynight,$dayofweek);
+        }
+    }
+    $datesoftheweek = getDatesOfAWeekBySheetId($sheetid);
+    $days = [1 => "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
 
-    for($i = 0; $i < 7; $i++){
-        $day = date(strtotime("+".$i." day", $time));
-        $fullDate = strftime('%A %e %b %Y', $day);
-        $dates[] = $fullDate;
+    require_once VIEW . 'todo/Edittodopage.php';
+
+}
+
+
+function reopenToDo()
+{
+    reOpenToDoPage($_POST["reopen"]);
+    require_once VIEW . 'main/home.php';
+}
+function closeToDo()
+{
+    closeToDoPage($_POST["close"]);
+    require_once VIEW . 'main/home.php';
+}
+
+
+// retourne un tableau contenant les dates en timestamp des jours contenu pour la feuille donnée
+function getDatesOfAWeekBySheetId($sheetid)
+{
+    $thesheet = readTodoSheet($sheetid);
+
+    $year = substr($thesheet['week'], 0, 2) + 2000;
+    $weeknb = substr($thesheet['week'], 2);
+    //Tests de tous les jours de l'année demandée jusqu'à trouver la date du premier jour de la semaine demandée.
+    $datetest = strtotime("$year-01-01");    //on part du 1 janvier de l'année donnée pour la date de test.
+    $dateinrun = null;
+    if (empty($weeknb) == false) {  //ne pas executer si la semaine n'est pas donnée, sinon boucle infinie !
+        while (empty($dateinrun) == true) {
+            if (date("W", $datetest) == $weeknb) {  //si la semaine de cette date est la semaine recherchée donc $weeknb
+                $dateinrun = $datetest; //on enregistre cette date
+                break;  //on sort du while pour arrêter le processus de recherche.
+            } else {
+                $datetest = strtotime("+1 day", $datetest); //sinon on teste avec le jour suivant.
+            }
+        }
     }
 
-    return $dates;
+    //Enregistrer les valeurs dans un tableau avec les numéros des jours comme index
+    for ($j = 1; $j <= 7; $j++) {
+        $datesoftheweek[$j] = $dateinrun;   //jour de 1 à 7.
+
+        $dateinrun = strtotime("+1 day", $dateinrun);   //Avancer d'un jour pour avoir la date du jour d'après
+    }
+
+    return $datesoftheweek;
 }
+
+/*function getNbWeekCalcul($sheetid, $selectedBase) {
+    $thesheet = readTodoSheet($sheetid);
+    $todoSheets=readTodoSheetsForBase($selectedBase);
+
+    $year = substr($thesheet['week'], 0, 2) + 2000;
+    $weeknb = substr($thesheet['week'], 2);
+    $maxweek = MaxToDoSheetWeek();
+
+    foreach ($todoSheets as $todoSheet) {
+        if ($todoSheet['week'] == $maxweek) {
+            strtotime("+1" , $maxweek);
+        }
+    }
+}*/
+
+?>
