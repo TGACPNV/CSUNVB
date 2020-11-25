@@ -209,29 +209,25 @@ function switcherUser()
 
         /** Using weeklyTasksControler */
 
-        case 'todolist':
-
-            if (isset($_POST['base'])) {
-                createSheetToDo($_POST['base']);
-            }
-            if (isset($_POST['site'])) {
-                $selectedBase = $_POST['site'];
+        case 'homeWeeklyTasks':
+            if(isset($_POST['selectBaseID'])){
+                $selectedBase = $_POST['selectBaseID'];
             } else {
                 $selectedBase = $_SESSION['base']['id'];
             }
-            if (!isset($_POST['newtodo'])) {
-                todoListHomePage($selectedBase);
-            }
+            homeWeeklyTasks($selectedBase);
             break;
-        case 'edittod':
-            $sheetid = $_GET['sheetid'];
-            edittodopage($sheetid);
+        case 'toDoDetails':
+            showWeeklyTasks($_POST['weekID'], $_POST['weekNbr']);
+            break;
+        case 'addWeek':
+            // ToDo
+            break;
+        case 'closeWeek':
+            // ToDo
             break;
         case 'reOpenToDo':
             reOpenToDo();
-            break;
-        case 'closedToDo':
-            closeToDo();
             break;
         default :
             unknownPage();

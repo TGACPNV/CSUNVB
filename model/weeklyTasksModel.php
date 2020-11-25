@@ -1,160 +1,33 @@
 <?php
-function readTodoSheets()
+/**
+ * Fonction permettant de rechercher dans la base de données lu numéro et l'id des semaines fermées pour une base spécifique
+ * @param $baseID : l'ID de la base dont on cherche les semaines fermées
+ * @return array|mixed|null
+ */
+function getClosedWeeks($baseID)
 {
-
-    return selectMany("SELECT * FROM todosheets;", []);
+    $query = "SELECT t.week, t.id FROM todosheets t JOIN bases b ON t.base_id = b.id WHERE b.id = '$baseID' AND t.state = 'close' ORDER BY t.week DESC;";
+    return selectMany($query, ['base']);
 }
 
 /**
- * Retourne un item précis, identifié par son id
- * ...
+ * Fonction permettant de rechercher dans la base de données lu numéro et l'id de la semaine ouverte pour une base spécifique
+ * @param $baseID : l'ID de la base dont on cherche la semaine ouverte
+ * @return array|mixed|null
  */
-
-function readTodoSheet($id)
+function getOpenedWeeks($baseID)
 {
-    return selectMany("SELECT * FROM todosheets where id='$id';", []);
+    $query = "SELECT t.week, t.id FROM todosheets t JOIN bases b ON t.base_id = b.id WHERE b.id = '$baseID' AND t.state = 'open';";
+    return selectOne($query, []);
 }
 
 /**
- * Modifie un item précis
- * Le paramètre $item est un item complet (donc un tableau associatif)
- * ...
+ * Fonction permettant de fermer une semaine
+ * @param $id : l'ID de la semaine à fermer
  */
-function updateTodoSheet($item)
-{
-    return execute("UPDATE todosheets SET
-                    base_id=:base_id,
-             state=:state,
-                    week=:week,
-                    WHERE id =:id", $item);
-}
-
-
-/**
- * Détruit un item précis, identifié par son id
- * ...
- */
-function destroyTodoSheet($id)
-{
-
-    return execute("DELETE FROM todosheet WHERE id=:id", ["id" => $id]);
-}
-
-
-/**
- * Ajoute un nouvel item
- * Le paramètre $item est un item complet (donc un tableau associatif), sauf que la valeur de son id n'est pas valable
- * puisque le modèle ne l'a pas encore traité
- * ...
- */
-function readLastWeek($base_id)
-{
-    return selectOne("SELECT base_id, MAX(week) as 'last_week'  FROM todosheets
-where base_id =:base_id
-GROUP BY base_id",["base_id" => $base_id]);
-}
-function createTodoSheet($base_id,$lastWeek)
-{
-    return insert("INSERT INTO todosheets (base_id,state,week) VALUES (:base_id, 'blank', :lastWeek)", ["base_id" => $base_id, "lastWeek" => $lastWeek+1]);
-}
-
-function readTodoSheetsForBase($base_id)
-{
-    return selectMany("SELECT * FROM todosheets WHERE todosheets.base_id=:base_id", ["base_id" => $base_id]);
-}
-
-/** ------------------TODOS---------------------- */
-
-/**
- * Retourne tous les todos
- *
- */
-function todos() {
-    return selectMany("SELECT * FROM todos", []);
-}
-
-function activateTodoSheets($state)
-{
-    execute("UPDATE todosheets set state = :state", ["state" => $state]);
-}
-/** ------------------TODOTHINGS---------------------- */
-
-/**
- * Retourne tous les todothings
- *
- */
-function readTodoThings()
-{
-    return selectMany("SELECT * FROM todothings;", []);
-}
-
-/**
- * Retourne un item précis, identifié par son id
- * ...
- */
-function readTodoThing($id)
-{
-    return selectMany("SELECT * FROM todothings where id=:id;", ["id" => $id]);
-}
-
-/**
- * Modifie un item précis
- * Le paramètre $item est un item complet (donc un tableau associatif)
- * ...
- */
-function updateTodoThing($item)
-{
-
-    return execute("UPDATE todothings SET
-                    daything=:daything,
-             description=:description,
-                    type=:type,
-                    display_order=:display_order
-                    WHERE id =:id", $item);
-}
-/**
- * Détruit un item précis, identifié par son id
- * ...
- */
-function destroyTodoThing($id)
-{
-    return execute("DELETE FROM todothing WHERE id=:id", ["id" => $id]);
-}
-
-/**
- * Ajoute un nouvel item
- * Le paramètre $item est un item complet (donc un tableau associatif), sauf que la valeur de son id n'est pas valable
- * puisque le modèle ne l'a pas encore traité
- * ...
- */
-function createTodoThing($item)
-{
-    return insert("INSERT INTO todothing (daything,description,type,display_order) VALUES (:daything,:description,:type,:display_order)", $item);
-}
-
-/**
- * Ajoute une nouvelle feuille
- * Les paramètre que je prends
- */
-/*function createToDoSheet($week, $state, $base_id) {
-    return insert("INSERT INTO todosheets (week, state, base_id) VALUES (:week, :state, :base_id)", ['week' => $week, 'state' => $state, 'base_id' => $base_id]);
-}*/
-
-function reOpenToDoPage($id)
-{
-    execute("UPDATE todosheets set state='reOpen' WHERE id=:id", ['id' => $id]);
-}
-
-function closeToDoPage($id)
+function closeWeeklyTasks($id)
 {
     execute("UPDATE todosheets set state='closed' WHERE id=:id", ['id' => $id]);
 }
 
-
-
-// WIP
-function readTodoThingsForDay($sid, $day, $dayOfWeek)
-{
-    $res = selectMany("SELECT description, type FROM todos INNER JOIN todothings t on todothing_id = t.id where todosheet_id=:sid AND daything = :daything AND day_of_week = :dayofweek",["sid" => $sid, "daything" => $day, "dayofweek" => $dayOfWeek]);
-    return $res;
-}
+?>
