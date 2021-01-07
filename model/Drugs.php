@@ -27,6 +27,10 @@ function getDrugSheetsByState($state) {
     return selectMany("SELECT * FROM drugsheets WHERE state = '$state'");
 }
 
+function getSlugs() {
+    return selectMany("SELECT slug FROM status");
+}
+
 function getDrugsInDrugSheet($sheetID) {
     return selectMany("SELECT drugs.name,drugs.id FROM drugsheet_use_batch
                              JOIN batches ON drugsheet_use_batch.batch_id=batches.id
@@ -85,9 +89,10 @@ function getLatestDrugSheetWeekNb($base_id) {
 }
 
 function insertDrugSheet($base_id, $lastWeek) {
+    //TODO: slug
     //magnifique, passe a la nouvelle annee grace a +48 si 52eme semaine
     (($lastWeek % 100) == 52) ? $lastWeek += 49 : $lastWeek++;
-    return insert("INSERT INTO drugsheets (base_id,state,week) VALUES ('$base_id', 'vierge', '$lastWeek')");
+    return insert("INSERT INTO drugsheets (base_id,state,week) VALUES ('$base_id', 'blank', '$lastWeek')");
 }
 
 function cloneLatestDrugSheet($newSheetID, $oldSheetID) {
@@ -103,8 +108,8 @@ function cloneLatestDrugSheet($newSheetID, $oldSheetID) {
     }
 }
 
-function updateSheetState($baseID, $week, $state) {
-    return execute("UPDATE drugsheets SET state='$state' WHERE base_id='$baseID' AND week='$week'");
+function updateSheetState($sheetID, $state) {
+    return execute("UPDATE drugsheets SET state='$state' WHERE id='$sheetID'");
 }
 
 function getOpenDrugSheet($baseID) {

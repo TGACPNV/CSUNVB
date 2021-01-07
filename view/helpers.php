@@ -34,6 +34,54 @@ function getDrugSheetStateButton($state)
     }
 }
 
+function showDrugSheetsByStatus($slug, $sheets)
+{
+    $html = "<div class='slug" . ucwords($slug) . "'>";
+
+    $html .= "<h3>Semaine(s) " . showState($slug, count($sheets) - 1) . "</h3>
+                    <button class='btn dropdownButton'><i class='fas fa-caret-square-down' data-list='" . $slug . "' ></i></button>
+                    </div>";
+
+    if (!empty($sheets)) {
+        $html = $html . "<div class='" . $slug . "Sheets'><table class='table table-bordered'>
+                        <thead class='thead-dark'><th>Semaine n°</th><th class='actions'>Actions</th></thead>
+                        <tbody>";
+
+        foreach ($sheets as $sheet) {
+            $html .= "<tr><td>Semaine " . $sheet['week'];
+
+            $html .= "<td><div class='d-flex justify-content-around'>
+                                <form>
+                                    <input type='hidden' name='action' value='showDrugSheet'>
+                                    <input type='hidden' name='id' value='" . $sheet['id'] . "'>
+                                    <button type='submit' class='btn btn-primary'>Détails</button>
+                                </form>
+                            ";
+            if(!(hasOpenDrugSheet($sheet['base_id']) && $sheet['state'] == 'blank'))
+                $html .= generateSlugButtonDrugs($slug, $sheet['id']);
+
+            $html .= "</div></td>";
+        }
+
+        $html = $html . "</tr> </tbody> </table></div>";
+
+    } else {
+        $html = $html . "<div class='" . $slug . "Sheets'><p>Aucune feuille de tâche n'est actuellement " . showState($slug) . ".</p></div>";
+    }
+
+    return $html;
+}
+
+function generateSlugButtonDrugs($slug, $sheetID) { //TODO: champ "action" dans la table status, pour remplacer slug dans le submit?
+    if (ican(getDrugSheetStateButton($slug) . "sheet")) {
+        return "<form method='POST' action=?action=".getDrugSheetStateButton($slug)."DrugSheet>
+                    <input type='hidden' name='id' value='" . $sheetID . "'>
+                    <button type='submit' class='btn btn-primary'>" . getDrugSheetStateButton($slug) . "</button>
+                    </form>";
+    }
+    return null;
+}
+
 function buttonTask($initials, $desription, $taskID, $type, $weekState)
 {
     if ($weekState == 'open') {
@@ -108,7 +156,7 @@ function showState($slug, $plural = 0)
         case "open":
             $result = "active";
             if ($plural) {
-                $result = $result . "(s)";
+                $result .= "s";
             }
             break;
         case "reopen":
@@ -117,13 +165,13 @@ function showState($slug, $plural = 0)
         case "close":
             $result = "fermée";
             if ($plural) {
-                $result = $result . "(s)";
+                $result .= "s";
             }
             break;
         case "archive":
             $result = "archivée";
             if ($plural) {
-                $result = $result . "(s)";
+                $result .= "s";
             }
             break;
         default:
@@ -132,64 +180,6 @@ function showState($slug, $plural = 0)
     }
 
     return $result;
-}
-
-function showDrugSheetsByStatus($slug, $sheets)
-{
-    switch ($slug) {
-        case "blank":
-            $html = "<div class='slugBlank'>";
-            break;
-        case "open":
-            $html = "<div class='slugOpen'>";
-            break;
-        case "reopen":
-            $html = "<div class='slugReopen'>";
-            break;
-        case "close":
-            $html = "<div class='slugClose'>";
-            break;
-        case "archive":
-            $html = "<div class='slugArchive'>";
-            break;
-        default:
-            $html = "<div>";
-            break;
-    }
-
-    $html = $html . "<h3>Semaine(s) " . showState($slug, 1) . "</h3>
-                    <button class='btn dropdownButton'><i class='fas fa-caret-square-down' data-list='" . $slug . "' ></i></button>
-                    </div>";
-
-    if (!empty($sheets)) {
-        $html = $html . "<div class='" . $slug . "Sheets'><table class='table table-bordered'>
-                        <thead class='thead-dark'><th>Semaine n°</th><th class='actions'>Actions</th></thead>
-                        <tbody>";
-
-        foreach ($sheets as $sheet) {
-
-            $html = $html . "<tr> <td>Semaine " . $sheet['week'];
-
-            if (ican('createsheet') && (isset($sheet['template_name']))) {
-                $html = $html . "<i class='fas fa-file-alt template' title='" . $sheet['template_name'] . "'></i>";
-            }
-
-            $html = $html . "<td><div class='d-flex justify-content-around'>
-                                <form>
-                                    <input type='hidden' name='action' value='showtodo'>
-                                    <input type='hidden' name='id' value='" . $sheet['id'] . "'>
-                                    <button type='submit' class='btn btn-primary'>Détails</button>
-                                </form>
-                            " . slugsButtonTodo($slug, $sheet['id']) . "</div></td>";
-        }
-
-        $html = $html . "</tr> </tbody> </table></div>";
-
-    } else {
-        $html = $html . "<div class='" . $slug . "Sheets'><p>Aucune feuille de tâche n'est actuellement " . showState($slug) . ".</p></div>";
-    }
-
-    return $html;
 }
 
 function showSheetsTodoByStatus($slug, $sheets)
