@@ -353,17 +353,17 @@ function slugButtons($page, $sheet, $slug)
                     $buttons .= "<form  method='POST' action='?action=".$page."SheetSwitchState'>
                     <input type='hidden' name='id' value='" . $sheet["id"] . "'>
                     <input type='hidden' name='newSlug' value='open'>
-                    <button type='submit' class='btn btn-primary'>Activer</button>
+                    <button type='submit' class='btn btn-primary m-1 float-right'>Activer</button>
                     </form>";
                 } else {
-                    $buttons .= "<form><button type='submit' class='btn btn-primary' disabled>Activer</button></form>";
+                    $buttons .= "<form><button type='submit' class='btn btn-primary m-1 float-right' disabled>Activer</button></form>";
                 }
             }
         case "archive":
             if (ican('deletesheet')) { // TODO : ajouter une verification de la part de l'utilisateur (VB)
                 $buttons .= "<form  method='POST' action='?action=".$page."DeleteSheet'>
                     <input type='hidden' name='id' value='" . $sheet["id"] . "'>
-                    <button type='submit' class='btn btn-primary'>Supprimer</button>
+                    <button type='submit' class='btn btn-primary m-1 float-right'>Supprimer</button>
                     </form>";
             }
             break;
@@ -372,7 +372,7 @@ function slugButtons($page, $sheet, $slug)
                 $buttons .= "<form  method='POST' action='?action=".$page."SheetSwitchState'>
                     <input type='hidden' name='id' value='" .  $sheet["id"]  . "'>
                     <input type='hidden' name='newSlug' value='close'>
-                    <button type='submit' class='btn btn-primary'>Fermer</button>
+                    <button type='submit' class='btn btn-primary m-1 float-right'>Fermer</button>
                     </form>";
             }
             break;
@@ -381,7 +381,7 @@ function slugButtons($page, $sheet, $slug)
                 $buttons .= "<form  method='POST' action='?action=".$page."SheetSwitchState'>
                     <input type='hidden' name='id' value='" . $sheet["id"] . "'>
                     <input type='hidden' name='newSlug' value='close'>
-                    <button type='submit' class='btn btn-primary'>Refermer</button>
+                    <button type='submit' class='btn btn-primary m-1 float-right'>Refermer</button>
                     </form>";
             }
             break;
@@ -390,14 +390,14 @@ function slugButtons($page, $sheet, $slug)
                 $buttons .= "<form  method='POST' action='?action=".$page."SheetSwitchState'>
                     <input type='hidden' name='id' value='" . $sheet["id"] . "'>
                     <input type='hidden' name='newSlug' value='reopen'>
-                    <button type='submit' class='btn btn-primary'>Corriger</button>
+                    <button type='submit' class='btn btn-primary m-1 float-right'>Corriger</button>
                     </form>";
             }
             if (ican('archivesheet')) {
                 $buttons .= "<form  method='POST' action='?action=".$page."SheetSwitchState'>
                     <input type='hidden' name='id' value='" . $sheet["id"] . "'>
                     <input type='hidden' name='newSlug' value='archive'>
-                    <button type='submit' class='btn btn-primary'>Archiver</button>
+                    <button type='submit' class='btn btn-primary m-1 float-right'>Archiver</button>
                     </form>";
             }
             break;
