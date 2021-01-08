@@ -326,7 +326,7 @@ function listShiftSheet($slug, $shiftList)
                                 <form>
                                     <input type='hidden' name='action' value='showShift'>
                                     <input type='hidden' name='id' value='" . $shift['id'] . "'>
-                                    <button type='submit' class='btn btn-primary'>Détails</button>
+                                    <button type='submit' class='btn btn-primary m-1'>Détails</button>
                                 </form>
             " . slugButtons("shift", $shift, $slug) . "</div></td>";
             $body .= "</td></tr>";
