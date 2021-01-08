@@ -67,8 +67,7 @@ function showSheetState($id, $zone){
         $slug = getStateFromSheet($id);
     }
     else if($zone == "todo"){
-        /** $slug = getStateFromTodo($id); */
-        $slug = "tes<t";
+        $slug = getStateFromTodo($id);
     }
     else if ($zone == "drugs"){
         /** $slug = getStateFromDrugs($id); */
@@ -78,7 +77,7 @@ function showSheetState($id, $zone){
 
     }
 
-    switch($slug){
+    switch($slug['slug']){
         case "blank":
             $state = "[En préparation]";
             break;

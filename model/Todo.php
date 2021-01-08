@@ -47,9 +47,9 @@ function getWeeksBySlugs($baseID, $slug)
 }
 
 
-//function getStateFromTodo($id){
-//    return execute("SELECT status.slug FROM status LEFT JOIN todosheets ON todosheets.status_id = status.id WHERE todosheets.id =:sheetID", ["sheetID"=>$id]);
-//}
+function getStateFromTodo($id){
+    return selectOne("SELECT status.slug FROM status LEFT JOIN todosheets ON todosheets.status_id = status.id WHERE todosheets.id =:sheetID", ["sheetID"=>$id]);
+}
 
 
 
