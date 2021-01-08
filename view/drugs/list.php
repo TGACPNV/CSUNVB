@@ -6,21 +6,19 @@ $title = "CSU-NVB - Drogues hebdomadaires";
     <h1>Tâches hebdomadaires</h1>
 </div>
 <div>
-    <div> <!-- Liste déroulante pour le choix de la base -->
-        <form>
-            <input type="hidden" name="action" value="listDrugSheets">
+    <form>
+        <input type="hidden" name="action" value="listDrugSheets">
             <select onchange="this.form.submit()" name="id" size="1">
                 <?php foreach ($baseList as $base) : ?>
                     <option value="<?= $base['id'] ?>" <?= ($selectedBaseID == $base['id']) ? 'selected' : '' ?>
                             name="site"><?= $base['name'] ?></option>
                 <?php endforeach; ?>
             </select>
-        </form>
-    </div>
+    </form>
     <div class="newSheetZone"> <!-- Bouton de nouvelle semaine -->
         <?php if (ican('createsheet') && ($_SESSION['base']['id'] == $selectedBaseID)) : ?>
-            <form method="POST" action="?action=newDrugSheet" class="float-right">
-                <button type="submit" class="btn btn-primary m-1 pull-right">Nouvelle semaine</button>
+            <form method="POST" action="?action=newDrugSheet" style="margin-block-end: 0;" class="float-right">
+                <button type="submit" class="btn btn-primary m-1">Nouvelle semaine</button>
             </form>
         <?php endif; ?>
     </div>

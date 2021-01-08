@@ -43,7 +43,7 @@ function showDrugSheetsByStatus($slug, $sheets)
                     </div>";
 
     if (!empty($sheets)) {
-        $html = $html . "<div class='" . $slug . "Sheets'><table class='table table-bordered'>
+        $html = $html . "<div class='" . $slug . "Sheets'><table style='margin-top: 0;' class='table table-bordered'>
                         <thead class='thead-dark'><th>Semaine n°</th><th class='actions'>Actions</th></thead>
                         <tbody>";
 
@@ -51,11 +51,11 @@ function showDrugSheetsByStatus($slug, $sheets)
             $html .= "<tr><td>Semaine " . $sheet['week'];
 
             $html .= "<td><div class='d-flex justify-content-around'>
-                                <form>
-                                    <input type='hidden' name='action' value='showDrugSheet'>
-                                    <input type='hidden' name='id' value='" . $sheet['id'] . "'>
-                                    <button type='submit' class='btn btn-primary'>Détails</button>
-                                </form>
+                <form>
+                    <input type='hidden' name='action' value='showDrugSheet'>
+                    <input type='hidden' name='id' value='" . $sheet['id'] . "'>
+                    <button type='submit' class='btn btn-primary'>Détails</button>
+                </form>
                             ";
             if(!(hasOpenDrugSheet($sheet['base_id']) && $sheet['state'] == 'blank'))
                 $html .= generateSlugButtonDrugs($slug, $sheet['id']);

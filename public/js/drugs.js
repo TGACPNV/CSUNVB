@@ -4,17 +4,21 @@
  **/
 
 function novaCheck(novaID, drugID, dateID) {
-    divid = novaID + drugID + dateID;
-    console.log(divid);
-    let originalQuantity = document.getElementById(divid + "start").value;
-    let currentQuantity = document.getElementById(divid + "end").value;
-    if(Number(currentQuantity) !== Number(originalQuantity)) {
-        document.getElementById(divid).style = "background-color: orange;"
-    } else {
-        document.getElementById(divid).removeAttribute("style");
-    }
+    divID = novaID + drugID + dateID;
+    quantityCheck(divID);
 }
 
-function pharmaCheck() {
+function pharmaCheck(drugID, dateID) {
+    divID = drugID + dateID;
+    quantityCheck(divID);
+}
 
+function quantityCheck(divID) {
+    let originalQuantity = document.getElementById(divID + "start").value;
+    let currentQuantity = document.getElementById(divID + "end").value;
+    if(Number(currentQuantity) !== Number(originalQuantity)) {
+        document.getElementById(divID).style = "background-color: orange;"
+    } else {
+        document.getElementById(divID).removeAttribute("style");
+    }
 }

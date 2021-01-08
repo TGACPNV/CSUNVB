@@ -50,7 +50,7 @@ function openDrugSheet() {
 }
 
 function closeDrugSheet() {
-    updateSheetState($_POST["id"], "closed");
+    updateSheetState($_POST["id"], "close");
     redirect("listDrugSheets", $_SESSION["base"]["id"]);
 }
 

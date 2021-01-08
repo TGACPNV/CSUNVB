@@ -44,9 +44,7 @@ ob_start();
                         <?php $ncheck = getNovaCheckByDateAndDrug($date, $drug['id'], $nova['id'], $drugsheet['id']); // not great practice, but it spares repeated queries on the db ?>
                         <td id="<?= $nova["number"] . $drug["name"] . $date ?>">
                             <input type="number" min="0" width="30" height="100" class="text-center" value="<?= $ncheck ? $ncheck["start"] : ''?>" onchange="novaCheck(<?= "'" . $nova["number"] . "', '" . $drug["name"] . "', '" . $date . "'" ?>);" id="<?= $nova["number"] . $drug["name"] . $date ?>start">
-                            </input>
                             <input type="number" min="0" width="20" height="30" class="text-center" value="<?= $ncheck ? $ncheck["end"] : '' ?>" onchange="novaCheck(<?= "'" . $nova["number"] . "', '" . $drug["name"] . "', '" . $date . "'" ?>);" id="<?= $nova["number"] . $drug["name"] . $date ?>end">
-                            </input>
                         </td>
                     <?php endforeach; ?>
                     <td></td>
@@ -55,11 +53,17 @@ ob_start();
                     <?php $pcheck = getPharmaCheckByDateAndBatch($date, $batch['id'], $drugsheet['id']); // not great practice, but  it spares repeated queries on the db ?>
                     <tr>
                         <td class="text-right"><?= $batch['number'] ?></td>
-                        <td class="text-center"><?= $pcheck ? $pcheck['start'] : '' ?></td>
+                        <td class="text-center">
+                            <input id='<?= $drug["name"] . $date . "start"?>' type="number" min="0" width="30" height="100" class="text-center" value="<?= $pcheck ? $pcheck['start'] : '' ?>" onchange="pharmaCheck(<?= "'" . $drug["name"] . "', '" . $date . "'" ?>);" id="<?= $nova["number"] . $drug["name"] . $date ?>start">
+                        </td>
                         <?php foreach ($novas as $nova): ?>
-                            <td class="text-center"><?= getRestockByDateAndDrug($date,$batch['id'],$nova['id']) ?></td>
+                            <td class="text-center">
+                                <input type="number" min="0" width="30" height="100" class="text-center" value="<?= getRestockByDateAndDrug($date,$batch['id'],$nova['id']) ?>" onchange="pharmaCheck(<?= "'" . $drug["name"] . "', '" . $date . "'" ?>);" id="<?= $nova["number"] . $drug["name"] . $date ?>start">
+                            </td>
                         <?php endforeach; ?>
-                        <td class="text-center"><?= $pcheck ? $pcheck['end'] : '' ?></td>
+                        <td id='<?= $drug["name"] . $date ?>' class="text-center">
+                            <input id='<?= $drug["name"] . $date . "end"?>' type="number" min="0" width="30" height="100" class="text-center" value="<?= $pcheck ? $pcheck['end'] : '' ?>" onchange="pharmaCheck(<?= "'" . $drug["name"] . "', '" . $date . "'" ?>);" id="<?= $nova["number"] . $drug["name"] . $date ?>start">
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             <?php endforeach; ?>
