@@ -76,7 +76,7 @@ function showSheetState($id, $zone){
     else{
 
     }
-
+    // todo (VB) : Utilisation de la base de données (displayname)
     switch($slug['slug']){
         case "blank":
             $state = "[En préparation]";

@@ -101,6 +101,7 @@ function actionForStatus($status)
 
 function showState($slug, $plural = 0)
 {
+    // todo (VB) : Utilisation de la base de données (displayname)
     switch ($slug) {
         case "blank":
             $result = "en préparation";
