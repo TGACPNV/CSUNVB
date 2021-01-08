@@ -115,7 +115,7 @@ function showState($slug, $plural = 0)
             $result = "en correction";
             break;
         case "close":
-            $result = "fermée";
+            $result = "clôturée";
             if ($plural) {
                 $result = $result . "(s)";
             }
@@ -372,7 +372,7 @@ function slugButtons($page, $sheet, $slug)
                 $buttons .= "<form  method='POST' action='?action=".$page."SheetSwitchState'>
                     <input type='hidden' name='id' value='" .  $sheet["id"]  . "'>
                     <input type='hidden' name='newSlug' value='close'>
-                    <button type='submit' class='btn btn-primary m-1 float-right'>Fermer</button>
+                    <button type='submit' class='btn btn-primary m-1 float-right'>Clôturer</button>
                     </form>";
             }
             break;
