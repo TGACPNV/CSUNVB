@@ -34,9 +34,9 @@ function getDrugSheetStateButton($state)
     }
 }
 
-function buttonTask($initials, $desription, $taskID, $type, $weekState)
+function buttonTask($initials, $desription, $taskID, $type, $slug)
 {
-    if ($weekState == 'open') {
+    if ($slug == 'open' || $slug == 'reopen') {
         if (empty($initials)) {
             $messageQuittance = 'Vous êtes sur le point de quittancer la tâche suivante : <br> "' . $desription . '".';
             return "<button type='button' class='btn btn-secondary toggleTodoModal btn-block m-1' data-title='Quittancer une tâche' data-id='" . $taskID . "' data-status='close' data-type='" . $type . "' data-content='" . $messageQuittance . "'>" . $desription . "<div class='bg-white rounded mt-1'><br></div></button>";
