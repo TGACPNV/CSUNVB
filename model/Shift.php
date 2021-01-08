@@ -157,8 +157,9 @@ function updateDataShift($id,$novaDay,$novaNight,$bossDay,$bossNight,$teammateDa
 }
 
 function getStateFromSheet($id){
-    return execute("SELECT status.slug FROM status LEFT JOIN shiftsheets ON shiftsheets.status_id = status.id WHERE shiftsheets.id =:sheetID", ["sheetID"=>$id]);
+    return selectOne("SELECT status.slug FROM status LEFT JOIN shiftsheets ON shiftsheets.status_id = status.id WHERE shiftsheets.id =:sheetID", ["sheetID"=>$id])["slug"];
 }
+
 
 function getBaseIDForShift($id){
     return selectOne("SELECT base_id FROM shiftsheets where id =:id", ["id"=>$id])["base_id"];
