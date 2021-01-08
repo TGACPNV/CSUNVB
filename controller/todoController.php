@@ -60,7 +60,7 @@ function showtodo($todo_id){
 function addWeek(){
     $baseID = $_SESSION['base']['id']; // On ne peut ajouter une feuille que dans la base où l'on se trouve
 
-    $week = GetLastWeek($baseID); // Récupère la dernière semaine
+    $week = getLastWeek($baseID); // Récupère la dernière semaine
 
     if($_POST['selectModel'] == 'lastValue'){
         $template = $week;
