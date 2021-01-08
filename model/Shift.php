@@ -218,8 +218,11 @@ function removeShiftAction($modelID,$actionID){
     execute("DELETE FROM `shiftmodel_has_shiftaction` WHERE shiftaction_id=:actionID and shiftmodel_id=:modelID;", ["actionID"=> $actionID,"modelID"=> $modelID]);
 }
 
-function getShiftActionID($actionName){
-    return selectOne("SELECT id from shiftactions where text=:actionName", ["actionName" => $actionName])["id"];
+function getShiftActionID($actionName,$sectionName){
+    return selectOne("SELECT shiftactions.id from shiftactions 
+INNER JOIN shiftsections
+ON shiftsections.id = shiftactions.shiftsection_id
+where TEXT= :actionName AND shiftsections.id = :sectionName", ["actionName" => $actionName, "sectionName" => $sectionName])["id"];
 }
 
 function getShiftActionName($actionID){

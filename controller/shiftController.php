@@ -92,7 +92,7 @@ function addActionForShift($sheetID){
  * @param $sheetID
  */
 function creatActionForShift($sheetID){
-    $actionID = getShiftActionID($_POST["actionToAdd"]);
+    $actionID = getShiftActionID($_POST["actionToAdd"],$_POST["section"]);
     if($actionID == null){
         $actionID = creatShiftAction($_POST["actionToAdd"],$_POST["section"]);
         setFlashMessage("Nouvelle action <strong>".$_POST["actionToAdd"]."</strong> créée et ajoutée à la feuille");
