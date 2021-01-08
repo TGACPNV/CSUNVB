@@ -108,7 +108,7 @@ $title = "CSU-NVB - Remise de garde";
     <form>
         <input type="hidden" name="action" value="listshift">
         <input type="hidden" name="id" value="<?= $shiftsheet["base_id"] ?>">
-        <button type="submit" class='btn btn-primary m-1 float-right'>Retour à la liste</button>
+        <button type="submit" class='btn btn-primary m-1'>Retour à la liste</button>
     </form>
 </div>
 <div class='d-flex float-right'>
@@ -116,7 +116,7 @@ $title = "CSU-NVB - Remise de garde";
     <form  method='POST' action='?action=shiftPDF&id=<?=$shiftsheet["id"]?>'>
         <input type='hidden' name='id' value='" . $sheet["id"] . "'>
         <input type='hidden' name='newSlug' value='open'>
-        <button type='submit' class='btn btn-primary m-1 float-right'>Télécharger en PDF</button>
+        <button type='submit' class='btn btn-primary m-1'>Télécharger en PDF</button>
     </form>
 </div>
 
