@@ -34,9 +34,47 @@ function getDrugSheetStateButton($state)
     }
 }
 
-function buttonTask($initials, $desription, $taskID, $type, $weekState)
+function showDrugSheetsByStatus($slug, $sheets)
 {
-    if ($weekState == 'open') {
+    $html = "<div class='slug" . ucwords($slug) . "'>";
+
+    $html .= "<h3>Semaine(s) " . showState($slug, count($sheets) - 1) . "</h3>
+                    <button class='btn dropdownButton'><i class='fas fa-caret-square-down' data-list='" . $slug . "' ></i></button>
+                    </div>";
+
+    if (!empty($sheets)) {
+        $html = $html . "<div class='" . $slug . "Sheets'><table style='margin-top: 0;' class='table table-bordered'>
+                        <thead class='thead-dark'><th>Semaine n°</th><th class='actions'>Actions</th></thead>
+                        <tbody>";
+
+        foreach ($sheets as $sheet) {
+            $html .= "<tr><td>Semaine " . $sheet['week'];
+
+            $html .= "<td><div class='d-flex justify-content-around'>
+                <form>
+                    <input type='hidden' name='action' value='showDrugSheet'>
+                    <input type='hidden' name='id' value='" . $sheet['id'] . "'>
+                    <button type='submit' class='btn btn-primary'>Détails</button>
+                </form>
+                            ";
+            if(!(hasOpenDrugSheet($sheet['base_id']) && $sheet['state'] == 'blank'))
+                $html .= generateSlugButtonDrugs($slug, $sheet['id']);
+
+            $html .= "</div></td>";
+        }
+
+        $html = $html . "</tr> </tbody> </table></div>";
+
+    } else {
+        $html = $html . "<div class='" . $slug . "Sheets'><p>Aucune feuille de tâche n'est actuellement " . showState($slug) . ".</p></div>";
+    }
+
+    return $html;
+}
+
+function buttonTask($initials, $desription, $taskID, $type, $slug)
+{
+    if ($slug == 'open' || $slug == 'reopen') {
         if (empty($initials)) {
             $messageQuittance = 'Vous êtes sur le point de quittancer la tâche suivante : <br> "' . $desription . '".';
             return "<button type='button' class='btn btn-secondary toggleTodoModal btn-block m-1' data-title='Quittancer une tâche' data-id='" . $taskID . "' data-status='close' data-type='" . $type . "' data-content='" . $messageQuittance . "'>" . $desription . "<div class='bg-white rounded mt-1'><br></div></button>";
@@ -52,7 +90,6 @@ function buttonTask($initials, $desription, $taskID, $type, $weekState)
         }
     }
 }
-
 
 /**
  * Retourne la date formatée pour l'affichage
@@ -98,9 +135,9 @@ function actionForStatus($status)
     }
 }
 
-
 function showState($slug, $plural = 0)
 {
+    // todo (VB) : Utilisation de la base de données (displayname)
     switch ($slug) {
         case "blank":
             $result = "en préparation";
@@ -162,7 +199,7 @@ function showSheetsTodoByStatus($slug, $sheets)
                     </div>";
 
     if (!empty($sheets)) {
-        $html = $html . "<div class='" . $slug . "Sheets'><table class='table table-bordered'>
+        $html = $html . "<div class='" . $slug . "Sheets' style='margin-top: 0px;'><table class='table table-bordered' style='margin-top: 0px;'>
                         <thead class='thead-dark'><th>Semaine n°</th><th class='actions'>Actions</th></thead>
                         <tbody>";
 
@@ -235,11 +272,6 @@ function slugsButtonTodo($slug, $sheetID)
                     <button type='submit' class='btn btn-primary'>Fermer</button>
                     </form>";
             }
-            $buttons = $buttons . "<form  method='POST' action='?action=switchSheetState'>
-                    <input type='hidden' name='id' value='" . $sheetID . "'>
-                    <input type='hidden' name='newSlug' value='print_pdf'>
-                    <button type='submit' class='btn btn-primary'>Imprimer pdf</button>
-                    </form>";
             break;
         case "reopen":
             if (ican('closesheet')) {
@@ -340,8 +372,6 @@ function listShiftSheet($slug, $shiftList)
     return $html;
 }
 
-
-
 function slugButtons($page, $sheet, $slug)
 {
     $buttons = "";
@@ -405,4 +435,14 @@ function slugButtons($page, $sheet, $slug)
             break;
     }
     return $buttons;
+}
+
+function generateSlugButtonDrugs($slug, $sheetID) { //TODO: champ "action" dans la table status, pour remplacer slug dans le submit?
+    if (ican(getDrugSheetStateButton($slug) . "sheet")) {
+        return "<form method='POST' action=?action=".getDrugSheetStateButton($slug)."DrugSheet>
+                    <input type='hidden' name='id' value='" . $sheetID . "'>
+                    <button type='submit' class='btn btn-primary'>" . getDrugSheetStateButton($slug) . "</button>
+                    </form>";
+    }
+    return null;
 }
