@@ -82,10 +82,11 @@ UNLOCK TABLES;
 
 -- table status
 INSERT INTO `status` VALUES
-(1,'blank','Vierge'),
-(2,'open','Ouvert'),
+(1,'blank','En préparation'),
+(2,'open','Actif'),
 (3,'close','Fermé'),
-(4,'reopen','Réouvert');
+(4,'reopen','En correction'),
+(5,'archive','Archivé');
 
 -- table shiftsections
 INSERT INTO `shiftsections` VALUES
@@ -94,7 +95,7 @@ INSERT INTO `shiftsections` VALUES
 (3,'Matériel & Télécom'),
 (4,'Véhicules & Interventions');
 
--- table guardactions
+-- table shiftactions
 INSERT INTO `shiftactions` VALUES
 (1,'Radios',1),
 (2,'Détecteurs CO',1),
@@ -115,3 +116,13 @@ INSERT INTO `shiftactions` VALUES
 (17,'Centrale propre',4),
 (18,'Tâches du jour effectuées',4),
 (19,'Dimanche ',4);
+
+-- table shiftmodels
+INSERT INTO `shiftmodels` VALUES
+(1,'Classic',1),
+(2,'',0);
+
+-- table shiftmodel_has_shiftaction
+insert into shiftmodel_has_shiftaction VALUES
+(1,1,1),(2,2,1),(3,3,1),(4,4,1),(5,5,1),(6,6,1),(7,7,1),(8,8,1),(9,9,1),(10,10,1),(11,11,1),(12,12,1),(13,13,1),(14,14,1),(15,15,1),(16,16,1),(17,17,1),(18,18,1),(19,19,1),
+(20,1,2),(21,2,2),(22,3,2);

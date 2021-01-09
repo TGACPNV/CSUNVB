@@ -111,7 +111,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `todosheets` WRITE;
 /*!40000 ALTER TABLE `todosheets` DISABLE KEYS */;
-INSERT INTO `todosheets` VALUES (23,2044,'open',2,NULL);
+INSERT INTO `todosheets` VALUES (23,2044,2,2,NULL);
 /*!40000 ALTER TABLE `todosheets` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,11 +138,11 @@ UNLOCK TABLES;
 
 -- table shiftsheets
 INSERT INTO `shiftsheets` VALUES
-(1,'2020-10-26 00:00:00',2,3,43,32,34,23,1,2),
-(2,'2020-10-27 00:00:00',2,3,53,42,35,24,3,4),
-(3,'2020-10-28 00:00:00',2,2,63,52,36,25,5,6),
-(4,'2020-10-29 00:00:00',2,1,null,null,null,null,null,null),
-(5,'2020-10-30 00:00:00',2,1,null,null,null,null,null,NULL);
+(1,'2021-01-03',1,2,3,43,32,34,23,1,2),
+(2,'2021-01-03',1,3,3,53,42,35,24,3,4),
+(3,'2021-01-04',1,2,2,63,52,36,25,5,6),
+(4,'2021-01-04',1,3,1,null,null,null,null,null,null),
+(5,'2021-01-05',2,2,1,null,null,null,null,null,NULL);
 
 -- table shiftchecks
 INSERT INTO `shiftchecks` (id,DAY,shiftsheet_id,user_id,shiftaction_id) VALUES
@@ -174,5 +174,12 @@ insert into `shiftcomments` (id,message,user_id,shiftsheet_id,shiftaction_id )VA
 (3,'Commentaire', 29,1,4),
 (4,'Commentaire', 15,2,1),
 (5,'Commentaire', 87,2,7);
+
+-- table guardactions
+INSERT INTO `shiftactions` VALUES
+(20,'Sortir le chien',1),
+(21,'Vider les poubelles',1),
+(22,'Faire le ménage',1),
+(23,'Vérification quelconque',2);
 
 

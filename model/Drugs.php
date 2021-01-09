@@ -92,3 +92,7 @@ function getOpenDrugSheet($baseID) {
 function getDrugSheetState($baseID, $week) {
     return selectOne("SELECT state FROM drugsheets WHERE base_id = '$baseID' AND week = '$week'");
 }
+
+function getStateFromDrugs($id){
+    return selectOne("SELECT status.slug FROM status LEFT JOIN drugsheets ON drugsheets.status_id = status.id WHERE drugsheets.id =:sheetID", ["sheetID"=>$id]);
+}

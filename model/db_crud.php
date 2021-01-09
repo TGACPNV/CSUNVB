@@ -74,5 +74,3 @@ function execute($query, $params = []) {
         return null;
     }
 }
-
-?>

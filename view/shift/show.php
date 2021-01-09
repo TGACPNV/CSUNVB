@@ -3,7 +3,8 @@ ob_start();
 $title = "CSU-NVB - Remise de garde";
 ?>
 <div class="row m-2">
-    <h1>Remise de Garde du <?= date('d.m.Y', strtotime($shiftsheet['date'])) ?> à <?= $shiftsheet['baseName'] ?></h1>
+    <h1>Remise de Garde du <?= date('d.m.Y', strtotime($shiftsheet['date'])) ?> à <?= $shiftsheet['baseName'] ?> <?= showSheetState($shiftsheet['id'], "shift") ?></h1>
+    <input type="hidden" id="shiftDate" value="<?=$shiftsheet['date']?>">
 </div>
 <form action="?action=updateShift&id=<?= $shiftsheet['id'] ?>" method="POST">
     <input type=hidden name="id" value= <?= $shiftsheet['id'] ?>>
@@ -103,7 +104,14 @@ $title = "CSU-NVB - Remise de garde";
         </div>
     </div>
 </form>
-
+<div class='d-flex float-right'>
+    <?= slugButtons("shift", $shiftsheet, $shiftsheet["status"])?>
+    <form  method='POST' action='?action=shiftPDF&id=<?=$shiftsheet["id"]?>'>
+        <input type='hidden' name='id' value='" . $sheet["id"] . "'>
+        <input type='hidden' name='newSlug' value='open'>
+        <button type='submit' class='btn btn-primary'>Télécharger en PDF</button>
+    </form>
+</div>
 <?php foreach ($sections as $section): ?>
     <div class="row sectiontitle"><?= $section["title"] ?></div>
     <table class="table table-bordered table-striped">
@@ -118,7 +126,16 @@ $title = "CSU-NVB - Remise de garde";
         foreach ($section["actions"] as $action): ?>
             <tr>
                 <td class="actionname">
-                    <?= $action['text'] ?>
+                    <?php if ($shiftsheet['status'] == "blank" && $_SESSION['user']['admin'] == true):?>
+                        <form action="?action=removeActionForShift&id=<?=$shiftsheet['id'] ?>" method="post" style="display: inline">
+                            <input type="hidden" name="model" value="<?=$shiftsheet['model'] ?>">
+                            <input type="hidden" name="action" value="<?= $action['id'] ?>">
+                            <button type="submit" class="btn btn-danger" >
+                                <i class="fas fa-times" style = "margin-right: 4px;"></i>
+                            </button>
+                        </form>
+                    <?php endif; ?>
+                    <div style="display: inline;margin-left: 8px;"><?= $action['text'] ?></div>
                 </td>
                 <?php if ($enableshiftsheetFilling): ?>
                     <td class="ackcell" style="padding : 3px; width: 110px;">
@@ -160,15 +177,32 @@ $title = "CSU-NVB - Remise de garde";
                     </td>
                     <td>
                         <?php foreach ($action["comments"] as $comment): ?>
-                            [ <?= $comment['initials'] ?> - <?= date('H:i', strtotime($comment['time'])) ?> ] : <?= $comment['message'] ?>
-                            <br>
+                            <div class="<?= ($comment['carryOn'] == 1 and $comment['endOfCarryOn'] == null) ? 'carry' : 'notCarry' ?>" id="comment-<?= $comment['id'] ?>">
+
+                                    <button class="removeCarryOnBtn carried" value=<?= $comment['id'] ?>>
+                                        <i class="fas fa-thumbtack fa-lg" style="color:#000000"></i>
+                                    </button>
+
+                                    <button class="addCarryOnBtn addCarry" value=<?= $comment['id'] ?>>
+                                        <i class="fas fa-thumbtack fa-rotate-90 fa-lg" style="color:#777777"></i>
+                                    </button>
+
+                                <strong>[ <?= $comment['initials'] ?> - <?=date('H:i', strtotime($comment['time']))?> <?= ($comment['carryOn'] == 1) ? date('/  d.m.Y ', strtotime($comment['time'])) : "" ?>] :</strong>
+                                <?= $comment['message'] ?>
+                                <hr>
+                            </div>
+
                         <?php endforeach; ?>
+
+
                         <button type="submit" class="btn bg-white btn-block m-1 toggleShiftModal"
                                 data-content="Ajouter un commentaire  à <?= $action['text'] ?>"
                                 data-action_id="<?= $action['id'] ?>" data-action="?action=commentShift"
                                 data-comment="text" style="width:200px;">
                             Nouveau commentaire
                         </button>
+
+
                     </td>
                 <?php else: ?>
                     <td class="ackcell">
@@ -190,6 +224,33 @@ $title = "CSU-NVB - Remise de garde";
                 <?php endif; ?>
             </tr>
         <?php endforeach; ?>
+        <?php if ($shiftsheet['status'] == "blank" && $_SESSION['user']['admin'] == true):?>
+            <tr>
+                <td colspan="4" style="padding: 0px;">
+                    <div>
+                        <div class="float-left">
+                            <form action="?action=addActionForShift&id=<?=$shiftsheet['id'] ?>" method="post">
+                                <input type="hidden" name="model" value="<?=$shiftsheet['model'] ?>">
+                                <button type="submit" class='btn btn-success m-1'">Ajouter</button>
+                                <select name="actionID">
+                                    <?php foreach ($section["unusedActions"] as $action): ?>
+                                        <option value="<?=$action["id"]?>"><?=$action["text"]?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </form>
+                        </div>
+                        <div class="float-left" style="margin-left: 50px">
+                            <form action="?action=creatActionForShift&id=<?=$shiftsheet['id'] ?>" method="post">
+                                <input type="hidden" name="model" value="<?=$shiftsheet['model'] ?>">
+                                <input type="hidden" name="section" value="<?=$section['id'] ?>">
+                                <button type="submit" class='btn btn-success m-1'">Créer</button>
+                                <input type="text" name="actionToAdd" value="" style="margin : 6px;">
+                            </form>
+                        </div class="float-left">
+                    </div>
+                </td>
+            </tr>
+        <?php endif; ?>
         </tbody>
     </table>
 <?php endforeach; ?>

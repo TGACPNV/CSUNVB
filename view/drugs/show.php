@@ -10,7 +10,7 @@ ob_start();
 <div class="row m-2">
     <h1>Stupéfiants</h1>
 </div>
-<h2>Site de <?= $site ?>, Semaine N°<?= $drugsheet["week"] ?></h2>
+<h2>Site de <?= $site ?>, Semaine N°<?= $drugsheet["week"] ?> <?= showSheetState($drugsheet["week"], "drugs") ?></h2>
 <?php //TODO: a simplifier ?>
 <a href='?action=<?= getDrugSheetStateButton(getDrugSheetState($drugsheet["base_id"], $drugsheet["week"])["state"]); ?>DrugSheet&id=<?= $drugsheet["base_id"] ?>&week=<?= $drugsheet["week"]?>'>
     <button class='btn btn-primary btn-sm ml-3'><?= getDrugSheetStateButton(getDrugSheetState($drugsheet["base_id"], $drugsheet["week"])["state"]) ?></button>

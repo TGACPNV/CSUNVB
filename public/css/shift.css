@@ -43,3 +43,31 @@
     align-items: center;
 }
 
+/** ajouté par Michael Gogniat **/
+
+.carry .carried {
+    display: inline;
+}
+
+.carry .addCarry {
+    display: none;
+}
+
+.notCarry .carried {
+    display: none;
+}
+
+.notCarry .addCarry {
+    display: none;
+}
+
+.notCarry .addCarry:hover {
+    display: inline;
+}
+
+.notCarry:hover .addCarry {
+    display: inline;
+}
+
+
+

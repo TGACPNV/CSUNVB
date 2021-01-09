@@ -9,22 +9,40 @@
  */
 
 session_start();
-
+/**
+ * Call definition file pour paths
+ */
 require "../path.php";
 
+/**
+ * Call common functions used in different parts of the code
+ */
 require VIEW . "helpers.php";
 require "../globalhelpers.php";
 
+/**
+ * Call the controller files for the different pages of the site:
+ * adminController: Administration
+ * drugsController: Drug use tracking
+ * mainController: Home page and login
+ * shiftController: Shift reports
+ * todoController: Daily tasks
+ */
 require CONTROLLER . "adminController.php";
 require CONTROLLER . "drugsController.php";
 require CONTROLLER . "mainController.php";
 require CONTROLLER . "shiftController.php";
 require CONTROLLER . "todoController.php";
 
-
+/**
+ * Call database login details and functions
+ */
 require MODEL . ".const.php";
 require MODEL . "db_crud.php";
 
+/**
+ * Call all model files
+ */
 require MODEL . "Base.php";
 require MODEL . "User.php";
 require MODEL . "Drugs.php";
@@ -32,11 +50,14 @@ require MODEL . "Nova.php";
 require MODEL . "Shift.php";
 require MODEL . "Todo.php";
 
-// nothing's allowed without authentication
+require('../FPDF/fpdf.php');
+
+/**
+ * Check if user logged in and perform requested action when true
+ */
 if (!isset($_SESSION['user'])) {
     login();
 } else {
-    // define which action must be performed
     if (isset($_GET['action'])) {
         $action = $_GET['action'];
     } else {

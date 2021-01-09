@@ -10,14 +10,48 @@ var buttons = document.querySelectorAll('.toggleShiftModal');
 buttons.forEach((item) => {
     item.addEventListener('click', function (event) {
         $("#shiftModal").modal("toggle");
-        document.getElementById("modal-content").innerHTML = this.getAttribute("data-content");
-        document.getElementById("action_id").value = this.getAttribute("data-action_id");
-        document.getElementById("day").value = this.getAttribute("data-day");
-        document.getElementById("shiftSheetinfo").action = this.getAttribute("data-action");
-        document.getElementById("comment").type = this.getAttribute("data-comment");
+        $("#action_id").val( this.getAttribute("data-action_id"));
+        $("#day").val( this.getAttribute("data-day"));
+        $("#modal-content").html(this.getAttribute("data-content"));
+        $("#shiftSheetinfo").attr('action', this.getAttribute("data-action"));
+        $("#comment").prop("type",this.getAttribute("data-comment"));
     }, false);
 })
 
-$(".shiftInfo").change(function () {
-    document.getElementById("updateShift").classList.remove("d-none");
-});
+var addCarryOnBtn = document.querySelectorAll('.addCarryOnBtn');
+addCarryOnBtn.forEach((item) => {
+    item.addEventListener('click', function (event) {
+        $( "#comment-" + this.value ).removeClass( "notCarry" );
+        $( "#comment-" + this.value ).addClass( "carry" );
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+            }
+        };
+        request.open("GET", "?action=addCarryOnComment&id="+ this.value, true);
+        request.send();
+    }, false);
+})
+
+
+var removeCarryOnBtn = document.querySelectorAll('.removeCarryOnBtn');
+removeCarryOnBtn.forEach((item) => {
+    item.addEventListener('click', function (event) {
+        $( "#comment-" + this.value ).removeClass( "carry" )
+        $( "#comment-" + this.value ).addClass( "notCarry" )
+        $.ajax({
+            type: "POST",
+            url: "?action=carryOffComment",
+            data: {
+                carryOff: $("#shiftDate").val(),
+                commentID: this.value
+            },
+            cache: false,
+            success: function(data) {
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr);
+            }
+        });
+    }, false);
+})

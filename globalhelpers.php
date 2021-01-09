@@ -67,8 +67,7 @@ function showSheetState($id, $zone){
         $slug = getStateFromSheet($id);
     }
     else if($zone == "todo"){
-        /** $slug = getStateFromTodo($id); */
-        $slug = "tes<t";
+        $slug = getStateFromTodo($id);
     }
     else if ($zone == "drugs"){
         /** $slug = getStateFromDrugs($id); */
@@ -77,8 +76,8 @@ function showSheetState($id, $zone){
     else{
 
     }
-
-    switch($slug){
+    // todo (VB) : Utilisation de la base de données (displayname)
+    switch($slug['slug']){
         case "blank":
             $state = "[En préparation]";
             break;
@@ -109,6 +108,6 @@ function showSheetState($id, $zone){
  */
 function ican ($action)
 {
-    require_once ('policies.php');
+    $policies = require('policies.php');
     return isset($policies[$_SESSION['user']['admin']][$action]);
 }

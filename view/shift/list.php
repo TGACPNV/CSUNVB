@@ -1,80 +1,42 @@
 <?php
-/**
- * Auteur: Thomas Grossmann / Mounir Fiaux
- * Date: Mars 2020
- **/
-
 ob_start();
 $title = "CSU-NVB - Remise de garde";
 ?>
 <script src="js/shift.js"></script>
-<div class="row m-2">
+<div>
     <h1>Remise de Garde</h1>
 </div>
-
-<div class="row">
-    <form action="?action=listshift" class="col">
-        <input type="hidden" name="action" value="listshiftforbase">
+<div>
+    <form><!-- Liste déroulante pour le choix de la base -->
+        <input type="hidden" name="action" value="listshift">
         <select onchange="this.form.submit()" name="id" size="1">
-            <?php foreach ($Bases as $base) : ?>
-                <option value="<?= $base['id'] ?>" <?= ($baseID == $base['id']) ? 'selected' : '' ?> name="site"><?= $base['name'] ?></option>
+            <?php foreach ($bases as $base) : ?>
+                <option value="<?= $base['id'] ?>" <?= ($baseID == $base['id']) ? 'selected' : '' ?>
+                        name="base"><?= $base['name'] ?></option>
             <?php endforeach; ?>
         </select>
     </form>
-
-    <?php if (($_SESSION['user']['admin'] == true)) : ?>
-        <div class="col">
-            <form>
-                <input type="hidden" name="action" value="newShiftSheet">
-                <input type="hidden" name="id" value="<?= $baseID ?>">
-                <button type="submit" class='btn btn-primary m-1 float-right'>Nouvelle Feuille de garde</button>
+    <div class="newSheetZone"> <!-- Liste déroulante pour le choix du modèle et bouton de nouvelle semaine -->
+        <?php if (ican('createsheet')) : ?>
+            <form method="POST" action="?action=newShiftSheet&id=<?= $baseID ?>" class="float-right">
+                <select name="selectModel">
+                    <option value='lastValue' selected=selected>En développement</option>
+                    <?php foreach ($templates as $template) : ?>
+                        <option value='<?= $template['template_name'] ?>'><?= $template['template_name'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <button class='btn btn-primary m-1'>Nouvelle Feuille de garde</button>
             </form>
-        </div>
-    <?php endif; ?>
+        <?php endif; ?>
+    </div>
+
 </div>
 
 
-<table class="table table-bordered  table-striped" style="text-align: center">
-    <thead class="thead-dark">
-    <th>Date</th>
-    <th>État</th>
-    <th>Véhicule</th>
-    <th>Responsable</th>
-    <th>Équipage</th>
-
-
-    <th>Action</th>
-    </thead>
-    <?php foreach ($shiftsheets as $shiftsheet) { ?>
-        <tr>
-            <td><a href='?action=showshift&id=<?= $shiftsheet['id'] ?>'
-                   class="btn"><?= date('d.m.Y', strtotime($shiftsheet['date'])) ?>  </a></td>
-            <td>
-                <?= $shiftsheet['status'] ?>
-            </td>
-            <td>Jour : <?= $shiftsheet['novaDay'] ?><br>Nuit : <?= $shiftsheet['novaNight'] ?></td>
-            <td>Jour : <?= $shiftsheet['bossDay'] ?><br>Nuit : <?= $shiftsheet['bossNight'] ?> </td>
-            <td>Jour : <?= $shiftsheet['teammateDay'] ?><br>Nuit : <?= $shiftsheet['teammateNight'] ?></td>
-            <td>
-                <!-- TODO (XCL): faire un helper qui donne l'action correspondante à l'état actuel -->
-                <?php if ((($_SESSION['user']['admin'] == true and getNbshiftsheet('open', $baseID) == 0) ||
-                    ($_SESSION['user']['admin'] == true and $shiftsheet['statusslug'] == 'close') ||
-                    $shiftsheet['statusslug'] == 'open' ||
-                    $shiftsheet['statusslug'] == 'reopen')) { ?>
-                    <form>
-                        <input type="hidden" name="action" value="altershiftsheetStatus">
-                        <input type=hidden name="id" value= <?= $shiftsheet['id'] ?>>
-                        <button class="btn btn-primary btn-sm"><?= actionForStatus($shiftsheet['statusslug'])?></button>
-                    </form>
-                <?php } ?>
-
-            </td>
-        </tr>
-    <?php } ?>
-</table>
-
+<div id="tableContent">
+    <?= listSheet("shift", $sheets) ?>
+</div>
 <?php
-
 $content = ob_get_clean();
 require GABARIT;
 ?>

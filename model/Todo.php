@@ -1,85 +1,91 @@
 <?php
+/**Function for the daily task section**/
+
 
 /**
- * Fonction permettant de récupérer l'ensemble des informations d'une semaine grâce à son ID
- * @param $id : l'ID de la semaine à retrouver
+ * Function that gets all data from a weekly sheet based on it's ID
+ * @param $sheetID : ID of the desired sheet
  * @return array|mixed|null
  */
-function getTodosheetByID($id)
+function getTodosheetByID($sheetID)
 {
-    return selectOne("SELECT * FROM todosheets where id =:id", ['id' => $id]);
+    return selectOne("SELECT todosheets.id AS id, week, base_id, template_name, slug, displayname
+                             FROM todosheets
+                             LEFT JOIN status ON todosheets.status_id = status.id
+                             WHERE todosheets.id =:sheetID", ['sheetID' => $sheetID]);
+
 }
 
+
+
 /**
- * Fonction permettant de récupérer l'ensemble des informations d'une semaine pour une base et une semaine précise
- * @param $id : l'ID de la semaine à retrouver
+ * Function that gets all data from a weekly sheet based on week number and base id *
+ * @param $baseID : ID of the desired base
+ * @param $weekNbr : Number of the desired week. format: yynn where yy is 2 digit year and nn is week number
  * @return array|mixed|null
  */
-function getTodosheetByBaseAndWeek($base_id, $weeknb)
+function getTodosheetByBaseAndWeek($baseID, $weekNbr)
 {
-    return selectOne("SELECT * FROM todosheets where base_id =:id and week = :weeknb", ['id' => $base_id, 'week' => $weeknb]);
+    return selectOne("SELECT * FROM todosheets where base_id =:baseID and week = :weekNbr", ['baseID' => $baseID, 'weekNbr' => $weekNbr]);
 }
 
 /**
- * Fonction permettant de rechercher dans la base de données lu numéro et l'id des semaines fermées pour une base spécifique
- * @param $baseID : l'ID de la base dont on cherche les semaines fermées
+ * Function that gets all weekly sheets based on base ID and slug name
+ * @param $baseID : ID of the desired base
+ * @param $slug : Name of desired slug. Values: blank, open, close, reopen
  * @return array|mixed|null
  */
-function getClosedWeeks($baseID)
+function getWeeksBySlugs($baseID, $slug)
 {
-    $query = "SELECT t.week, t.id, t.template_name FROM todosheets t JOIN bases b ON t.base_id = b.id WHERE b.id = :baseID AND t.state = 'close' ORDER BY t.week DESC;";
-    return selectMany($query, ['baseID' => $baseID]);
+    $query = "SELECT t.week, t.id, t.template_name
+            FROM todosheets t
+            JOIN bases b ON t.base_id = b.id
+            JOIN status ON t.status_id = status.id
+            WHERE b.id = :baseID AND status.slug =:slug
+            ORDER BY t.week DESC;";
+    return selectMany($query, ['baseID' => $baseID, 'slug' => $slug]);
 }
 
+
+function getStateFromTodo($id){
+    return selectOne("SELECT status.slug FROM status LEFT JOIN todosheets ON todosheets.status_id = status.id WHERE todosheets.id =:sheetID", ["sheetID"=>$id]);
+}
+
+
+
+
+
 /**
- * Fonction permettant de rechercher dans la base de données lu numéro et l'id de la semaine ouverte pour une base spécifique
- * @param $baseID : l'ID de la base dont on cherche la semaine ouverte
+ * Function that gets the latest week for a defined base
+ * @param $baseID : ID of the desired base
  * @return array|mixed|null
  */
-function getOpenedWeeks($baseID)
-{
-    $query = "SELECT t.week, t.id, t.template_name FROM todosheets t JOIN bases b ON t.base_id = b.id WHERE b.id = :baseID AND t.state = 'open';";
-    return selectOne($query, ['baseID' => $baseID]);
-}
-
-/**
- * Fonction permettant de fermer une semaine
- * @param $id : l'ID de la semaine à fermer
- */
-function closeWeeklyTasks($id)
-{
-    execute("UPDATE todosheets set state='close' WHERE id=:id", ['id' => $id]);
-}
-
-/**
- * Fonction permettant d'ouvrir une semaine
- * @param $id : l'ID de la semaine à ouvrir
- */
-function openWeeklyTasks($id)
-{
-    execute("UPDATE todosheets set state='open' WHERE id=:id", ['id' => $id]);
-}
-
-function readLastWeek($base_id)
+function getLastWeek($baseID)
 {
     return selectOne("SELECT MAX(week) as 'last_week', MAX(id) AS 'id'
                             FROM todosheets
-                            Where base_id =:base_id
-                            GROUP BY base_id", ["base_id" => $base_id]);
+                            Where base_id =:baseID
+                            GROUP BY base_id", ["baseID" => $baseID]);
 }
 
-function weeknew($base, $week)
+
+/**
+ * Function that creates a new weekly sheet
+ * @param $baseID : ID of the desired base
+ * @param $weekNbr : Number of the desired week. format: yynn where yy is 2 digit year and nn is week number
+ * @return string|null
+ */
+function createNewSheet($baseID, $weekNbr)
 {
-    // todo : remplacer la requete execute par une requete insert !
-    execute("INSERT INTO todosheets(week,state ,base_id)
-                   VALUES('$week','close','$base')", []);
-
-    $query = "SELECT id FROM todosheets 
-                WHERE week = :week AND base_id = :base";
-
-    return selectOne($query, ['week' => $week, 'base' => $base]);
+    return insert("INSERT INTO todosheets(base_id,status_id,week) VALUES(:baseID, 1, :weekNbr)", ["baseID" => $baseID, "weekNbr" => $weekNbr]); // 1 is value for blank
 }
 
+/**
+ * @param $sid
+ * @param $day
+ * @param $dayOfWeek
+ * @return array|mixed|null
+ */
 function readTodoThingsForDay($sid, $day, $dayOfWeek)
 {
     $res = selectMany("SELECT description, type, value, u.initials AS 'initials', todos.id AS id
@@ -90,40 +96,59 @@ function readTodoThingsForDay($sid, $day, $dayOfWeek)
     return $res;
 }
 
+/**
+ * @param $sheetID
+ * @return array|mixed|null
+ */
 function readTodoForASheet($sheetID)
 {
-    $query = "SELECT todothing_id, daything, day_of_week
+    $query = "SELECT todothing_id AS id, daything, day_of_week AS 'day'
                 FROM todos
                 INNER JOIN todothings ON todos.todothing_id = todothings.id
                 INNER JOIN todosheets ON todos.todosheet_id = todosheets.id
-                WHERE todosheet_id = :id";
+                WHERE todosheet_id = :sheetID";
 
-    return selectMany($query, ['id' => $sheetID]);
+    return selectMany($query, ['sheetID' => $sheetID]);
 }
 
-function addtoDo($todoID, $weekID, $dayOfWeek)
+/**
+ * @param $todoID
+ * @param $weekID
+ * @param $dayOfWeek
+ */
+function addTodoThing($todoID, $weekID, $dayOfWeek)
 {
     $query = "INSERT INTO todos (todothing_id, todosheet_id, day_of_week) VALUE (:todoID, :sheetID, :day)";
     execute($query, ['todoID' => $todoID, 'sheetID' => $weekID, 'day' => $dayOfWeek]);
 }
 
+/**
+ * @param $id
+ * @param $template_name
+ * @return bool|null
+ */
 function updateTemplateName($id, $template_name)
 {
     return execute(
         "UPDATE todosheets SET template_name=:template_name WHERE id =:id", ['template_name' => $template_name, 'id' => $id]);
 }
 
+/**
+ * @param $id
+ * @return bool|null
+ */
 function deleteTemplateName($id)
 {
     return execute(
         "UPDATE todosheets SET template_name=NULL WHERE id =:id", ['id' => $id]);
 }
 
-function createTodoSheet($base_id, $lastWeek)
-{
-    return insert("INSERT INTO todosheets (base_id,state,week) VALUES (:base_id, 'blank', :lastWeek)", ["base_id" => $base_id, "lastWeek" => $lastWeek + 1]);
-}
 
+/**
+ * @param $id
+ * @param $type
+ * @return bool|null
+ */
 function unvalidateTodo($id, $type)
 {
     if ($type == 1) {
@@ -134,6 +159,11 @@ function unvalidateTodo($id, $type)
 
 }
 
+/**
+ * @param $id
+ * @param $value
+ * @return bool|null
+ */
 function validateTodo($id, $value)
 {
     $initials = $_SESSION['user']['initials'];
@@ -146,7 +176,11 @@ function validateTodo($id, $value)
     }
 }
 
-function getTemplate_name($id)
+/**
+ * @param $id
+ * @return array|mixed|null
+ */
+function getTemplateName($id)
 {
     $query = "SELECT template_name 
              FROM todosheets
@@ -154,6 +188,10 @@ function getTemplate_name($id)
     return selectOne($query, ['id' => $id]);
 }
 
+/**
+ * @param $selectedBaseID
+ * @return array|mixed|null
+ */
 function getTodosheetMaxID($selectedBaseID)
 {
     $query = "SELECT MAX(id) AS id
@@ -162,7 +200,10 @@ function getTodosheetMaxID($selectedBaseID)
     return selectOne($query, ['id' => $selectedBaseID]);
 }
 
-function getTemplates_name()
+/**
+ * @return array|mixed|null
+ */
+function getAllTemplateNames()
 {
     $query = "SELECT template_name, id 
              FROM todosheets
@@ -170,10 +211,55 @@ function getTemplates_name()
     return selectMany($query, []);
 }
 
-function readLastWeekTemplate($Template_name)
+/**
+ * @param $templateName
+ * @return array|mixed|null
+ */
+function getTemplateSheet($templateName)
 {
     return selectOne("SELECT id, week AS last_week
                             FROM todosheets
-                            Where template_name =:Template_name", ["Template_name" => $Template_name]);
+                            Where template_name =:template", ["template" => $templateName]);
 }
-?>
+
+/*
+function closeStatus(){
+    return selectOne("SELECT slug
+                      FROM status
+                      Where slug = 'close'", []);
+
+}*/
+
+/**
+ * @param $id
+ * @param $slug
+ * @return bool|null
+ */
+function changeSheetState($id, $slug)
+{
+    switch($slug){
+        case "open":
+            $statusID =2;
+            break;
+        case "reopen":
+            $statusID =4;
+            break;
+        case "close":
+            $statusID =3;
+            break;
+        case "archive":
+            $statusID =5;
+            break;
+        default:
+            break;
+    }
+    return execute("UPDATE todosheets SET status_id=:statusID WHERE id=:id", ['id' => $id, 'statusID' => $statusID]);
+}
+
+/**
+ * @param $sheetID
+ * @return bool|null
+ */
+function deleteTodoSheet($sheetID){
+    return execute("DELETE FROM todosheets WHERE id=:sheetID",['sheetID' => $sheetID]);
+}
