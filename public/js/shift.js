@@ -55,3 +55,10 @@ removeCarryOnBtn.forEach((item) => {
         });
     }, false);
 })
+
+var shiftInfo = document.querySelectorAll('.shiftInfo');
+shiftInfo.forEach((item) => {
+    item.addEventListener('change', function (event) {
+        updateShift.classList.remove('d-none')
+    }, false);
+})
