@@ -3,17 +3,17 @@ ob_start();
 $title = "CSU-NVB - Drogues hebdomadaires";
 ?>
 <div>
-    <h1>Tâches hebdomadaires</h1>
-</div>
-<div>
-    <form>
+    <form><!-- Liste déroulante pour le choix de la base -->
         <input type="hidden" name="action" value="listDrugSheets">
-            <select onchange="this.form.submit()" name="id" size="1">
+        <div class="row">
+            <h1 class="mr-3">Gestion des stupéfiants à </h1>
+            <select onchange="this.form.submit()" name="id" size="1" class="bigfont mb-3">
                 <?php foreach ($baseList as $base) : ?>
                     <option value="<?= $base['id'] ?>" <?= ($selectedBaseID == $base['id']) ? 'selected' : '' ?>
-                            name="site"><?= $base['name'] ?></option>
+                            name="base"><?= $base['name'] ?></option>
                 <?php endforeach; ?>
             </select>
+        </div>
     </form>
     <div class="newSheetZone"> <!-- Bouton de nouvelle semaine -->
         <?php if (ican('createsheet') && ($_SESSION['base']['id'] == $selectedBaseID)) : ?>

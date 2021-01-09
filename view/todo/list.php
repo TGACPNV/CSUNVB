@@ -11,20 +11,18 @@ ob_start();
 $title = "CSU-NVB - Tâches hebdomadaires";
 ?>
 <div>
-    <h1>Tâches hebdomadaires</h1>
-</div>
-<div>
-    <div> <!-- Liste déroulante pour le choix de la base -->
-        <form>
-            <input type="hidden" name="action" value="listtodoforbase">
-            <select onchange="this.form.submit()" name="id" size="1">
+    <form><!-- Liste déroulante pour le choix de la base -->
+        <input type="hidden" name="action" value="listtodoforbase">
+        <div class="row">
+            <h1 class="mr-3">Tâches hebdomadaires à </h1>
+            <select onchange="this.form.submit()" name="id" size="1" class="bigfont mb-3">
                 <?php foreach ($baseList as $base) : ?>
                     <option value="<?= $base['id'] ?>" <?= ($selectedBaseID == $base['id']) ? 'selected' : '' ?>
-                            name="site"><?= $base['name'] ?></option>
+                            name="base"><?= $base['name'] ?></option>
                 <?php endforeach; ?>
             </select>
-        </form>
-    </div>
+        </div>
+    </form>
     <div class="newSheetZone"> <!-- Liste déroulante pour le choix du modèle et bouton de nouvelle semaine -->
         <?php if (ican('createsheet') && ($_SESSION['base']['id'] == $selectedBaseID)) : ?>
             <form method="POST" action="?action=addWeek" class="float-right">
