@@ -157,11 +157,7 @@ function updateDataShift($id,$novaDay,$novaNight,$bossDay,$bossNight,$teammateDa
 }
 
 function getStateFromSheet($id){
-<<<<<<< HEAD
-    return selectOne("SELECT status.slug FROM status LEFT JOIN shiftsheets ON shiftsheets.status_id = status.id WHERE shiftsheets.id =:sheetID", ["sheetID"=>$id])["slug"];
-=======
     return selectOne("SELECT status.slug FROM status LEFT JOIN shiftsheets ON shiftsheets.status_id = status.id WHERE shiftsheets.id =:sheetID", ["sheetID"=>$id]);
->>>>>>> 230c62154a507ab0c9c7cef6056e61692418bf3c
 }
 
 
@@ -240,11 +236,8 @@ function setSlugForShift($id,$slug){
 function shiftSheetDelete($id){
     return execute("DELETE FROM shiftsheets WHERE id=:id",["id" => $id]);
 }
-<<<<<<< HEAD
-=======
 
 function getShiftModels(){
     $models = selectMany("SELECT name FROM shiftModels where name <> '' and suggested = 1",[]);
     return $models;
 }
->>>>>>> 230c62154a507ab0c9c7cef6056e61692418bf3c

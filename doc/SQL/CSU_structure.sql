@@ -382,8 +382,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
-<<<<<<< HEAD
-=======
 -- Table `csunvb_csu`.`status`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `csunvb_csu`.`status` (
@@ -396,7 +394,6 @@ CREATE TABLE IF NOT EXISTS `csunvb_csu`.`status` (
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
->>>>>>> 230c62154a507ab0c9c7cef6056e61692418bf3c
 -- Table `csunvb_csu`.`shiftmodels`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `csunvb_csu`.`shiftmodels` (
@@ -414,13 +411,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `csunvb_csu`.`shiftsheets` (
   `id` INT NOT NULL AUTO_INCREMENT,
-<<<<<<< HEAD
-  `date` DATETIME NOT NULL DEFAULT NOW(),
-  `shiftmodel_id` INT,
-=======
   `date` DATE NOT NULL DEFAULT CURDATE(),
   `shiftmodel_id` INT NOT NULL,
->>>>>>> 230c62154a507ab0c9c7cef6056e61692418bf3c
   `base_id` INT NOT NULL,
   `status_id` INT NOT NULL,
   `dayboss_id` INT NULL,

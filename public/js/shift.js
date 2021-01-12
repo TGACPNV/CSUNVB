@@ -56,15 +56,6 @@ removeCarryOnBtn.forEach((item) => {
     }, false);
 })
 
-<<<<<<< HEAD
-var shiftInfo = document.querySelectorAll('.shiftInfo');
-shiftInfo.forEach((item) => {
-    item.addEventListener('change', function (event) {
-        updateShift.classList.remove('d-none')
-    }, false);
-})
-=======
 $( ".shiftInfo" ).change(function() {
     $( "#updateShift").removeClass( "d-none" );
 });
->>>>>>> 230c62154a507ab0c9c7cef6056e61692418bf3c

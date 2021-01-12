@@ -372,10 +372,6 @@ function listShiftSheet($slug, $shiftList)
     return $html;
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 230c62154a507ab0c9c7cef6056e61692418bf3c
 function slugButtons($page, $sheet, $slug)
 {
     $buttons = "";
@@ -441,7 +437,6 @@ function slugButtons($page, $sheet, $slug)
     return $buttons;
 }
 
-<<<<<<< HEAD
 function generateSlugButtonDrugs($slug, $sheetID) { //TODO: champ "action" dans la table status, pour remplacer slug dans le submit?
     if (ican(getDrugSheetStateButton($slug) . "sheet")) {
         return "<form method='POST' action=?action=".getDrugSheetStateButton($slug)."DrugSheet>
@@ -451,7 +446,7 @@ function generateSlugButtonDrugs($slug, $sheetID) { //TODO: champ "action" dans 
     }
     return null;
 }
-=======
+
 /**
  * @param $page nom de la page ex. "shift"
  * @param $bases liste des bases, avec leur id ("id") et noms ("name")
@@ -493,4 +488,3 @@ function headerForList($page, $bases, $selectedBaseID, $models)
     }
     return $header;
 }
->>>>>>> 230c62154a507ab0c9c7cef6056e61692418bf3c
