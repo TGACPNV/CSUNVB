@@ -13,6 +13,9 @@ ob_start();
 </div>
 <h2>Site de <?= $site ?>, Semaine N°<?= $drugsheet["week"] ?> <?= showSheetState($drugsheet["week"], "drugs") ?></h2>
 <?php //TODO: a simplifier ?>
+<a href='?action=listDrugSheets'>
+    <button class='btn btn-primary btn-sm ml-3'>Retour à la liste</button>
+</a>
 <a href='?action=<?= $buttonState ?>DrugSheet&id=<?= $drugsheet["base_id"] ?>&week=<?= $drugsheet["week"]?>'>
     <button class='btn btn-primary btn-sm ml-3'><?= $buttonState ?></button>
 </a>
