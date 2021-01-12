@@ -326,7 +326,7 @@ function listShiftSheet($slug, $shiftList)
                                 <form>
                                     <input type='hidden' name='action' value='showShift'>
                                     <input type='hidden' name='id' value='" . $shift['id'] . "'>
-                                    <button type='submit' class='btn btn-primary'>Détails</button>
+                                    <button type='submit' class='btn btn-primary m-1'>Détails</button>
                                 </form>
             " . slugButtons("shift", $shift, $slug) . "</div></td>";
             $body .= "</td></tr>";
@@ -352,17 +352,17 @@ function slugButtons($page, $sheet, $slug)
                     $buttons .= "<form  method='POST' action='?action=" . $page . "SheetSwitchState'>
                     <input type='hidden' name='id' value='" . $sheet["id"] . "'>
                     <input type='hidden' name='newSlug' value='open'>
-                    <button type='submit' class='btn btn-primary'>Activer</button>
+                    <button type='submit' class='btn btn-primary m-1'>Activer</button>
                     </form>";
                 } else {
-                    $buttons .= "<form><button type='submit' class='btn btn-primary' disabled>Activer</button></form>";
+                    $buttons .= "<form><button type='submit' class='btn btn-primary m-1' disabled>Activer</button></form>";
                 }
             }
         case "archive":
             if (ican('deletesheet')) { // TODO : ajouter une verification de la part de l'utilisateur (VB)
                 $buttons .= "<form  method='POST' action='?action=" . $page . "DeleteSheet'>
                     <input type='hidden' name='id' value='" . $sheet["id"] . "'>
-                    <button type='submit' class='btn btn-primary'>Supprimer</button>
+                    <button type='submit' class='btn btn-primary m-1'>Supprimer</button>
                     </form>";
             }
             break;
@@ -371,7 +371,7 @@ function slugButtons($page, $sheet, $slug)
                 $buttons .= "<form  method='POST' action='?action=" . $page . "SheetSwitchState'>
                     <input type='hidden' name='id' value='" . $sheet["id"] . "'>
                     <input type='hidden' name='newSlug' value='close'>
-                    <button type='submit' class='btn btn-primary'>Clôturer</button>
+                    <button type='submit' class='btn btn-primary m-1'>Clôturer</button>
                     </form>";
             }
             break;
@@ -380,7 +380,7 @@ function slugButtons($page, $sheet, $slug)
                 $buttons .= "<form  method='POST' action='?action=" . $page . "SheetSwitchState'>
                     <input type='hidden' name='id' value='" . $sheet["id"] . "'>
                     <input type='hidden' name='newSlug' value='close'>
-                    <button type='submit' class='btn btn-primary'>Refermer</button>
+                    <button type='submit' class='btn btn-primary m-1'>Refermer</button>
                     </form>";
             }
             break;
@@ -389,14 +389,14 @@ function slugButtons($page, $sheet, $slug)
                 $buttons .= "<form  method='POST' action='?action=" . $page . "SheetSwitchState'>
                     <input type='hidden' name='id' value='" . $sheet["id"] . "'>
                     <input type='hidden' name='newSlug' value='reopen'>
-                    <button type='submit' class='btn btn-primary'>Corriger</button>
+                    <button type='submit' class='btn btn-primary m-1'>Corriger</button>
                     </form>";
             }
             if (ican('archivesheet')) {
                 $buttons .= "<form  method='POST' action='?action=" . $page . "SheetSwitchState'>
                     <input type='hidden' name='id' value='" . $sheet["id"] . "'>
                     <input type='hidden' name='newSlug' value='archive'>
-                    <button type='submit' class='btn btn-primary'>Archiver</button>
+                    <button type='submit' class='btn btn-primary m-1'>Archiver</button>
                     </form>";
             }
             break;
