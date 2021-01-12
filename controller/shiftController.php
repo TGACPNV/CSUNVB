@@ -22,11 +22,11 @@ function newShiftSheet($baseID)
 }
 
 
-function listshift($baseID = null)
+function listshift($selectedBaseID = null)
 {
-    if($baseID == null)$baseID = $_SESSION['base']['id'];
+    if($selectedBaseID == null)$selectedBaseID = $_SESSION['base']['id'];
     $bases = getbases();
-    $sheets= getAllShiftForBase($baseID);
+    $sheets= getAllShiftForBase($selectedBaseID);
     require_once VIEW . 'shift/list.php';
 }
 
