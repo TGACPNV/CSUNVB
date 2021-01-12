@@ -2,6 +2,7 @@
 ob_start();
 $title = "CSU-NVB - Remise de garde";
 ?>
+<<<<<<< HEAD
 <script src="js/shift.js"></script>
 <div>
     <form><!-- Liste déroulante pour le choix de la base -->
@@ -29,12 +30,17 @@ $title = "CSU-NVB - Remise de garde";
             </form>
         <?php endif; ?>
     </div>
+=======
+<div>
+    <?= headerForList("shift",$bases,$selectedBaseID,$models) ?>
+>>>>>>> 230c62154a507ab0c9c7cef6056e61692418bf3c
 </div>
 
-
-<div id="tableContent">
+<div>
     <?= listSheet("shift", $sheets) ?>
 </div>
+
+<script src="js/shift.js"></script>
 <?php
 $content = ob_get_clean();
 require GABARIT;

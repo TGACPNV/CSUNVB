@@ -11,11 +11,23 @@ ob_start();
 $title = "CSU-NVB - Tâches hebdomadaires";
 ?>
 <div>
+<<<<<<< HEAD
     <form><!-- Liste déroulante pour le choix de la base -->
         <input type="hidden" name="action" value="listtodoforbase">
         <div class="row">
             <h1 class="mr-3">Tâches hebdomadaires à </h1>
             <select onchange="this.form.submit()" name="id" size="1" class="bigfont mb-3">
+=======
+    <h1>Tâches hebdomadaires</h1>
+</div>
+
+
+<div>
+    <div> <!-- Liste déroulante pour le choix de la base -->
+        <form>
+            <input type="hidden" name="action" value="listtodoforbase">
+            <select onchange="this.form.submit()" name="id" size="1">
+>>>>>>> 230c62154a507ab0c9c7cef6056e61692418bf3c
                 <?php foreach ($baseList as $base) : ?>
                     <option value="<?= $base['id'] ?>" <?= ($selectedBaseID == $base['id']) ? 'selected' : '' ?>
                             name="base"><?= $base['name'] ?></option>
