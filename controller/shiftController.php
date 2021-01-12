@@ -9,7 +9,7 @@
  */
 function newShiftSheet($baseID)
 {
-    if($_POST["selectedModel"])
+    if($_POST["selectedModel"]=="lastModel")
     {
         setFlashMessage("pas encore impémenté");
     }else{

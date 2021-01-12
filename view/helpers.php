@@ -402,24 +402,28 @@ function slugButtons($page, $sheet, $slug)
     return $buttons;
 }
 
-function headerForList($page, $bases, $selectedBaseID,$models)
+/**
+ * @param $page nom de la page ex. "shift"
+ * @param $bases liste des bases, avec leur id ("id") et noms ("name")
+ * @param $selectedBaseID identifiant de la base selectionnée
+ * @param $models liste des modèles, avec leur id ("id") et noms ("name")
+ * @return string code html pour créer le header
+ */
+function headerForList($page, $bases, $selectedBaseID, $models)
 {
     switch ($page) {
         case "shift":
-            $header = "<h1>Remise de Garde</h1>";
+            $title = "Remise de Garde";
             $switchBaseAction = "listshift";
-            $newSheetAction = "?action=newShiftSheet&id=".$selectedBaseID;
+            $newSheetAction = "?action=newShiftSheet&id=" . $selectedBaseID;
             $newSheetBtnName = "Nouvelle Feuille de garde";
             break;
-            //TODO (Michael) ajouter les cases pour les autres types de rapport et intégrer cette fonction
         default:
-            $header = "<h1>Non Défini</h1>";
-            break;
+            return "<h1>Header pour la page non défini</h1>";
     }
+    $header = "<h1>".$title."</h1>";
     //Liste déroulante pour le choix de la base
-    $header .= "<form>
-            <input type='hidden' name='action' value='" . $switchBaseAction . "'>
-                <select onchange='this.form.submit()' name='id' size='1'>";
+    $header .= "<form><input type='hidden' name='action' value='" . $switchBaseAction . "'><select onchange='this.form.submit()' name='id' size='1'>";
     foreach ($bases as $base) {
         $header .= "<option value='" . $base['id'] . "'";
         if ($selectedBaseID == $base['id']) {
@@ -428,20 +432,14 @@ function headerForList($page, $bases, $selectedBaseID,$models)
         $header .= "name='base'>" . $base['name'] . "</option>";
     }
     $header .= "</select></form>";
+
     //Création d'une nouvelle feuille
     if (ican('createsheet') && $_SESSION['base']['id'] == $selectedBaseID) {
-        $header .= "<div class='newSheetZone'>
-<form method='POST' action='".$newSheetAction."' class='float-right'>
-Utiliser le modèle :
-<select name='selectedModel'>
-        <option value='lastModel' selected=selected>Dernier rapport en date</option>";
+        $header .= "<div class='newSheetZone'><form method='POST' action='" . $newSheetAction . "' class='float-right'>Utiliser le modèle :<select name='selectedModel'><option value='lastModel' selected=selected>Dernier rapport en date</option>";
         foreach ($models as $model) {
-            $header .= "<option>" . $model['name'] . "</option>";
+            $header .= "<option value='" . $model['id'] . "'>" . $model['name'] . "</option>";
         }
-        $header .= "</select>
-        <button class='btn btn-primary m-1'>".$newSheetBtnName."</button>
-        </form>
-</div>";
+        $header .= "</select> <button class='btn btn-primary m-1'>" . $newSheetBtnName . "</button></form></div>";
     }
     return $header;
 }
