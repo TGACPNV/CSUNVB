@@ -60,7 +60,7 @@ function showtodo($todo_id){
 function addWeek(){
     $baseID = $_SESSION['base']['id']; // On ne peut ajouter une feuille que dans la base où l'on se trouve
 
-    $week = GetLastWeek($baseID); // Récupère la dernière semaine
+    $week = getLastWeek($baseID); // Récupère la dernière semaine
 
     if($_POST['selectModel'] == 'lastValue'){
         $template = $week;
@@ -172,4 +172,15 @@ function deleteSheet(){
     deleteTodoSheet($sheetID);
     setFlashMessage("La semaine ".$sheet['week']." a correctement été supprimée.");
     header('Location: ?action=listtodoforbase&id='.$sheet['base_id']);
+}
+
+function todoSheetToPDF($id){
+
+    $week = getTodosheetByID($id);
+
+    $pdf = new FPDF();
+    $pdf->AddPage();
+    $pdf->SetFont('Arial','B',16);
+    $pdf->Cell(40,10,utf8_decode("PDF en préparation"));
+    $pdf->Output("","hebdomadaire_".$week['week'].".pdf");
 }

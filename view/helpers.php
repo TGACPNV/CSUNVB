@@ -34,9 +34,9 @@ function getDrugSheetStateButton($state)
     }
 }
 
-function buttonTask($initials, $desription, $taskID, $type, $weekState)
+function buttonTask($initials, $desription, $taskID, $type, $slug)
 {
-    if ($weekState == 'open') {
+    if ($slug == 'open' || $slug == 'reopen') {
         if (empty($initials)) {
             $messageQuittance = 'Vous êtes sur le point de quittancer la tâche suivante : <br> "' . $desription . '".';
             return "<button type='button' class='btn btn-secondary toggleTodoModal btn-block m-1' data-title='Quittancer une tâche' data-id='" . $taskID . "' data-status='close' data-type='" . $type . "' data-content='" . $messageQuittance . "'>" . $desription . "<div class='bg-white rounded mt-1'><br></div></button>";
@@ -101,6 +101,7 @@ function actionForStatus($status)
 
 function showState($slug, $plural = 0)
 {
+    // todo (VB) : Utilisation de la base de données (displayname)
     switch ($slug) {
         case "blank":
             $result = "en préparation";
@@ -162,7 +163,7 @@ function showSheetsTodoByStatus($slug, $sheets)
                     </div>";
 
     if (!empty($sheets)) {
-        $html = $html . "<div class='" . $slug . "Sheets'><table class='table table-bordered'>
+        $html = $html . "<div class='" . $slug . "Sheets' style='margin-top: 0px;'><table class='table table-bordered' style='margin-top: 0px;'>
                         <thead class='thead-dark'><th>Semaine n°</th><th class='actions'>Actions</th></thead>
                         <tbody>";
 
@@ -235,11 +236,6 @@ function slugsButtonTodo($slug, $sheetID)
                     <button type='submit' class='btn btn-primary'>Fermer</button>
                     </form>";
             }
-            $buttons = $buttons . "<form  method='POST' action='?action=switchSheetState'>
-                    <input type='hidden' name='id' value='" . $sheetID . "'>
-                    <input type='hidden' name='newSlug' value='print_pdf'>
-                    <button type='submit' class='btn btn-primary'>Imprimer pdf</button>
-                    </form>";
             break;
         case "reopen":
             if (ican('closesheet')) {

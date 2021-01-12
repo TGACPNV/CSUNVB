@@ -30,6 +30,9 @@ $title = "CSU-NVB - Tâches hebdomadaires";
 </div>
 <div> <!-- Boutons relatifs à l'état de la feuille -->
 <?=  slugsButtonTodo($week['slug'], $week['id'])?>
+    <form  method='POST' action='?action=todoSheetToPDF&id=<?=$week['id']?>'>
+        <button type='submit' class='btn btn-primary'>Télécharger en PDF</button>
+    </form>
 </div>
 <div>
     <div class="week text-center p-0">
