@@ -9,7 +9,10 @@
  */
 function newShiftSheet($baseID)
 {
-    if (isAdmin()) {
+    if($_POST["selectedModel"])
+    {
+        setFlashMessage("pas encore impémenté");
+    }else{
         $result = addNewShiftSheet($baseID);
         if ($result == false) {
             setFlashMessage("Une erreur est survenue. Impossible d'ajouter la feuille de garde.");
@@ -17,7 +20,6 @@ function newShiftSheet($baseID)
             setFlashMessage("La feuille de garde a bien été créée !");
         }
     }
-    $sheets= getAllShiftForBase($baseID);
     redirect("listshift",$baseID);
 }
 
@@ -27,6 +29,7 @@ function listshift($selectedBaseID = null)
     if($selectedBaseID == null)$selectedBaseID = $_SESSION['base']['id'];
     $bases = getbases();
     $sheets= getAllShiftForBase($selectedBaseID);
+    $models = getShiftModels();
     require_once VIEW . 'shift/list.php';
 }
 

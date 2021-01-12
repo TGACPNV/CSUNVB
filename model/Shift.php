@@ -236,3 +236,8 @@ function setSlugForShift($id,$slug){
 function shiftSheetDelete($id){
     return execute("DELETE FROM shiftsheets WHERE id=:id",["id" => $id]);
 }
+
+function getShiftModels(){
+    $models = selectMany("SELECT name FROM shiftModels where name <> '' and suggested = 1",[]);
+    return $models;
+}

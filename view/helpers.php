@@ -406,7 +406,7 @@ function slugButtons($page, $sheet, $slug)
     return $buttons;
 }
 
-function headerForList($page, $bases, $selectedBaseID)
+function headerForList($page, $bases, $selectedBaseID,$models)
 {
     switch ($page) {
         case "shift":
@@ -415,6 +415,7 @@ function headerForList($page, $bases, $selectedBaseID)
             $newSheetAction = "?action=newShiftSheet&id=".$selectedBaseID;
             $newSheetBtnName = "Nouvelle Feuille de garde";
             break;
+            //TODO (Michael) ajouter les cases pour les autres types de rapport et intégrer cette fonction
         default:
             $header = "<h1>Non Défini</h1>";
             break;
@@ -437,8 +438,11 @@ function headerForList($page, $bases, $selectedBaseID)
 <form method='POST' action='".$newSheetAction."' class='float-right'>
 Utiliser le modèle :
 <select name='selectedModel'>
-        <option value='lastModel' selected=selected>Dernier rapport en date</option>
-        </select>
+        <option value='lastModel' selected=selected>Dernier rapport en date</option>";
+        foreach ($models as $model) {
+            $header .= "<option>" . $model['name'] . "</option>";
+        }
+        $header .= "</select>
         <button class='btn btn-primary m-1'>".$newSheetBtnName."</button>
         </form>
 </div>";

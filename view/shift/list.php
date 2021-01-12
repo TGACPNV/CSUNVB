@@ -3,7 +3,7 @@ ob_start();
 $title = "CSU-NVB - Remise de garde";
 ?>
 <div>
-    <?= headerForList("shift",$bases,$selectedBaseID) ?>
+    <?= headerForList("shift",$bases,$selectedBaseID,$models) ?>
 </div>
 
 <div>
