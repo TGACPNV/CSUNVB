@@ -421,9 +421,9 @@ function headerForList($page, $bases, $selectedBaseID, $models)
         default:
             return "<h1>Header pour la page non défini</h1>";
     }
-    $header = "<h1>".$title."</h1>";
+    $header = "<div class='row''><h1 class='mr-3'>".$title."</h1>";
     //Liste déroulante pour le choix de la base
-    $header .= "<form><input type='hidden' name='action' value='" . $switchBaseAction . "'><select onchange='this.form.submit()' name='id' size='1'>";
+    $header .= "<form><input type='hidden' name='action' value='" . $switchBaseAction . "'><select onchange='this.form.submit()' name='id' size='1' class='bigfont mb-3'>";
     foreach ($bases as $base) {
         $header .= "<option value='" . $base['id'] . "'";
         if ($selectedBaseID == $base['id']) {
@@ -431,7 +431,7 @@ function headerForList($page, $bases, $selectedBaseID, $models)
         }
         $header .= "name='base'>" . $base['name'] . "</option>";
     }
-    $header .= "</select></form>";
+    $header .= "</select></form></div>";
 
     //Création d'une nouvelle feuille
     if (ican('createsheet') && $_SESSION['base']['id'] == $selectedBaseID) {
