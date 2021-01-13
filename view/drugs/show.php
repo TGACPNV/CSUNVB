@@ -74,11 +74,10 @@ ob_start();
                                id="<?= $nova["number"] . $drug["name"] . $date ?>start">
                     </td>
                     <?php foreach ($novas as $nova): ?>
-                        <td class="text-center">
-                            <input type="number" min="0" width="30" height="100" class="text-center"
-                                   value="<?= getRestockByDateAndDrug($date, $batch['id'], $nova['id']) ?>"
-                                   onchange="pharmaCheck(<?= "'" . $drug["name"] . "', '" . $date . "'" ?>);"
-                                   id="<?= $nova["number"] . $drug["name"] . $date ?>start">
+                        <?php $ncheck = getNovaCheckByDateAndDrug($date, $drug['id'], $nova['id'], $drugsheet['id']); // not great practice, but it spares repeated queries on the db ?>
+                        <td id="<?= $nova["number"] . $drug["name"] . $date ?>">
+                            <input type="number" min="0" class="text-center" value="<?= $ncheck ? $ncheck["start"] : ''?>" onchange="novaCheck(<?= "'" . $nova["number"] . "', '" . $drug["name"] . "', '" . $date . "'" ?>);" id="<?= $nova["number"] . $drug["name"] . $date ?>start">
+                            <input type="number" min="0" class="text-center" value="<?= $ncheck ? $ncheck["end"] : '' ?>" onchange="novaCheck(<?= "'" . $nova["number"] . "', '" . $drug["name"] . "', '" . $date . "'" ?>);" id="<?= $nova["number"] . $drug["name"] . $date ?>end">
                         </td>
                     <?php endforeach; ?>
                     <td id='<?= $drug["name"] . $date ?>' class="text-center">
@@ -88,6 +87,24 @@ ob_start();
                                id="<?= $nova["number"] . $drug["name"] . $date ?>start">
                     </td>
                 </tr>
+                <?php foreach ($batchesByDrugId[$drug["id"]] as $batch): ?>
+                    <?php $UID =  $drug["name"] . $date ?>
+                    <?php $pcheck = getPharmaCheckByDateAndBatch($date, $batch['id'], $drugsheet['id']); // not great practice, but  it spares repeated queries on the db ?>
+                    <tr>
+                        <td class="text-right"><?= $batch['number'] ?></td>
+                        <td class="text-center">
+                            <input class="<?= $UID ?> start" type="number" min="0" value="<?= $pcheck ? $pcheck['start'] : '' ?>" onchange="cellUpdate(<?= $UID ?>);">
+                        </td>
+                        <?php foreach ($novas as $nova): ?>
+                            <td class="text-center">
+                                <input class="<?= $UID ?> nova' data-novaNumber='<?= $nova['id'] ?>" type="number" min="0" value="<?= getRestockByDateAndDrug($date,$batch['id'],$nova['id']) ?>" onchange="cellUpdate(<?= $UID ?>);">
+                            </td>
+                        <?php endforeach; ?>
+                        <td id="<?= $UID ?>" class="text-center">
+                            <input class="<?= $UID ?> end" type="number" min="0" value="<?= $pcheck ? $pcheck['end'] : '' ?>" onchange="cellUpdate(<?= $UID ?>);">
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
             <?php endforeach; ?>
         <?php endforeach; ?>
         <tr>
