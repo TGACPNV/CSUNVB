@@ -2,73 +2,51 @@ body {
     background-color: #6cc8ff;
 }
 
-.colorblue{
+/*.colorblue{
     color: #0000ff;
-}
+}*/
 
-.versionnumber {
+/*.versionnumber {
     font-size: 10px;
     color: #93a1a1;
-}
+}*/
+
 .banner {
     background-color: transparent;
     width: 100%;
 }
 
-.menutile {
+/*.menutile {
     background-color: aliceblue;
     font-size: xx-large;
-}
-.week {
-    background-color: #4DB9EE;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 2px;
-    margin: 2px;
-}
-.day {
-    background-color: pink;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    padding: 2px;
-    margin: 2px;
-}
-.hour {
-    background-color: chartreuse;
-    padding: 4px;
-    margin: 2px;
-}
-.hour2 {
-    background-color: green;
-    padding: 4px;
-    margin: 2px;
-}
-.dayheader {
+}*/
+
+/*.dayheader {
     text-align: center;
     font-size: large;
     font-weight: bold;
     padding: 3px;
-}
+}*/
 
-.error {
+/*.error {
     color: white;
     background-color: red;
-}
+}*/
 
-.today
+/*.today
 {
     background-color: yellow;
     color:black;
-}
+}*/
+
 textarea{
     font-size: 13px;
 }
-.sizemax
+
+/*.sizemax
 {
     max-width: 50px;
-}
+}*/
 
 .logo {
     width: 152px;
@@ -81,18 +59,6 @@ textarea{
 
 .bigfont {
     font-size: 36px;
-}
-
-.todothing {
-    border:1px solid black;
-}
-
-.dropdownButton > i {
-    font-size: 1.75rem;
-}
-
-.newSheetZone{
-    height: 50px;
 }
 
 /* ------------------------------------------------------------
@@ -126,6 +92,14 @@ table.table-bordered > tbody > tr > td{
     margin: 5px;
 }
 
+.newSheetZone{
+    height: 50px;
+}
+
+.dropdownButton > i {
+    font-size: 1.75rem;
+}
+
 /* ------------------------------------------------------------
 * Fonds de couleur correspondant aux différents slugs
  -------------------------------------------------------------- */
@@ -143,4 +117,37 @@ table.table-bordered > tbody > tr > td{
 }
 .slugArchive{
     background-color: #f5f5f5;
+}
+
+/* ------------------------------------------------------------
+* Styles CSS utilisés pour l'affichage de la vue des tâches hebdomadaires
+ -------------------------------------------------------------- */
+
+.week {
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    padding: 2px;
+    margin: 2px;
+}
+
+
+.day {
+    /*background-color: pink;
+    background-color: #ffffff;*/
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 2px;
+    margin: 2px;
+}
+
+.hour {
+    text-align: center;
+    /*background-color: chartreuse;
+    background-color: #ffffff;*/
+    padding: 4px;
+    margin: 2px;
+    border-style: solid;
 }
