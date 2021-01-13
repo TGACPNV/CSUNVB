@@ -245,3 +245,8 @@ function getShiftModels(){
     $models = selectMany("SELECT id,name FROM shiftModels where name <> '' and suggested = 1",[]);
     return $models;
 }
+
+function getLastShiftModel($baseID){
+    $modelID = selectOne("SELECT shiftmodel_id from shiftsheets where DATE = ( SELECT MAX(DATE) FROM shiftsheets WHERE base_id = :baseID ) AND base_id = :baseID",["baseID" => $baseID])["shiftmodel_id"];
+    return $modelID;
+}
