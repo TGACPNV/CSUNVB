@@ -5,27 +5,32 @@ $title = "CSU-NVB - Tâches hebdomadaires";
 <div>
     <h1>Tâches hebdomadaires</h1>
     <h2>Semaine <?= $week['week'] ?> - Base de <?= $base['name']?> <?= showSheetState($week['id'], "todo") ?></h2>
-    <form>
-        <input type="hidden" name="action" value="listtodoforbase">
-        <input type="hidden" name="id" value="<?= $base['id'] ?>">
-        <button type="submit" class='btn btn-primary m-1 float-right'>Retour à la liste</button>
-    </form>
+    <div class="d-flex justify-content-end">
+        <form  method='POST' action='?action=todoSheetToPDF&id=<?=$week['id']?>'>
+            <button type='submit' class='btn btn-primary m-1 float-right'>Télécharger en PDF</button>
+        </form>
+        <form>
+            <input type="hidden" name="action" value="listtodoforbase">
+            <input type="hidden" name="id" value="<?= $base['id'] ?>">
+            <button type="submit" class='btn btn-primary m-1 float-right'>Retour à la liste</button>
+        </form>
+    </div>
 </div>
-<div>
-    <div>
+<div class="d-flex justify-content-between">
+    <div class="d-flex flex-row"> <!-- Boutons relatifs aux modèles -->
         <?php if($_SESSION['user']['admin'] == 1 && is_null($template['template_name'])) : ?>
             <form action="?action=modelWeek" method="POST">
+                <button type="submit" class='btn btn-primary m-1'>Retenir comme modèle</button>
                 <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
                 <input type="hidden" name="baseID" value="<?= $base['id'] ?>">
-                <input type="text" name="template_name" value="<?= $template['template_name']?>">
-                <button type="submit" class='btn btn-primary m-1 float-right'>Retenir comme modèle</button>
+                <input type="text" name="template_name" value="" placeholder="Nom du modèle" required>
             </form>
         <?php elseif($_SESSION['user']['admin'] == 1 && !is_null($template['template_name'])): ?>
             <form action="?action=deleteTemplate" method="POST">
                 <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
-                <button type="submit" class='btn btn-primary m-1 float-right'>Oublier le modèle</button>
+                <button type="submit" class='btn btn-primary m-1'>Oublier le modèle</button>
             </form>
-
+            <div style="padding: 5px"> Nom du modèle : <?= $template['template_name'] ?></div>
         <?php endif; ?>
         <form action="?action=modTemplate" method="POST">
             <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
@@ -33,12 +38,9 @@ $title = "CSU-NVB - Tâches hebdomadaires";
             <button type="submit" class='btn btn-primary m-1 float-right'>Modifier</button>
         </form>
     </div>
-</div>
-<div> <!-- Boutons relatifs à l'état de la feuille -->
-<?=  slugsButtonTodo($week['slug'], $week['id'])?>
-    <form  method='POST' action='?action=todoSheetToPDF&id=<?=$week['id']?>'>
-        <button type='submit' class='btn btn-primary'>Télécharger en PDF</button>
-    </form>
+    <div class="d-flex flex-row"> <!-- Boutons relatifs à l'état de la feuille -->
+        <?=  slugsButtonTodo($week['slug'], $week['id'])?>
+    </div>
 </div>
 <div>
     <div class="week text-center p-0">
