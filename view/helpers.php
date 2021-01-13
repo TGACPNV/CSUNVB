@@ -72,7 +72,7 @@ function showDrugSheetsByStatus($slug, $sheets)
     return $html;
 }
 
-function buttonTask($initials, $desription, $taskID, $type, $slug)
+function buttonTask($initials, $desription, $taskID, $type, $slug, $edition)
 {
     if ($slug == 'open' || $slug == 'reopen') {
         if (empty($initials)) {
@@ -82,7 +82,11 @@ function buttonTask($initials, $desription, $taskID, $type, $slug)
             $messageQuittance = 'Vous êtes sur le point de retirer la quittance de la tâche suivante : <br> "' . $desription . '".';
             return "<button type='button' class='btn btn-success toggleTodoModal btn-block m-1' data-title='Retirer une quittance' data-id='" . $taskID . "' data-status='open' data-type='" . $type . "' data-content='" . $messageQuittance . "'>" . $desription . "<div class='text-dark bg-white rounded mt-1'>" . $initials . "</div></button>";
         }
-    } else {
+    }elseif($slug == 'blank' && $edition)
+    {
+        return "<button type='button' class='btn btn-primary btn-block m-1' disabled > <i class='fas fa-trash'></i>" . $desription . "<div class='bg-white rounded mt-1'><br></div></button>";
+    }
+    else {
         if (empty($initials)) {
             return "<button type='button' class='btn btn-warning btn-block m-1' disabled >" . $desription . "<div class='bg-white rounded mt-1'><br></div></button>";
         } else {
