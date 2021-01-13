@@ -34,6 +34,44 @@ function getDrugSheetStateButton($state)
     }
 }
 
+function showDrugSheetsByStatus($slug, $sheets)
+{
+    $html = "<div class='slug" . ucwords($slug) . "'>";
+
+    $html .= "<h3>Semaine(s) " . showState($slug, count($sheets) - 1) . "</h3>
+                    <button class='btn dropdownButton'><i class='fas fa-caret-square-down' data-list='" . $slug . "' ></i></button>
+                    </div>";
+
+    if (!empty($sheets)) {
+        $html = $html . "<div class='" . $slug . "Sheets'><table style='margin-top: 0;' class='table table-bordered'>
+                        <thead class='thead-dark'><th>Semaine n°</th><th class='actions'>Actions</th></thead>
+                        <tbody>";
+
+        foreach ($sheets as $sheet) {
+            $html .= "<tr><td>Semaine " . $sheet['week'];
+
+            $html .= "<td><div class='d-flex justify-content-around'>
+                <form>
+                    <input type='hidden' name='action' value='showDrugSheet'>
+                    <input type='hidden' name='id' value='" . $sheet['id'] . "'>
+                    <button type='submit' class='btn btn-primary'>Détails</button>
+                </form>
+                            ";
+            if(!(hasOpenDrugSheet($sheet['base_id']) && $sheet['state'] == 'blank'))
+                $html .= generateSlugButtonDrugs($slug, $sheet['id']);
+
+            $html .= "</div></td>";
+        }
+
+        $html = $html . "</tr> </tbody> </table></div>";
+
+    } else {
+        $html = $html . "<div class='" . $slug . "Sheets'><p>Aucune feuille de tâche n'est actuellement " . showState($slug) . ".</p></div>";
+    }
+
+    return $html;
+}
+
 function buttonTask($initials, $desription, $taskID, $type, $slug)
 {
     if ($slug == 'open' || $slug == 'reopen') {
@@ -52,7 +90,6 @@ function buttonTask($initials, $desription, $taskID, $type, $slug)
         }
     }
 }
-
 
 /**
  * Retourne la date formatée pour l'affichage
@@ -97,7 +134,6 @@ function actionForStatus($status)
             return "Action indéterminée";
     }
 }
-
 
 function showState($slug, $plural = 0)
 {
@@ -336,7 +372,6 @@ function listShiftSheet($slug, $shiftList)
     return $html;
 }
 
-
 function slugButtons($page, $sheet, $slug)
 {
     $buttons = "";
@@ -402,24 +437,38 @@ function slugButtons($page, $sheet, $slug)
     return $buttons;
 }
 
-function headerForList($page, $bases, $selectedBaseID,$models)
+function generateSlugButtonDrugs($slug, $sheetID) { //TODO: champ "action" dans la table status, pour remplacer slug dans le submit?
+    if (ican(getDrugSheetStateButton($slug) . "sheet")) {
+        return "<form method='POST' action=?action=".getDrugSheetStateButton($slug)."DrugSheet>
+                    <input type='hidden' name='id' value='" . $sheetID . "'>
+                    <button type='submit' class='btn btn-primary'>" . getDrugSheetStateButton($slug) . "</button>
+                    </form>";
+    }
+    return null;
+}
+
+/**
+ * @param $page nom de la page ex. "shift"
+ * @param $bases liste des bases, avec leur id ("id") et noms ("name")
+ * @param $selectedBaseID identifiant de la base selectionnée
+ * @param $models liste des modèles, avec leur id ("id") et noms ("name")
+ * @return string code html pour créer le header
+ */
+function headerForList($page, $bases, $selectedBaseID, $models)
 {
     switch ($page) {
         case "shift":
-            $header = "<h1>Remise de Garde</h1>";
+            $title = "Remise de Garde";
             $switchBaseAction = "listshift";
-            $newSheetAction = "?action=newShiftSheet&id=".$selectedBaseID;
+            $newSheetAction = "?action=newShiftSheet&id=" . $selectedBaseID;
             $newSheetBtnName = "Nouvelle Feuille de garde";
             break;
-            //TODO (Michael) ajouter les cases pour les autres types de rapport et intégrer cette fonction
         default:
-            $header = "<h1>Non Défini</h1>";
-            break;
+            return "<h1>Header pour la page non défini</h1>";
     }
+    $header = "<div class='row''><h1 class='mr-3'>".$title."</h1>";
     //Liste déroulante pour le choix de la base
-    $header .= "<form>
-            <input type='hidden' name='action' value='" . $switchBaseAction . "'>
-                <select onchange='this.form.submit()' name='id' size='1'>";
+    $header .= "<form><input type='hidden' name='action' value='" . $switchBaseAction . "'><select onchange='this.form.submit()' name='id' size='1' class='bigfont mb-3'>";
     foreach ($bases as $base) {
         $header .= "<option value='" . $base['id'] . "'";
         if ($selectedBaseID == $base['id']) {
@@ -427,21 +476,15 @@ function headerForList($page, $bases, $selectedBaseID,$models)
         }
         $header .= "name='base'>" . $base['name'] . "</option>";
     }
-    $header .= "</select></form>";
+    $header .= "</select></form></div>";
+
     //Création d'une nouvelle feuille
     if (ican('createsheet') && $_SESSION['base']['id'] == $selectedBaseID) {
-        $header .= "<div class='newSheetZone'>
-<form method='POST' action='".$newSheetAction."' class='float-right'>
-Utiliser le modèle :
-<select name='selectedModel'>
-        <option value='lastModel' selected=selected>Dernier rapport en date</option>";
+        $header .= "<div class='newSheetZone'><form method='POST' action='" . $newSheetAction . "' class='float-right'>Utiliser le modèle :<select name='selectedModel'><option value='lastModel' selected=selected>Dernier rapport en date</option>";
         foreach ($models as $model) {
-            $header .= "<option>" . $model['name'] . "</option>";
+            $header .= "<option value='" . $model['id'] . "'>" . $model['name'] . "</option>";
         }
-        $header .= "</select>
-        <button class='btn btn-primary m-1'>".$newSheetBtnName."</button>
-        </form>
-</div>";
+        $header .= "</select> <button class='btn btn-primary m-1'>" . $newSheetBtnName . "</button></form></div>";
     }
     return $header;
 }

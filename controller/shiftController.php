@@ -9,7 +9,7 @@
  */
 function newShiftSheet($baseID)
 {
-    if($_POST["selectedModel"])
+    if($_POST["selectedModel"]=="lastModel")
     {
         setFlashMessage("pas encore impémenté");
     }else{
@@ -68,15 +68,6 @@ function updateShift()
         setFlashMessage("Données enregistrées");
     }
     redirect("showshift", $_GET["id"]);
-}
-
-
-function displayShift($baseID = null)
-{
-    if($baseID == null)$baseID = $_SESSION['base']['id'];
-    $Bases = getbases();
-    $sheets= getAllShiftForBase($baseID);
-    echo listSheet("shift",$sheets);
 }
 
 /**
