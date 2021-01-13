@@ -45,7 +45,7 @@ function showshift($shiftid)
     $sections = getshiftsections($shiftid, $shiftsheet["baseID"]);
     $enableshiftsheetUpdate = ($shiftsheet['status'] == "open" || ($shiftsheet['status'] == "blank" && $_SESSION['user']['admin'] == true));
     $enableshiftsheetFilling = ($shiftsheet['status'] == "open" || $shiftsheet['status'] == "reopen" && $_SESSION['user']['admin'] == true);
-
+    $modelName = getModelName($shiftsheet['model']);
     $novas = getNovas();
     $users = getUsers();
     require_once VIEW . 'shift/show.php';
