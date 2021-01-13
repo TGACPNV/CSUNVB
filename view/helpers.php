@@ -481,12 +481,9 @@ function headerForList($page, $bases, $selectedBaseID, $models, $emptyBase)
     //Création d'une nouvelle feuille
     if (ican('createsheet') && $_SESSION['base']['id'] == $selectedBaseID) {
         $header .= "<div class='newSheetZone'><form method='POST' action='" . $newSheetAction . "' class='float-right'>Utiliser le modèle :<select name='selectedModel'>";
-        if($emptyBase == true){
-            $header .= "<option value='emptyModel' selected=selected>Nouveau Modèle</option>";
-        }else{
+        if($emptyBase == false){
             $header .= "<option value='lastModel' selected=selected>Dernier rapport en date</option>";
         }
-
         foreach ($models as $model) {
             $header .= "<option value='" . $model['id'] . "'>" . $model['name'] . "</option>";
         }
