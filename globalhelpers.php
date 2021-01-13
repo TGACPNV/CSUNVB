@@ -4,7 +4,7 @@ setlocale(LC_ALL, 'fr_CH'); // pour les format de dates
 
 function getVersion()
 {
-    return "2/Sprint 3";
+    return "2/Sprint 4";
 }
 
 /**
@@ -70,14 +70,11 @@ function showSheetState($id, $zone){
         $slug = getStateFromTodo($id);
     }
     else if ($zone == "drugs"){
-        /** $slug = getStateFromDrugs($id); */
-        $slug = "tsers";
+        $slug = getStateFromDrugs($id);
     }
-    else{
-
-    }
+    
     // todo (VB) : Utilisation de la base de données (displayname)
-    switch($slug){
+    switch($slug['slug']){
         case "blank":
             $state = "[En préparation]";
             break;

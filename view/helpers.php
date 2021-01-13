@@ -106,34 +106,6 @@ function displayDate($date, $format)
     }
 }
 
-/**
- * Si l'utilisateur n'est pas administrateur, affiche une erreur et le redirige sur la page d'accueil
- */
-function isAdmin()
-{
-    if ($_SESSION['user']['admin'] == 0) {
-        setFlashMessage("Vous n'êtes pas autorisé à effectuer cette action !");
-        return false;
-    }
-    return true;
-}
-
-// todo (VB) : supprimer dès que les vues 'list' sont homogènes
-function actionForStatus($status)
-{
-    switch ($status) {
-        case "blank":
-            return "Activer";
-        case "open":
-            return "Fermer";
-        case "close":
-            return "Corriger";
-        case "reopen":
-            return "Refermer";
-        default:
-            return "Action indéterminée";
-    }
-}
 
 function showState($slug, $plural = 0)
 {
