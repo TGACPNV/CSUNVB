@@ -31,6 +31,11 @@ function listshift($selectedBaseID = null)
     $bases = getbases();
     $sheets = getAllShiftForBase($selectedBaseID);
     $models = getShiftModels();
+    if(count($sheets["close"])==0 and count($sheets["reopen"])==0){
+        $emptyBase = true;
+    }else{
+        $emptyBase = false;
+    }
     require_once VIEW . 'shift/list.php';
 }
 

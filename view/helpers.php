@@ -482,7 +482,7 @@ function headerForList($page, $bases, $selectedBaseID, $models, $emptyBase)
     if (ican('createsheet') && $_SESSION['base']['id'] == $selectedBaseID) {
         $header .= "<div class='newSheetZone'><form method='POST' action='" . $newSheetAction . "' class='float-right'>Utiliser le modèle :<select name='selectedModel'>";
         if($emptyBase == false){
-            $header .= "<option value='lastModel' selected=selected>Dernier rapport en date</option>";
+            $header .= "<option value='lastModel' selected=selected>Dernier rapport clôturé</option>";
         }
         foreach ($models as $model) {
             $header .= "<option value='" . $model['id'] . "'>" . $model['name'] . "</option>";

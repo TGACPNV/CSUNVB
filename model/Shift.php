@@ -60,12 +60,8 @@ function getshiftsections($shiftSheetID, $baseID)
 
 function getAllShiftForBase($baseID){
     $slugs = selectMany("SELECT id,slug as name FROM status",[]);
-    $sheets["empty"] = true;
     foreach ($slugs as $slug){
         $sheets[$slug["name"]]= getShiftWithStatus($baseID,$slug["id"]);
-        if(count($sheets[$slug["name"]])>0){;
-            $sheets["empty"] = false;
-        }
     }
     return  $sheets;
 }
@@ -247,6 +243,6 @@ function getShiftModels(){
 }
 
 function getLastShiftModel($baseID){
-    $modelID = selectOne("SELECT shiftmodel_id from shiftsheets where DATE = ( SELECT MAX(DATE) FROM shiftsheets WHERE base_id = :baseID ) AND base_id = :baseID",["baseID" => $baseID])["shiftmodel_id"];
+    $modelID = selectOne("SELECT shiftmodel_id from shiftsheets where DATE = ( SELECT MAX(DATE) FROM shiftsheets WHERE base_id = :baseID and (status_id = (SELECT id FROM status WHERE slug = 'close') or status_id = (SELECT id FROM status WHERE slug = 'reopen'))) AND base_id = :baseID",["baseID" => $baseID])["shiftmodel_id"];
     return $modelID;
 }
