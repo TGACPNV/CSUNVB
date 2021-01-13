@@ -179,7 +179,7 @@ function showSheetsTodoByStatus($slug, $sheets)
                                 <form>
                                     <input type='hidden' name='action' value='showtodo'>
                                     <input type='hidden' name='id' value='" . $sheet['id'] . "'>
-                                    <button type='submit' class='btn btn-primary'>Détails</button>
+                                    <button type='submit' class='btn btn-primary m-1'>Détails</button>
                                 </form>
                             " . slugsButtonTodo($slug, $sheet['id']) . "</div></td>";
         }
@@ -213,10 +213,10 @@ function slugsButtonTodo($slug, $sheetID)
                     $buttons = $buttons . "<form  method='POST' action='?action=switchSheetState'>
                     <input type='hidden' name='id' value='" . $sheetID . "'>
                     <input type='hidden' name='newSlug' value='open'>
-                    <button type='submit' class='btn btn-primary float-right'>Activer</button>
+                    <button type='submit' class='btn btn-primary m-1'>Activer</button>
                     </form>";
                 } else {
-                    $buttons = $buttons . "<form><button type='submit' class='btn btn-primary' disabled>Activer</button></form>";
+                    $buttons = $buttons . "<form><button type='submit' class='btn btn-primary m-1' disabled>Activer</button></form>";
                 }
 
             }
@@ -224,7 +224,7 @@ function slugsButtonTodo($slug, $sheetID)
             if (ican('deletesheet')) { // TODO : ajouter une verification de la part de l'utilisateur (VB)
                 $buttons = $buttons . "<form  method='POST' action='?action=deleteSheet'>
                     <input type='hidden' name='id' value='" . $sheetID . "'>
-                    <button type='submit' class='btn btn-primary'>Supprimer</button>
+                    <button type='submit' class='btn btn-primary m-1'>Supprimer</button>
                     </form>";
             }
             break;
@@ -233,7 +233,7 @@ function slugsButtonTodo($slug, $sheetID)
                 $buttons = $buttons . "<form  method='POST' action='?action=switchSheetState'>
                     <input type='hidden' name='id' value='" . $sheetID . "'>
                     <input type='hidden' name='newSlug' value='close'>
-                    <button type='submit' class='btn btn-primary'>Fermer</button>
+                    <button type='submit' class='btn btn-primary m-1'>Clôturer</button>
                     </form>";
             }
             break;
@@ -242,7 +242,7 @@ function slugsButtonTodo($slug, $sheetID)
                 $buttons = $buttons . "<form  method='POST' action='?action=switchSheetState'>
                     <input type='hidden' name='id' value='" . $sheetID . "'>
                     <input type='hidden' name='newSlug' value='close'>
-                    <button type='submit' class='btn btn-primary'>Refermer</button>
+                    <button type='submit' class='btn btn-primary m-1'>Reclôturer</button>
                     </form>";
             }
             break;
@@ -251,14 +251,14 @@ function slugsButtonTodo($slug, $sheetID)
                 $buttons = $buttons . "<form  method='POST' action='?action=switchSheetState'>
                     <input type='hidden' name='id' value='" . $sheetID . "'>
                     <input type='hidden' name='newSlug' value='reopen'>
-                    <button type='submit' class='btn btn-primary'>Corriger</button>
+                    <button type='submit' class='btn btn-primary m-1'>Corriger</button>
                     </form>";
             }
             if (ican('archivesheet')) {
                 $buttons = $buttons . "<form  method='POST' action='?action=switchSheetState'>
                     <input type='hidden' name='id' value='" . $sheetID . "'>
                     <input type='hidden' name='newSlug' value='archive'>
-                    <button type='submit' class='btn btn-primary'>Archiver</button>
+                    <button type='submit' class='btn btn-primary m-1'>Archiver</button>
                     </form>";
             }
             break;
