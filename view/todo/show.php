@@ -25,7 +25,13 @@ $title = "CSU-NVB - Tâches hebdomadaires";
                 <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
                 <button type="submit" class='btn btn-primary m-1 float-right'>Oublier le modèle</button>
             </form>
+
         <?php endif; ?>
+        <form action="?action=modTemplate" method="POST">
+            <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
+            <input type="hidden" name="edition" value="<?= $edition ?>">
+            <button type="submit" class='btn btn-primary m-1 float-right'>Modifier</button>
+        </form>
     </div>
 </div>
 <div> <!-- Boutons relatifs à l'état de la feuille -->
@@ -48,7 +54,7 @@ $title = "CSU-NVB - Tâches hebdomadaires";
         <?php foreach ($dates as $index => $date) : ?>
             <div class="col p-1">
                 <?php foreach ($todoThings[1][$index + 1] as $todothing): ?>
-                    <?= buttonTask($todothing['initials'], $todothing['description'], $todothing['id'], $todothing['type'], $week['slug']) ?>
+                    <?= buttonTask($todothing['initials'], $todothing['description'], $todothing['id'], $todothing['type'], $week['slug'], $edition) ?>
                 <?php endforeach; ?>
             </div>
         <?php endforeach; ?>
@@ -61,7 +67,7 @@ $title = "CSU-NVB - Tâches hebdomadaires";
         <?php foreach ($dates as $index => $date) : ?>
             <div class="col p-1">
                 <?php foreach ($todoThings[0][$index + 1] as $todothing): ?>
-                    <?= buttonTask($todothing['initials'], $todothing['description'], $todothing['id'], $todothing['type'], $week['slug']) ?>
+                    <?= buttonTask($todothing['initials'], $todothing['description'], $todothing['id'], $todothing['type'], $week['slug'], $edition) ?>
                 <?php endforeach; ?>
             </div>
         <?php endforeach; ?>

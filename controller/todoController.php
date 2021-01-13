@@ -29,7 +29,7 @@ function listtodoforbase($selectedBaseID){
  * Fonction qui affiche les tâches d'une semaine spécifique
  * @param $todo_id : l'ID de la feuille de tâche à afficher
  */
-function showtodo($todo_id){
+function showtodo($todo_id, $edition = false){
     $week = getTodosheetByID($todo_id);
     $base = getbasebyid($week['base_id']);
     $dates = getDaysForWeekNumber($week['week']);
@@ -110,6 +110,22 @@ function deleteTemplate(){
 
     deleteTemplateName($todosheetID);
     header('Location: ?action=showtodo&id='.$todosheetID);
+}
+
+function modTemplate()
+{
+    $edition = $_POST['edition'];
+    $todosheetID = $_POST['todosheetID'];
+
+    if (!$edition){
+        $edition = true;
+
+    } else {
+        $edition = false;
+    }
+
+    showtodo($todosheetID,$edition);
+
 }
 
 function loadAModel($weekID, $template_name){
