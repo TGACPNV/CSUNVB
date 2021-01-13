@@ -70,15 +70,6 @@ function updateShift()
     redirect("showshift", $_GET["id"]);
 }
 
-
-function displayShift($baseID = null)
-{
-    if($baseID == null)$baseID = $_SESSION['base']['id'];
-    $Bases = getbases();
-    $sheets= getAllShiftForBase($baseID);
-    echo listSheet("shift",$sheets);
-}
-
 /**
  * Ajoute une action déjà à une feuille de garde
  * @param $sheetID

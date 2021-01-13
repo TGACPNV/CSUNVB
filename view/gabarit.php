@@ -3,17 +3,11 @@
 <head>
     <meta charset="utf-8">
     <title>
-        <?php
-        if (isset($title)) {
-            echo $title;
-        } else {
-            echo "Page sans nom";
-        }
-        ?>
+        <?= (isset($title)) ? $title : "Page sans nom" ?>
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- paths are from root ( where there is index.php ) -->
-    <link href="assets/bootstrap/dist/css/bootstrap.css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
     <link href="css/shift.css" rel="stylesheet">
@@ -51,16 +45,8 @@
 </div>
 
 <div class="container">
-    <?php
-    /** if $_SESSION['flashmessage'] is set, display a box with the message */
-    echo getFlashMessage();
-    /** display the content of the page */
-    if (isset($content)) {
-        echo $content;
-    } else {
-        echo "page vide";
-    }
-    ?>
+    <?= getFlashMessage() ?>
+    <?= (isset($content)) ? $content : "page vide" ?>
 </div>
 </body>
 </html>

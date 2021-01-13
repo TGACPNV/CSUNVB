@@ -34,6 +34,44 @@ function getDrugSheetStateButton($state)
     }
 }
 
+function showDrugSheetsByStatus($slug, $sheets)
+{
+    $html = "<div class='slug" . ucwords($slug) . "'>";
+
+    $html .= "<h3>Semaine(s) " . showState($slug, count($sheets) - 1) . "</h3>
+                    <button class='btn dropdownButton'><i class='fas fa-caret-square-down' data-list='" . $slug . "' ></i></button>
+                    </div>";
+
+    if (!empty($sheets)) {
+        $html = $html . "<div class='" . $slug . "Sheets'><table style='margin-top: 0;' class='table table-bordered'>
+                        <thead class='thead-dark'><th>Semaine n°</th><th class='actions'>Actions</th></thead>
+                        <tbody>";
+
+        foreach ($sheets as $sheet) {
+            $html .= "<tr><td>Semaine " . $sheet['week'];
+
+            $html .= "<td><div class='d-flex justify-content-around'>
+                <form>
+                    <input type='hidden' name='action' value='showDrugSheet'>
+                    <input type='hidden' name='id' value='" . $sheet['id'] . "'>
+                    <button type='submit' class='btn btn-primary'>Détails</button>
+                </form>
+                            ";
+            if(!(hasOpenDrugSheet($sheet['base_id']) && $sheet['state'] == 'blank'))
+                $html .= generateSlugButtonDrugs($slug, $sheet['id']);
+
+            $html .= "</div></td>";
+        }
+
+        $html = $html . "</tr> </tbody> </table></div>";
+
+    } else {
+        $html = $html . "<div class='" . $slug . "Sheets'><p>Aucune feuille de tâche n'est actuellement " . showState($slug) . ".</p></div>";
+    }
+
+    return $html;
+}
+
 function buttonTask($initials, $desription, $taskID, $type, $slug)
 {
     if ($slug == 'open' || $slug == 'reopen') {
@@ -52,7 +90,6 @@ function buttonTask($initials, $desription, $taskID, $type, $slug)
         }
     }
 }
-
 
 /**
  * Retourne la date formatée pour l'affichage
@@ -97,7 +134,6 @@ function actionForStatus($status)
             return "Action indéterminée";
     }
 }
-
 
 function showState($slug, $plural = 0)
 {
@@ -336,7 +372,6 @@ function listShiftSheet($slug, $shiftList)
     return $html;
 }
 
-
 function slugButtons($page, $sheet, $slug)
 {
     $buttons = "";
@@ -400,6 +435,16 @@ function slugButtons($page, $sheet, $slug)
             break;
     }
     return $buttons;
+}
+
+function generateSlugButtonDrugs($slug, $sheetID) { //TODO: champ "action" dans la table status, pour remplacer slug dans le submit?
+    if (ican(getDrugSheetStateButton($slug) . "sheet")) {
+        return "<form method='POST' action=?action=".getDrugSheetStateButton($slug)."DrugSheet>
+                    <input type='hidden' name='id' value='" . $sheetID . "'>
+                    <button type='submit' class='btn btn-primary'>" . getDrugSheetStateButton($slug) . "</button>
+                    </form>";
+    }
+    return null;
 }
 
 /**

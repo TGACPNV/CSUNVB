@@ -1,4 +1,3 @@
-DROP DATABASE IF EXISTS `csunvb_csu`;
 
 -- MySQL Workbench Forward Engineering
 
@@ -10,7 +9,6 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema csunvb_csu
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `csunvb_csu` DEFAULT CHARACTER SET utf8 ;
 USE `csunvb_csu` ;
 
 -- -----------------------------------------------------
@@ -300,6 +298,18 @@ CREATE TABLE IF NOT EXISTS `csunvb_csu`.`drugsheet_use_batch` (
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
+-- Table `csunvb_csu`.`status`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `csunvb_csu`.`status` (
+     `id` INT NOT NULL AUTO_INCREMENT,
+     `slug` VARCHAR(25) NOT NULL,
+     `displayname` VARCHAR(25) NOT NULL,
+     PRIMARY KEY (`id`),
+     UNIQUE INDEX `slug` (`slug` ASC) ,
+     UNIQUE INDEX `id_UNIQUE` (`id` ASC) )
+    ENGINE = InnoDB;
+
+-- -----------------------------------------------------
 -- Table `csunvb_csu`.`todosheets`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `csunvb_csu`.`todosheets` (
@@ -307,7 +317,7 @@ CREATE TABLE IF NOT EXISTS `csunvb_csu`.`todosheets` (
   `week` INT NOT NULL,
   `status_id` INT NOT NULL,
   `base_id` INT NOT NULL,
-  `template_name` VARCHAR(45) NULL DEFAULT NULL COMMENT 'The name under which the drugsheet may be identified as a templatre to be create new sheets. Copies will NOT carry that name',
+  `template_name` VARCHAR(45) NULL ,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `model_name_UNIQUE` (`template_name` ASC) ,
   INDEX `fk_todosheets_bases1_idx` (`base_id` ASC) ,
@@ -507,7 +517,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `csunvb_csu`.`shiftcomments` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `message` VARCHAR(200) NOT NULL,
-  `time` DATETIME NOT NULL DEFAULT current_timestamp(),
+  `time` DATETIME NOT NULL DEFAULT NOW(),
   `carryOn` TINYINT(1) NOT NULL DEFAULT 0,
   `endOfCarryOn` DATE NULL,
   `user_id` INT NOT NULL,
@@ -542,7 +552,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `csunvb_csu`.`shiftchecks` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `day` TINYINT(1) NOT NULL,
-  `time` DATETIME NOT NULL DEFAULT current_timestamp(),
+  `time` DATETIME NOT NULL DEFAULT NOW(),
   `shiftsheet_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   `shiftaction_id` INT NOT NULL,
