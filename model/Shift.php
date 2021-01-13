@@ -60,8 +60,12 @@ function getshiftsections($shiftSheetID, $baseID)
 
 function getAllShiftForBase($baseID){
     $slugs = selectMany("SELECT id,slug as name FROM status",[]);
+    $sheets["empty"] = true;
     foreach ($slugs as $slug){
         $sheets[$slug["name"]]= getShiftWithStatus($baseID,$slug["id"]);
+        if(count($sheets[$slug["name"]])>0){;
+            $sheets["empty"] = false;
+        }
     }
     return  $sheets;
 }
