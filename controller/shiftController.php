@@ -9,11 +9,10 @@
  */
 function newShiftSheet($baseID)
 {
-    if($_POST["selectedModel"]=="lastModel")
-    {
+    if($_POST["selectedModel"]=="lastModel") {
         setFlashMessage("pas encore impémenté");
     }else{
-        $result = addNewShiftSheet($baseID);
+        $result = addNewShiftSheet($baseID,$_POST["selectedModel"]);
         if ($result == false) {
             setFlashMessage("Une erreur est survenue. Impossible d'ajouter la feuille de garde.");
         } else {
