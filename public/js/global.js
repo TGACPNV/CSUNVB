@@ -14,3 +14,8 @@ dropdownButtons.forEach((item) => {
         }
     }, false);
 })
+
+
+function print_page(){
+    window.print();
+}

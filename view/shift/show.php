@@ -104,22 +104,22 @@ $title = "CSU-NVB - Remise de garde";
         </div>
     </div>
 </form>
-<div class='d-flex float-right'>
+<div class='d-flex float-right d-print-none'>
     <form>
         <input type="hidden" name="action" value="listshift">
         <input type="hidden" name="id" value="<?= $shiftsheet["base_id"] ?>">
         <button type="submit" class='btn btn-primary m-1'>Retour à la liste</button>
     </form>
 </div>
-<div class='d-flex float-right'>
+<div class='d-flex float-right d-print-none'>
     <?= slugButtons("shift", $shiftsheet, $shiftsheet["status"])?>
-    <form  method='POST' action='?action=shiftPDF&id=<?=$shiftsheet["id"]?>'>
+    <form  method='POST'>
         <input type='hidden' name='id' value='" . $sheet["id"] . "'>
         <input type='hidden' name='newSlug' value='open'>
-        <button type='submit' class='btn btn-primary m-1'>Télécharger en PDF</button>
+        <button type='submit' class='btn btn-primary m-1' onclick="print_page()">Télécharger en PDF</button>
     </form>
 </div>
-<div class='d-flex float-right'>
+<div class='d-flex float-right d-print-none'>
     <?php if ($modelName == "") : ?>
         <button type="submit"
                 class="btn btn-primary toggleShiftModal m-1"
