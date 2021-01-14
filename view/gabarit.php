@@ -27,7 +27,7 @@
     <script src="js/global.js" defer></script>
 </head>
 <body>
-<div class="container">
+<div class="container d-print-none">
     <header>
         <div class="row banner">
             <a href="?action=home" class="col-auto">
@@ -38,7 +38,7 @@
                 <?= gitBranchTag() ?>
             </div>
         </div>
-        <div>
+        <div class="d-print-none">
             <a href="?action=home" class="btn btn-primary m-1 float-right">Accueil</a>
             <?php if (isset($_SESSION['user'])) : ?>
                 <a href="?action=disconnect" class="btn btn-primary m-1 float-right">Se déconnecter</a>
