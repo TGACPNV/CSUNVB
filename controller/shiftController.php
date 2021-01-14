@@ -144,12 +144,3 @@ function shiftDeleteSheet()
     $res = shiftSheetDelete($_POST["id"]);
     redirect("listshift", getBaseIDForShift($_POST["id"]));
 }
-
-function shiftPDF($id)
-{
-    $pdf = new FPDF();
-    $pdf->AddPage();
-    $pdf->SetFont('Arial', 'B', 16);
-    $pdf->Cell(40, 10, "Voici un Pdf pas vraiment utile pour le moment");
-    $pdf->Output("D", "unPDF.pdf");
-}
