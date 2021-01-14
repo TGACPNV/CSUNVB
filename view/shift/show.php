@@ -119,6 +119,25 @@ $title = "CSU-NVB - Remise de garde";
         <button type='submit' class='btn btn-primary m-1'>Télécharger en PDF</button>
     </form>
 </div>
+<div class='d-flex float-right'>
+    <?php if ($modelName == "") : ?>
+        <button type="submit"
+                class="btn btn-primary toggleShiftModal m-1"
+                data-content="Enregistrer comme modèle"
+                data-action_id="<?= $action['id'] ?>" data-day="1" data-action="?action=checkShift"
+                data-comment="hidden">
+            Enregistrer comme modèle
+        </button>
+    <?php else : ?>
+        <button type="submit"
+                class="btn btn-primary toggleShiftModal m-1"
+                data-content="Retirer le modèle"
+                data-action_id="<?= $action['id'] ?>" data-day="1" data-action="?action=checkShift"
+                data-comment="hidden">
+            Retirer le modèle
+        </button>
+    <?php endif; ?>
+</div>
 
 <?php foreach ($sections as $section): ?>
     <div class="row sectiontitle"><?= $section["title"] ?></div>
@@ -151,7 +170,7 @@ $title = "CSU-NVB - Remise de garde";
                                 class="btn <?= (count($action["checksDay"]) == 0) ? 'btn-warning' : 'btn-success' ?> toggleShiftModal"
                                 data-content="Valider <?= $action['text'] ?> : Jour"
                                 data-action_id="<?= $action['id'] ?>" data-day="1" data-action="?action=checkShift"
-                                data-comment="hidden" style="width: 100%;">
+                                data-comment="hidden">
                             <?php if (count($action["checksDay"]) == 0): ?>
                                 A Valider
                             <?php else: ?>

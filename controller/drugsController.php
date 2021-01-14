@@ -5,11 +5,14 @@
  **/
 
 //Affiche la page de selection de la semaine pour une base choisie
-function listDrugSheets($baseID = null) {
-    if (is_null($baseID))
-        $baseID = $_SESSION["base"]["id"];
-    $bases = getbases();
-    $drugSheetList = getDrugSheets($baseID);
+function listDrugSheets($selectedBaseID = null) {
+    if (is_null($selectedBaseID))
+        $selectedBaseID = $_SESSION["base"]["id"];
+    $baseList = getbases();
+    $slugs = getSlugs();
+    foreach($slugs as $slug) {
+        $drugSheetList[$slug['slug']] = getDrugSheetsByState($slug['slug']);
+    }
     require_once VIEW . 'drugs/list.php';
 }
 
@@ -22,16 +25,18 @@ function showDrugSheet($drugSheetID) {
     foreach ($BatchesForSheet as $p) {
         $batchesByDrugId[$p["drug_id"]][] = $p;
     }
-    $drugs = getDrugs();
+    $drugs = getDrugsInDrugSheet($drugSheetID);
     $site = getbasebyid($drugsheet['base_id'])['name'];
+    $buttonState = getDrugSheetStateButton(getDrugSheetState($drugsheet["base_id"], $drugsheet["week"])["state"]);
     require_once VIEW . 'drugs/show.php';
 }
 
-// récupérer la valeur de $item puis transférer les valeurs
-function newDrugSheet($base) {
-    $lastWeek = readLastDrugSheet($base);
-    insertDrugSheet($base, $lastWeek['lastWeek']);
-    listDrugSheets($base);
+function newDrugSheet($baseID = null) {
+    if (is_null($baseID))
+        $baseID = $_SESSION["base"]["id"];
+    $oldSheet = getLatestDrugSheetWeekNb($baseID);
+    cloneLatestDrugSheet(insertDrugSheet($baseID, $oldSheet['week']), $oldSheet['id']);
+    redirect("listDrugSheets", $baseID);
 }
 
 function hasOpenDrugSheet($baseID) {
@@ -39,17 +44,17 @@ function hasOpenDrugSheet($baseID) {
 }
 
 //TODO: replace with switch
-function openDrugSheet($base) {
-    updateSheetState($base, $_GET["week"], "open");
-    redirect("listDrugSheets", $base);
+function openDrugSheet() {
+    updateSheetState($_POST["id"], "open");
+    redirect("listDrugSheets", $_SESSION["base"]["id"]);
 }
 
-function closeDrugSheet($base) {
-    updateSheetState($base, $_GET["week"], "closed");
-    redirect("listDrugSheets", $base);
+function closeDrugSheet() {
+    updateSheetState($_POST["id"], "close");
+    redirect("listDrugSheets", $_SESSION["base"]["id"]);
 }
 
-function reopenDrugSheet($base) {
-    updateSheetState($base, $_GET["week"], "reopened");
-    redirect("listDrugSheets", $base);
+function reopenDrugSheet() {
+    updateSheetState($_POST["id"], "reopened");
+    redirect("listDrugSheets", $_SESSION["base"]["id"]);
 }

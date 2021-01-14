@@ -187,11 +187,11 @@ UNLOCK TABLES;
 
 -- table shiftsheets
 INSERT INTO `shiftsheets` VALUES
-(1,'2020-10-26 00:00:00',2,3,100,112,111,116,1,2),
-(2,'2020-10-27 00:00:00',2,3,101,100,102,103,3,4),
-(3,'2020-10-28 00:00:00',2,2,100,101,102,103,5,6),
-(4,'2020-10-29 00:00:00',2,1,null,null,null,null,null,null),
-(5,'2020-10-30 00:00:00',2,1,null,null,null,null,null,NULL);
+(1,'2020-10-26 00:00:00',null,2,3,100,112,111,116,1,2),
+(2,'2020-10-27 00:00:00',null,2,3,101,100,102,103,3,4),
+(3,'2020-10-28 00:00:00',null,2,2,100,101,102,103,5,6),
+(4,'2020-10-29 00:00:00',null,2,1,null,null,null,null,null,null),
+(5,'2020-10-30 00:00:00',null,2,1,null,null,null,null,null,NULL);
 
 -- table shiftchecks
 INSERT INTO `shiftchecks` (id,DAY,shiftsheet_id,user_id,shiftaction_id) VALUES

@@ -96,14 +96,14 @@ WHERE shiftsheets.id =:id;', ["id" => $id]);
 }
 
 
-function addNewShiftSheet($baseID)
+function addNewShiftSheet($baseID,$modelID)
 {
     try {
         $date = getNewDate($baseID);
         if($date == null) {
-            $insertshiftsheet = execute("INSERT INTO shiftsheets (shiftmodel_id,status_id,base_id) VALUES (1,1,:base)", ['base' => $baseID]);
+            $insertshiftsheet = execute("INSERT INTO shiftsheets (shiftmodel_id,status_id,base_id) VALUES (:modelID,1,:base)", ['base' => $baseID, 'modelID'=>$modelID]);
         }else{
-            $insertshiftsheet = execute("INSERT INTO shiftsheets (date,shiftmodel_id,status_id,base_id) VALUES (:date,1,1,:base)", ['date' => $date, 'base' => $baseID]);
+            $insertshiftsheet = execute("INSERT INTO shiftsheets (date,shiftmodel_id,status_id,base_id) VALUES (:date,:modelID,1,:base)", ['date' => $date, 'base' => $baseID , 'modelID'=>$modelID]);
         }
         if ($insertshiftsheet == false) {
             throw new Exception("L'enregistrement ne s'est pas effectué correctement");
@@ -238,6 +238,11 @@ function shiftSheetDelete($id){
 }
 
 function getShiftModels(){
-    $models = selectMany("SELECT name FROM shiftModels where name <> '' and suggested = 1",[]);
+    $models = selectMany("SELECT id,name FROM shiftModels where name <> '' and suggested = 1",[]);
     return $models;
+}
+
+function getLastShiftModel($baseID){
+    $modelID = selectOne("SELECT shiftmodel_id from shiftsheets where DATE = ( SELECT MAX(DATE) FROM shiftsheets WHERE base_id = :baseID and (status_id = (SELECT id FROM status WHERE slug = 'close') or status_id = (SELECT id FROM status WHERE slug = 'reopen'))) AND base_id = :baseID",["baseID" => $baseID])["shiftmodel_id"];
+    return $modelID;
 }

@@ -22,11 +22,11 @@ $title = "CSU-NVB - Tâches hebdomadaires";
             <select onchange="this.form.submit()" name="id" size="1">
                 <?php foreach ($baseList as $base) : ?>
                     <option value="<?= $base['id'] ?>" <?= ($selectedBaseID == $base['id']) ? 'selected' : '' ?>
-                            name="site"><?= $base['name'] ?></option>
+                            name="base"><?= $base['name'] ?></option>
                 <?php endforeach; ?>
             </select>
-        </form>
-    </div>
+        </div>
+    </form>
     <div class="newSheetZone"> <!-- Liste déroulante pour le choix du modèle et bouton de nouvelle semaine -->
         <?php if (ican('createsheet') && ($_SESSION['base']['id'] == $selectedBaseID)) : ?>
             <form method="POST" action="?action=addWeek" class="float-right">

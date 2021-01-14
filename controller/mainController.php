@@ -24,6 +24,7 @@ function login()
 }
 
 function displayLoginPage(){
+    $bases = getbases();
     require VIEW . 'main/login.php';
 }
 
