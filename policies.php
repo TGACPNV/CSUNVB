@@ -22,6 +22,9 @@ return [
         "opensheet" => true,
         "archivesheet" => true,
         "deletesheet" => true,
-        "createsheet" => true
+        "createsheet" => true,
+        "createTemplate" => true,
+        "deleteTemplate" => true,
+        "modifySheet" => true
     ]
 ];

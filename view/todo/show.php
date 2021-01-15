@@ -18,27 +18,30 @@ $title = "CSU-NVB - Tâches hebdomadaires";
 </div>
 <div class="d-flex justify-content-between">
     <div class="d-flex flex-row"> <!-- Boutons relatifs aux modèles -->
-        <?php if($_SESSION['user']['admin'] == 1 && is_null($template['template_name'])) : ?>
+        <?php if(ican ("createTemplate") && is_null($template['template_name'])) : ?>
             <form action="?action=modelWeek" method="POST">
                 <button type="submit" class='btn btn-primary m-1'>Retenir comme modèle</button>
                 <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
                 <input type="hidden" name="baseID" value="<?= $base['id'] ?>">
                 <input type="text" name="template_name" value="" placeholder="Nom du modèle" required>
             </form>
-        <?php elseif($_SESSION['user']['admin'] == 1 && !is_null($template['template_name'])): ?>
+        <?php elseif(ican ("deleteTemplate") && !is_null($template['template_name'])): ?>
             <form action="?action=deleteTemplate" method="POST">
                 <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
                 <button type="submit" class='btn btn-primary m-1'>Oublier le modèle</button>
             </form>
             <div style="padding: 5px"> Nom du modèle : <?= $template['template_name'] ?></div>
         <?php endif; ?>
+
+    </div>
+    <div class="d-flex flex-row"> <!-- Boutons relatifs à l'état de la feuille -->
+        <?php if(ican ("modifySheet") && $week['slug'] == "blank") : ?>
         <form action="?action=modTemplate" method="POST">
             <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
             <input type="hidden" name="edition" value="<?= $edition ?>">
-            <button type="submit" class='btn btn-primary m-1 float-right'>Modifier</button>
+            <button type="submit" class='btn btn-primary m-1 float-right'>Modification des tâches</button>
         </form>
-    </div>
-    <div class="d-flex flex-row"> <!-- Boutons relatifs à l'état de la feuille -->
+        <?php endif; ?>
         <?=  slugsButtonTodo($week['slug'], $week['id'])?>
     </div>
 </div>
