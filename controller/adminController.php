@@ -31,7 +31,7 @@ function saveNewUser()         //Crée un utilisateur
     if ($result == 0) {
         setFlashMessage("Une erreur est survenue. Impossible d'ajouter l'utilisateur.");
     } else {
-        setFlashMessage("L'utilisateur a bien été créé !");
+        setFlashMessage("L'utilisateur a bien été ajouté !");
     }
     adminCrew();
 }
@@ -68,7 +68,12 @@ function adminDrugs()
 
 function newDrug(){
     if(isset($_POST['nameDrug'])){
-        addNewDrug($_POST['nameDrug']);
+        $res = addNewDrug($_POST['nameDrug']);
+        if ($res == false) {
+            setFlashMessage("Une erreur est survenue. Impossible d'ajouter le médicament.");
+        } else {
+            setFlashMessage("Le médicament ". $_POST['nameDrug'] ." a été correctement ajouté.");
+        }
         adminDrugs();
     }
     else {
@@ -79,7 +84,12 @@ function newDrug(){
 function updateDrug(){
     $idDrug = $_GET['idDrug'];
     if(isset($_POST['updateNameDrug'])){
-        updateDrugName($_POST['updateNameDrug'], $idDrug);
+        $res =updateDrugName($_POST['updateNameDrug'], $idDrug);
+        if ($res == false) {
+            setFlashMessage("Une erreur est survenue. Impossible de renommer le médicament.");
+        } else {
+            setFlashMessage("Le médicament a été correctement renommé.");
+        }
         adminDrugs();
     }
     else {
@@ -97,7 +107,12 @@ function adminBases()
 
 function newBase(){
     if(isset($_POST['nameBase'])){
-        addNewBase($_POST['nameBase']);
+        $res = addNewBase($_POST['nameBase']);
+        if ($res == false) {
+            setFlashMessage("Une erreur est survenue. Impossible d'ajouter la base.");
+        } else {
+            setFlashMessage("La base a été correctement ajoutée.");
+        }
         adminBases();
     }
     else {
@@ -114,8 +129,12 @@ function editbase($id)
 function updateBase()
 {
     extract($_POST); // crée les variables $id et $updateNameBase qui sont les clés du POST
-    renameBase($id, $updateNameBase);
-    setFlashMessage("La base a été renommée");
+    $res = renameBase($id, $updateNameBase);
+    if ($res == false) {
+        setFlashMessage("Une erreur est survenue. Impossible de renommer la base.");
+    } else {
+        setFlashMessage("La base a été correctement renommée.");
+    }
     redirect('adminBases');
 }
 
@@ -129,7 +148,12 @@ function adminNovas()
 
 function newNova(){
     if(isset($_POST['nameNova'])){
-        addNewNova($_POST['nameNova']);
+        $res = addNewNova($_POST['nameNova']);
+        if ($res == false) {
+            setFlashMessage("Une erreur est survenue. Impossible d'ajouter la nova.");
+        } else {
+            setFlashMessage("La nova a été correctement ajoutée.");
+        }
         adminNovas();
     }
     else {
@@ -141,7 +165,12 @@ function updateNova()
 {
     $idNova = $_GET['idNova'];
     if(isset($_POST['updateNameNova'])){
-        updateNameNova($_POST['updateNameNova'], $idNova);
+        $res = updateNameNova($_POST['updateNameNova'], $idNova);
+        if ($res == false) {
+            setFlashMessage("Une erreur est survenue. Impossible de renommer la nova.");
+        } else {
+            setFlashMessage("La nova a été correctement renommée.");
+        }
         adminNovas();
     }
     else {
