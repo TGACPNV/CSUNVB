@@ -59,7 +59,7 @@ $title = "CSU-NVB - Tâches hebdomadaires";
         <?php foreach ($dates as $index => $date) : ?>
             <div class="col p-1">
                 <?php foreach ($todoThings[1][$index + 1] as $todothing): ?>
-                    <?= buttonTask($todothing['initials'], $todothing['description'], $todothing['id'], $todothing['type'], $week['slug'], $edition) ?>
+                    <?= buttonTask($todothing['initials'], $todothing['description'], $todothing['id'], $todothing['type'], $week['slug'], $edition, $date) ?>
                 <?php endforeach; ?>
             </div>
         <?php endforeach; ?>
@@ -72,7 +72,7 @@ $title = "CSU-NVB - Tâches hebdomadaires";
         <?php foreach ($dates as $index => $date) : ?>
             <div class="col p-1">
                 <?php foreach ($todoThings[0][$index + 1] as $todothing): ?>
-                    <?= buttonTask($todothing['initials'], $todothing['description'], $todothing['id'], $todothing['type'], $week['slug'], $edition) ?>
+                    <?= buttonTask($todothing['initials'], $todothing['description'], $todothing['id'], $todothing['type'], $week['slug'], $edition, $date) ?>
                 <?php endforeach; ?>
             </div>
         <?php endforeach; ?>
@@ -85,7 +85,7 @@ $title = "CSU-NVB - Tâches hebdomadaires";
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-title"></h5>
+                <h5 class="modal-title" id="modal-validationTitle"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -96,8 +96,33 @@ $title = "CSU-NVB - Tâches hebdomadaires";
                 <input type="hidden" id="modal-todoID" name="modal-todoID" value="">
                 <input type="hidden" id="modal-todoStatus" name="modal-todoStatus" value="">
                 <div class="modal-body" >
-                    <div id="modal-content"></div>
+                    <div id="modal-validationContent"></div>
                     <input type="hidden" id="modal-todoValue" name="modal-todoValue">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Valider</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- -->
+<div class="modal fade" id="deletingTaskModal" tabindex="-1" role="dialog" aria-labelledby="modal-taskDelete"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-deletingTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="?action=">
+                <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
+                <input type="hidden" id="modal-deletingTaskID" name="taskID" value="">
+                <div class="modal-body" >
+                    <div id="modal-deletingContent"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Valider</button>
