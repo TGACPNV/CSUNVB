@@ -173,8 +173,8 @@ function carryOffComment(){
     return execute("update shiftcomments set endOfCarryOn = :carryOff where id= :commentID",["commentID"=>$_POST["commentID"],"carryOff"=>$_POST["carryOff"]]);
 }
 
-function getModelName($id){
-    return selectOne("select name from shiftmodels where id=:id", ["id" => $id])["name"];
+function getModelByID($id){
+    return selectOne("select * from shiftmodels where id=:id", ["id" => $id]);
 }
 
 /**
@@ -245,4 +245,12 @@ function getShiftModels(){
 function getLastShiftModel($baseID){
     $modelID = selectOne("SELECT shiftmodel_id from shiftsheets where DATE = ( SELECT MAX(DATE) FROM shiftsheets WHERE base_id = :baseID and (status_id = (SELECT id FROM status WHERE slug = 'close') or status_id = (SELECT id FROM status WHERE slug = 'reopen'))) AND base_id = :baseID",["baseID" => $baseID])["shiftmodel_id"];
     return $modelID;
+}
+
+function disableShiftModel($modelID){
+    return execute("UPDATE shiftmodels SET suggested = 0 WHERE id = :id",["id"=>$modelID]);
+}
+
+function enableShiftModel($modelID,$modelName){
+    return execute("UPDATE shiftmodels SET suggested = 1, name =:name WHERE id = :id",["id"=>$modelID, "name" => $modelName]);
 }

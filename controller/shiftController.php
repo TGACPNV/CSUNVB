@@ -45,7 +45,7 @@ function showshift($shiftid)
     $sections = getshiftsections($shiftid, $shiftsheet["baseID"]);
     $enableshiftsheetUpdate = ($shiftsheet['status'] == "open" || ($shiftsheet['status'] == "blank" && $_SESSION['user']['admin'] == true));
     $enableshiftsheetFilling = ($shiftsheet['status'] == "open" || $shiftsheet['status'] == "reopen" && $_SESSION['user']['admin'] == true);
-    $modelName = getModelName($shiftsheet['model']);
+    $model = getModelByID($shiftsheet['model']);
     $novas = getNovas();
     $users = getUsers();
     require_once VIEW . 'shift/show.php';
@@ -124,7 +124,7 @@ function removeActionForShift($sheetID)
 function configureModel($sheetID, $modelID)
 {
     //si le modèle ne possède pas de nom, il n'est pas utilisé pour créer d'autre feuille, il n'y a donc pas besoin de le mofifier
-    if (getModelName($modelID) != "") {
+    if (getModelBYID($modelID)["name"] != "") {
         $newID = copyModel($modelID);
         updateModelID($sheetID, $newID);
         return $newID;
@@ -143,4 +143,16 @@ function shiftDeleteSheet()
 {
     $res = shiftSheetDelete($_POST["id"]);
     redirect("listshift", getBaseIDForShift($_POST["id"]));
+}
+
+
+
+function removeShiftModel(){
+    disableShiftModel($_POST["action_id"]);
+    redirect("showShift",$_POST["shiftSheet_id"]);
+}
+
+function addShiftModel(){
+    enableShiftModel($_POST["action_id"],$_POST["comment"]);
+    redirect("showShift",$_POST["shiftSheet_id"]);
 }

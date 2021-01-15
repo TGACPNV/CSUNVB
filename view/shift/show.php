@@ -120,19 +120,19 @@ $title = "CSU-NVB - Remise de garde";
     </form>
 </div>
 <div class='d-flex float-right d-print-none'>
-    <?php if ($modelName == "") : ?>
+    <?php if ($model["suggested"] == 0 or $model["name"] == "Vide") : ?>
         <button type="submit"
                 class="btn btn-primary toggleShiftModal m-1"
-                data-content="Enregistrer comme modèle"
-                data-action_id="<?= $action['id'] ?>" data-day="1" data-action="?action=checkShift"
-                data-comment="hidden">
+                data-content="Enregistrer ce rapport comme nouveau modèle :<br><br><strong>Nom :</strong>"
+                data-action_id="<?= $shiftsheet["model"] ?>" data-day="1" data-action="?action=addShiftModel"
+                data-comment="text" style="width:200px;">
             Enregistrer comme modèle
         </button>
     <?php else : ?>
         <button type="submit"
                 class="btn btn-primary toggleShiftModal m-1"
-                data-content="Retirer le modèle"
-                data-action_id="<?= $action['id'] ?>" data-day="1" data-action="?action=checkShift"
+                data-content="Voulez-vous vraiment retirer le modèle ?<br><strong><?= $model["name"] ?></strong><br>Il ne sera plus proposé à la création de nouveaux rapports"
+                data-action_id="<?= $shiftsheet["model"] ?>" data-action="?action=removeShiftModel"
                 data-comment="hidden">
             Retirer le modèle
         </button>
@@ -189,7 +189,7 @@ $title = "CSU-NVB - Remise de garde";
                                 class="btn <?= (count($action["checksNight"]) == 0) ? 'btn-warning' : 'btn-success' ?> toggleShiftModal"
                                 data-content="Valider <?= $action['text'] ?> : Nuit"
                                 data-action_id="<?= $action['id'] ?>" data-day="0" data-action="?action=checkShift"
-                                data-comment="hidden" style=" width: 100%;">
+                                data-comment="hidden"">
                             <?php if (count($action["checksNight"]) == 0): ?>
                                 A Valider
                             <?php else: ?>
