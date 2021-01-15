@@ -189,9 +189,9 @@ function shiftSheetSwitchState()
 {
     $res = setSlugForShift($_POST["id"], $_POST["newSlug"]);
     if ($res == false) {
-        setFlashMessage("Une erreur est survenue. Impossible de changer l'état du rapport.");
+        setFlashMessage("Une erreur est survenue. Impossible de changer l'état de la feuille de garde.");
     } else {
-        setFlashMessage("L'état du rapport a été correctement modifié.");
+        setFlashMessage("L'état de la feuille de garde a été correctement modifiée.");
     }
     redirect("listshift", getBaseIDForShift($_POST["id"]));
 }
@@ -204,9 +204,9 @@ function shiftDeleteSheet()
 {
     $res = shiftSheetDelete($_POST["id"]);
     if ($res == false) {
-        setFlashMessage("Une erreur est survenue. Impossible de supprimer le rapport.");
+        setFlashMessage("Une erreur est survenue. Impossible de supprimer la feuille de garde.");
     } else {
-        setFlashMessage("Le rapport a été correctement supprimé.");
+        setFlashMessage("La feuille de garde a été correctement supprimé.");
     }
     redirect("listshift", getBaseIDForShift($_POST["id"]));
 }
