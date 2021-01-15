@@ -1,5 +1,6 @@
 <?php
 /**
+ * Shift.php : all funtion pertaining to database request -> for shift
  * Auteur: Gogniat Michael / Paola Costa
  * Date: Decembre 2020
  **/
