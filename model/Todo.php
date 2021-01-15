@@ -263,3 +263,8 @@ function changeSheetState($id, $slug)
 function deleteTodoSheet($sheetID){
     return execute("DELETE FROM todosheets WHERE id=:sheetID",['sheetID' => $sheetID]);
 }
+
+function deletethingsID($todoTaskID){
+    return execute("DELETE FROM todothings WHERE id =:task_id",['task_id' => $todoTaskID]);
+}
+

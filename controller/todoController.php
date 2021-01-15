@@ -35,6 +35,7 @@ function showtodo($todo_id, $edition = false){
     $dates = getDaysForWeekNumber($week['week']);
     $template = getTemplateName($todo_id);
 
+
     for ($daynight=0; $daynight <= 1; $daynight++) {
         for ($dayofweek = 1; $dayofweek <= 7; $dayofweek++) {
             $todoThings[$daynight][$dayofweek] = readTodoThingsForDay($todo_id,$daynight,$dayofweek);
@@ -126,6 +127,14 @@ function modTemplate()
 
     showtodo($todosheetID,$edition);
 
+}
+
+function destroyTaskTodoStatus(){
+
+    $todoTaskID = $_POST['taskID'];
+    $taskweek = deletethingsID($todoTaskID);
+
+    header('Location: ?action=showtodo&id='.$todoTaskID);
 }
 
 function loadAModel($weekID, $template_name){
