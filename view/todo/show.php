@@ -36,11 +36,19 @@ $title = "CSU-NVB - Tâches hebdomadaires";
     </div>
     <div class="d-flex flex-row"> <!-- Boutons relatifs à l'état de la feuille -->
         <?php if(ican ("modifySheet") && $week['slug'] == "blank") : ?>
-        <form action="?action=modTemplate" method="POST">
-            <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
-            <input type="hidden" name="edition" value="<?= $edition ?>">
-            <button type="submit" class='btn btn-primary m-1 float-right'>Modification des tâches</button>
-        </form>
+            <?php if($edition == false) : ?>
+                <form action="?action=modTemplate" method="POST">
+                    <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
+                    <input type="hidden" name="edition" value="<?= $edition ?>">
+                    <button type="submit" class='btn btn-primary m-1 float-right'>Mode édition</button>
+                </form>
+            <?php else:?>
+                <form action="?action=modTemplate" method="POST">
+                    <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
+                    <input type="hidden" name="edition" value="<?= $edition ?>">
+                    <button type="submit" class='btn btn-primary m-1 float-right'>Quitter édition</button>
+                </form>
+            <?php endif; ?>
         <?php endif; ?>
         <?=  slugsButtonTodo($week['slug'], $week['id'])?>
     </div>
