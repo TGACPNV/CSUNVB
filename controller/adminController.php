@@ -25,13 +25,18 @@ function saveNewUser()         //Crée un utilisateur
     $nomUser = $_POST['nomUser'];
     $initialesUser = $_POST['initialesUser'];
     $startPassword = $_POST['startPassword'];
-
     $hash = password_hash($startPassword, PASSWORD_DEFAULT);
-    $result = addNewUser($prenomUser, $nomUser, $initialesUser, $hash, 0, 1);
-    if ($result == 0) {
-        setFlashMessage("Une erreur est survenue. Impossible d'ajouter l'utilisateur.");
-    } else {
-        setFlashMessage("L'utilisateur a bien été ajouté !");
+
+    if($prenomUser == " " || $initialesUser == " " || $nomUser == " "){
+        setFlashMessage("Ni le prénom, ni le nom, ni les initiales ne peut être un champ vide.");
+    }
+    else {
+        $result = addNewUser($prenomUser, $nomUser, $initialesUser, $hash, 0, 1);
+        if ($result == 0) {
+            setFlashMessage("Une erreur est survenue. Impossible d'ajouter l'utilisateur.");
+        } else {
+            setFlashMessage("L'utilisateur a bien été ajouté !");
+        }
     }
     adminCrew();
 }
@@ -68,11 +73,16 @@ function adminDrugs()
 
 function newDrug(){
     if(isset($_POST['nameDrug'])){
-        $res = addNewDrug($_POST['nameDrug']);
-        if ($res == false) {
-            setFlashMessage("Une erreur est survenue. Impossible d'ajouter le médicament.");
-        } else {
-            setFlashMessage("Le médicament ". $_POST['nameDrug'] ." a été correctement ajouté.");
+        if($_POST['nameDrug']==" "){
+            setFlashMessage("Le nom de la base ne peut pas être vide.");
+        }
+        else {
+            $res = addNewDrug($_POST['nameDrug']);
+            if ($res == false) {
+                setFlashMessage("Une erreur est survenue. Impossible d'ajouter le médicament.");
+            } else {
+                setFlashMessage("Le médicament " . $_POST['nameDrug'] . " a été correctement ajouté.");
+            }
         }
         adminDrugs();
     }
@@ -107,11 +117,16 @@ function adminBases()
 
 function newBase(){
     if(isset($_POST['nameBase'])){
-        $res = addNewBase($_POST['nameBase']);
-        if ($res == false) {
-            setFlashMessage("Une erreur est survenue. Impossible d'ajouter la base.");
-        } else {
-            setFlashMessage("La base a été correctement ajoutée.");
+        if($_POST['nameBase']==" "){
+            setFlashMessage("Le nom de la base ne peut pas être vide.");
+        }
+        else {
+            $res = addNewBase($_POST['nameBase']);
+            if ($res == false) {
+                setFlashMessage("Une erreur est survenue. Impossible d'ajouter la base.");
+            } else {
+                setFlashMessage("La base a été correctement ajoutée.");
+            }
         }
         adminBases();
     }
@@ -148,13 +163,13 @@ function adminNovas()
 
 function newNova(){
     if(isset($_POST['nameNova'])){
-        $res = addNewNova($_POST['nameNova']);
-        if ($res == false) {
-            setFlashMessage("Une erreur est survenue. Impossible d'ajouter la nova.");
-        } else {
-            setFlashMessage("La nova a été correctement ajoutée.");
-        }
-        adminNovas();
+            $res = addNewNova($_POST['nameNova']);
+            if ($res == false) {
+                setFlashMessage("Une erreur est survenue. Impossible d'ajouter la nova.");
+            } else {
+                setFlashMessage("La nova a été correctement ajoutée.");
+            }
+            adminNovas();
     }
     else {
         require_once VIEW . 'admin/newNova.php';
