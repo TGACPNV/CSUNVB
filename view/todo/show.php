@@ -36,10 +36,10 @@ $title = "CSU-NVB - Tâches hebdomadaires";
     </div>
     <div class="d-flex flex-row"> <!-- If user is admin and sheet is "blank" then show modification button -->
         <?php if(ican ("modifySheet") && $week['slug'] == "blank") : ?>
-            <?php if($edition == false) :
-                $text = "Mode édition";
+            <?php if($edition) :
+                $text = "Quitter édition";
             else:
-                 $text = "Quitter édition";
+                 $text = "Mode édition";
            endif; ?>
 
             <form action="?action=modTemplate" method="POST">
