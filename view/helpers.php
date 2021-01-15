@@ -191,6 +191,7 @@ function showSheetsTodoByStatus($slug, $sheets)
                                 <form>
                                     <input type='hidden' name='action' value='showtodo'>
                                     <input type='hidden' name='id' value='" . $sheet['id'] . "'>
+                                    <!--Element à cliquer -->
                                     <button type='submit' class='btn btn-primary m-1'>Détails</button>
                                 </form>
                             " . slugsButtonTodo($slug, $sheet['id']) . "</div></td>";
