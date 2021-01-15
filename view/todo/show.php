@@ -34,7 +34,7 @@ $title = "CSU-NVB - Tâches hebdomadaires";
         <?php endif; ?>
 
     </div>
-    <div class="d-flex flex-row"> <!-- Boutons relatifs à l'état de la feuille -->
+    <div class="d-flex flex-row"> <!-- If user is admin and sheet is "blank" then show modification button -->
         <?php if(ican ("modifySheet") && $week['slug'] == "blank") : ?>
             <?php if($edition == false) :
                 $text = "Mode édition";
