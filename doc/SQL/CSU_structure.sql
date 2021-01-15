@@ -5,7 +5,7 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
-
+CREATE DATABASE IF NOT EXISTS `csunvb_csu`; /*!40100 COLLATE 'utf8_unicode_ci' */
 -- -----------------------------------------------------
 -- Schema csunvb_csu
 -- -----------------------------------------------------
@@ -411,7 +411,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `csunvb_csu`.`shiftsheets` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `date` DATE NOT NULL DEFAULT CURDATE(),
+  `date` DATE NOT NULL DEFAULT (CURRENT_DATE),
   `shiftmodel_id` INT NOT NULL,
   `base_id` INT NOT NULL,
   `status_id` INT NOT NULL,

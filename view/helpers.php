@@ -72,7 +72,7 @@ function showDrugSheetsByStatus($slug, $sheets)
     return $html;
 }
 
-function buttonTask($initials, $desription, $taskID, $type, $slug, $edition)
+function buttonTask($initials, $desription, $taskID, $type, $slug, $edition, $day)
 {
     if ($slug == 'open' || $slug == 'reopen') {
         if (empty($initials)) {
@@ -84,7 +84,9 @@ function buttonTask($initials, $desription, $taskID, $type, $slug, $edition)
         }
     }elseif($slug == 'blank' && $edition)
     {
-        return "<button type='button' class='btn btn-secondary btn-block m-1' disabled > <i class='fas fa-trash'></i>  " . $desription . "<div class='bg-white rounded mt-1'><br></div></button>";
+        $date = displayDate($day, 0);
+        $messageSuppression = 'Êtes-vous sûr(e) de vouloir supprimer la tâche  <br> "' . $desription . '" du '.$date.'?';
+        return "<button type='button' class='btn btn-secondary btn-block m-1' disabled >" . $desription . "<div class='rounded mt-1 trashButtons' style='background-color: red' data-title='Suppression de une tâche' data-id='" . $taskID . "' data-content='" . $messageSuppression . "'><i class='fas fa-trash'></i><br></div></button>";
     }
     else {
         if (empty($initials)) {
