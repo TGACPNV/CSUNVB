@@ -84,11 +84,11 @@ function buttonTask($initials, $desription, $taskID, $type, $slug, $edition)
         }
     }elseif($slug == 'blank' && $edition)
     {
-        return "<button type='button' class='btn btn-primary btn-block m-1' disabled > <i class='fas fa-trash'></i>" . $desription . "<div class='bg-white rounded mt-1'><br></div></button>";
+        return "<button type='button' class='btn btn-secondary btn-block m-1' disabled > <i class='fas fa-trash'></i>  " . $desription . "<div class='bg-white rounded mt-1'><br></div></button>";
     }
     else {
         if (empty($initials)) {
-            return "<button type='button' class='btn btn-warning btn-block m-1' disabled >" . $desription . "<div class='bg-white rounded mt-1'><br></div></button>";
+            return "<button type='button' class='btn btn-secondary btn-block m-1' disabled >" . $desription . "<div class='bg-white rounded mt-1'><br></div></button>";
         } else {
             return "<button type='button' class='btn btn-success btn-block m-1' disabled >" . $desription . "<div class='text-dark bg-white rounded mt-1'>" . $initials . "</div></button>";
         }
@@ -191,7 +191,6 @@ function showSheetsTodoByStatus($slug, $sheets)
                                 <form>
                                     <input type='hidden' name='action' value='showtodo'>
                                     <input type='hidden' name='id' value='" . $sheet['id'] . "'>
-                                    <!--Element à cliquer -->
                                     <button type='submit' class='btn btn-primary m-1'>Détails</button>
                                 </form>
                             " . slugsButtonTodo($slug, $sheet['id']) . "</div></td>";
