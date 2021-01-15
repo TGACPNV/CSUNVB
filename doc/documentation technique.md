@@ -1,30 +1,48 @@
-# Documentation technique
+# Documentation technique CSUNVB
 
-Bob est un développeur qui vient de rejoindre l'équipe de développement du TRUC. Ce document répond aux questions qu'il se pose
+Documentation pour les éventuels nouveaux membres de l'équipe de développement. 
 
-### A quoi sert ce TRUC ? Qui l'utilise et pourquoi ?
+### A quoi sert le site du CSU ? Qui l'utilise et pourquoi ?
 
-### Dans quel contexte (technique) fonctionne ce TRUC ?
+Le site internet actuellement en développement sera utilisé par les ambulanciers du CSU Nord Vaudois et Broye.
+Il sera utile aux ambulanciers afin de faciliter leures tâches administratives quotidienne qui jusqu'à aujourd'hui s'effectuent sur le papier.
 
-_(est-ce qu'il a besoin de réseau ? de Wifi ? d'un serveur ? d'internet ? et pourquoi ? ...)_
+Ce site fonctionnera en interne c'est à dire qu'uniquement les membres agréer auront le privilège d'utiliser le site internet CSUNVB, par membre agréer on entend les secouristes.
 
-### Qu'est-ce que je dois faire pour pouvoir essayer ce TRUC ?
+### Dans quel contexte (technique) fonctionne ce site ?
 
-### Quelles sont les données / informations que ce TRUC manipule ?
+Le site sera hébérger par un hébérgeur qui est encore à définir, cepandant une connexion internet sera nécessaire pour accèder au site. On pourra y accèder avec un pc ou une tablette car le site est responsive.
+### Qu'est-ce que je dois faire pour pouvoir essayer ce site ?
 
-### De quels composants le TRUC est-il fait ? 
+Pour l'instant une version d'essai régulièrement mise à jour est disponible sur CSUNVB.mycpnv.ch
+Cependant il faudra demander un identifiant au chef de projet de manière à vous connecter et essayer le prototype vu qu'il faut être connecté pour accèder au contenu
 
+### Quelles sont les données / informations que ce site manipule ?
+
+Ce site internet est lié à une base de donnée qui va contenir plusieures choses comme les utilisateurs (secouristes), Les médicaments, les différentes ambulances.
+
+### De quels composants le site est-il fait ? 
+
+-PHP, javascript
+-MySQL
+-html, css
 _(Comment est-ce qu'ils interagissent entre eux ?)_
 
-### Quelles technologies est-ce que je dois connaître pour pouvoir développer ce TRUC ? 
+### Quelles technologies est-ce que je dois connaître pour pouvoir développer ce site ? 
 
-_(Lesquelles est-ce que je dois maîtriser ?)_
+Les languages PHP et javascripts sont indispensables pour travailler sur ce projet.
+Il faut aussi être à l'aise avec le html et le css pour tout ce qui est de la mise en forme
 
-_(Pourquoi est-ce qu'on les a choisies ?)_
+Il est aussi nécessaire de connaître le sql car il y aura plusieures requête SQL pour interroger la base de donnée.
 
-### Qu'est-ce que je dois installer sur mon poste de travail pour pouvoir commencer à bosser sur ce TRUC ?
+Le choix de ces languages paraissent évidents pour le développement d'un site intenet.
 
-_(Les outils, les données et le code source)_
+### Qu'est-ce que je dois installer sur mon poste de travail pour pouvoir commencer à bosser sur ce site ?
+Les logiciels suivant sont nécessaires pour pouvoir travailler:
+
+- Un environnement de développement: PhpStorm https://www.jetbrains.com/fr-fr/phpstorm/
+- Wampserver https://www.wampserver.com/en/download-wampserver-64bits/
+- 
 
 ### Est-ce qu'on a des conventions de codage ?
 
