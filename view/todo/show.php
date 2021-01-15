@@ -124,7 +124,7 @@ $title = "CSU-NVB - Tâches hebdomadaires";
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="?action=">
+            <form method="POST" action="?action=destroyTaskTodo">
                 <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
                 <input type="hidden" id="modal-deletingTaskID" name="taskID" value="">
                 <div class="modal-body" >

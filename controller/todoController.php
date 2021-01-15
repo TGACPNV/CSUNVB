@@ -129,12 +129,13 @@ function modTemplate()
 
 }
 
-function destroyTaskTodoStatus(){
+function destroyTaskTodo(){
 
+    $todosheetID = $_POST['todosheetID'];
     $todoTaskID = $_POST['taskID'];
     $taskweek = deletethingsID($todoTaskID);
 
-    header('Location: ?action=showtodo&id='.$todoTaskID);
+    showtodo($todosheetID,true);
 }
 
 function loadAModel($weekID, $template_name){
