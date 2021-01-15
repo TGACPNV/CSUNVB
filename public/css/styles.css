@@ -2,51 +2,14 @@ body {
     background-color: #6cc8ff;
 }
 
-/*.colorblue{
-    color: #0000ff;
-}*/
-
-/*.versionnumber {
-    font-size: 10px;
-    color: #93a1a1;
-}*/
-
 .banner {
     background-color: transparent;
     width: 100%;
 }
 
-/*.menutile {
-    background-color: aliceblue;
-    font-size: xx-large;
-}*/
-
-/*.dayheader {
-    text-align: center;
-    font-size: large;
-    font-weight: bold;
-    padding: 3px;
-}*/
-
-/*.error {
-    color: white;
-    background-color: red;
-}*/
-
-/*.today
-{
-    background-color: yellow;
-    color:black;
-}*/
-
 textarea{
     font-size: 13px;
 }
-
-/*.sizemax
-{
-    max-width: 50px;
-}*/
 
 .logo {
     width: 152px;
@@ -127,7 +90,7 @@ table.table-bordered > tbody > tr > td{
     background-color: white;
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     padding: 2px;
     margin: 2px;
 }
@@ -141,6 +104,7 @@ table.table-bordered > tbody > tr > td{
     flex-grow: 1;
     padding: 2px;
     margin: 2px;
+    font-size: 80px;
 }
 
 .hour {
