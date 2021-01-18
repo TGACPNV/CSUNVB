@@ -1,10 +1,10 @@
 /**
- * Le fichier contient les fonctionnalités javascript qui ne sont utilisées que pour les tâches à réaliser
+ * Le fichier contient les fonctionnalités javascript qui ne sont utilisées que pour les tâches hebdomadaires
  * Auteur: Vicky Butty
- * Date: Décembre 2020
+ * Date: Janvier 2021
  **/
 
-// formulaire de vérification pour todoModal
+// Code lié à la pop-up de vérification de validation de tâches
 var buttons = document.querySelectorAll('.toggleTodoModal');
 
 buttons.forEach((item) => {
@@ -14,10 +14,10 @@ buttons.forEach((item) => {
         document.getElementById("modal-validationContent").innerHTML = this.getAttribute("data-content");
         document.getElementById("modal-todoID").value = this.getAttribute("data-id");
 
-        var status = this.getAttribute("data-status");
+        var status = this.getAttribute("data-status"); // 'validate' si la tache n'est pas validée, 'unvalidate' dans le cas contraire
         var type = this.getAttribute("data-type");
 
-        if(type == "2" && status == "close"){
+        if(type == "2" && status == "validate"){
             document.getElementById("modal-todoValue").type = "text";
         }
 
@@ -28,7 +28,8 @@ buttons.forEach((item) => {
 })
 console.log(buttons.length);
 
-//
+
+// Code lié à la pop-up de vérification de suppression de tâches
 var trashButtons = document.querySelectorAll('.trashButtons');
 
 trashButtons.forEach((item) => {
