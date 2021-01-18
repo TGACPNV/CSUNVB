@@ -265,6 +265,6 @@ function deleteTodoSheet($sheetID){
 }
 
 function deletethingsID($todoTaskID){
-    return execute("DELETE FROM todothings WHERE id =:task_id",['task_id' => $todoTaskID]);
+    return execute("DELETE FROM todos WHERE id =:task_id",['task_id' => $todoTaskID]);
 }
 

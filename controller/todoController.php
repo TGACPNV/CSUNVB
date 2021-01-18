@@ -131,7 +131,7 @@ function destroyTaskTodo(){
 
     $todosheetID = $_POST['todosheetID'];
     $todoTaskID = $_POST['taskID'];
-    $taskweek = deletethingsID($todoTaskID);
+    deletethingsID($todoTaskID);
 
     showtodo($todosheetID,true);
 }
@@ -147,7 +147,7 @@ function switchTodoStatus(){
     $todoValue = $_POST['modal-todoValue'];
     $todosheetID = $_POST['todosheetID'];
 
-    if($status == 'open'){
+    if($status == 'unvalidate'){
         unvalidateTodo($todoID, $todoType);
     } else {
         validateTodo($todoID, $todoValue);
