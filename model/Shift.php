@@ -203,11 +203,11 @@ WHERE shiftmodel_id = :model_id ', ['model_id' => $modelID]);
  * @return bool|null
  */
 function updateModelID($sheetID, $newID){
-    execute("update shiftsheets set shiftmodel_id = :newID where id= :sheetID",["newID"=>$newID,"sheetID"=>$sheetID]);
+    return execute("update shiftsheets set shiftmodel_id = :newID where id= :sheetID",["newID"=>$newID,"sheetID"=>$sheetID]);
 }
 
 function addShiftAction($modelID,$actionID){
-    execute("INSERT INTO `shiftmodel_has_shiftaction` (shiftaction_id,shiftmodel_id) VALUES (:actionID,:modelID)", ["modelID"=> $modelID, "actionID" => $actionID]);
+    return execute("INSERT INTO `shiftmodel_has_shiftaction` (shiftaction_id,shiftmodel_id) VALUES (:actionID,:modelID)", ["modelID"=> $modelID, "actionID" => $actionID]);
 }
 
 function creatShiftAction($action,$section){
@@ -216,7 +216,7 @@ function creatShiftAction($action,$section){
 }
 
 function removeShiftAction($modelID,$actionID){
-    execute("DELETE FROM `shiftmodel_has_shiftaction` WHERE shiftaction_id=:actionID and shiftmodel_id=:modelID;", ["actionID"=> $actionID,"modelID"=> $modelID]);
+    return execute("DELETE FROM `shiftmodel_has_shiftaction` WHERE shiftaction_id=:actionID and shiftmodel_id=:modelID;", ["actionID"=> $actionID,"modelID"=> $modelID]);
 }
 
 function getShiftActionID($actionName,$sectionName){

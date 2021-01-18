@@ -120,7 +120,7 @@ $title = "CSU-NVB - Remise de garde";
     </form>
 </div>
 <div class='d-flex float-right d-print-none'>
-    <?php if ($model["suggested"] == 0 or $model["name"] == "Vide") : ?>
+    <?php if ($model["suggested"] == 0) : ?>
         <button type="submit"
                 class="btn btn-primary toggleShiftModal m-1"
                 data-content="Enregistrer ce rapport comme nouveau modèle :<br><br><strong>Nom :</strong>"
@@ -129,13 +129,15 @@ $title = "CSU-NVB - Remise de garde";
             Enregistrer comme modèle
         </button>
     <?php else : ?>
-        <button type="submit"
-                class="btn btn-primary toggleShiftModal m-1"
-                data-content="Voulez-vous vraiment retirer le modèle ?<br><strong><?= $model["name"] ?></strong><br>Il ne sera plus proposé à la création de nouveaux rapports"
-                data-action_id="<?= $shiftsheet["model"] ?>" data-action="?action=removeShiftModel"
-                data-comment="hidden">
-            Retirer le modèle
-        </button>
+        <?php if ( $model["name"] != "Vide") : ?>
+            <button type="submit"
+                    class="btn btn-primary toggleShiftModal m-1"
+                    data-content="Voulez-vous vraiment retirer le modèle ?<br><strong><?= $model["name"] ?></strong><br>Il ne sera plus proposé à la création de nouveaux rapports"
+                    data-action_id="<?= $shiftsheet["model"] ?>" data-action="?action=removeShiftModel"
+                    data-comment="hidden">
+                Retirer le modèle
+            </button>
+        <?php endif; ?>
     <?php endif; ?>
 </div>
 
