@@ -73,7 +73,7 @@ function adminDrugs()
 
 function newDrug(){
     if(isset($_POST['nameDrug'])){
-        if($_POST['nameDrug']==" "){
+        if($_POST['nameDrug']==" " || $_POST['nameDrug']==""){
             setFlashMessage("Le nom de la base ne peut pas être vide.");
         }
         else {
@@ -117,7 +117,7 @@ function adminBases()
 
 function newBase(){
     if(isset($_POST['nameBase'])){
-        if($_POST['nameBase']==" "){
+        if($_POST['nameBase']==" " || $_POST['nameBase']==""){
             setFlashMessage("Le nom de la base ne peut pas être vide.");
         }
         else {
