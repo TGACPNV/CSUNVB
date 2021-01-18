@@ -197,14 +197,3 @@ function deleteSheet(){
     setFlashMessage("La semaine ".$sheet['week']." a correctement été supprimée.");
     header('Location: ?action=listtodoforbase&id='.$sheet['base_id']);
 }
-
-function todoSheetToPDF($id){
-
-    $week = getTodosheetByID($id);
-
-    $pdf = new FPDF();
-    $pdf->AddPage();
-    $pdf->SetFont('Arial','B',16);
-    $pdf->Cell(40,10,utf8_decode("PDF en préparation"));
-    $pdf->Output("","hebdomadaire_".$week['week'].".pdf");
-}

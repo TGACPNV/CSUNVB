@@ -5,10 +5,8 @@ $title = "CSU-NVB - Tâches hebdomadaires";
 <div>
     <h1>Tâches hebdomadaires</h1>
     <h2>Semaine <?= $week['week'] ?> - Base de <?= $base['name']?> <?= showSheetState($week['id'], "todo") ?></h2>
-    <div class="d-flex justify-content-end">
-        <form  method='POST' action='?action=todoSheetToPDF&id=<?=$week['id']?>'>
-            <button type='submit' class='btn btn-primary m-1 float-right'>Télécharger en PDF</button>
-        </form>
+    <div class="d-flex justify-content-end d-print-none">
+        <button type='submit' class='btn btn-primary m-1 float-right' onclick="window.print()">Télécharger en PDF</button>
         <form>
             <input type="hidden" name="action" value="listtodoforbase">
             <input type="hidden" name="id" value="<?= $base['id'] ?>">
@@ -16,7 +14,7 @@ $title = "CSU-NVB - Tâches hebdomadaires";
         </form>
     </div>
 </div>
-<div class="d-flex justify-content-between">
+<div class="d-flex justify-content-between d-print-none">
     <div class="d-flex flex-row"> <!-- Boutons relatifs aux modèles -->
         <?php if(ican ("createTemplate") && is_null($template['template_name'])) : ?>
             <form action="?action=modelWeek" method="POST">
@@ -32,7 +30,6 @@ $title = "CSU-NVB - Tâches hebdomadaires";
             </form>
             <div style="padding: 5px"> Nom du modèle : <?= $template['template_name'] ?></div>
         <?php endif; ?>
-
     </div>
     <div class="d-flex flex-row"> <!-- If user is admin and sheet is "blank" then show modification button -->
         <?php if(ican ("modifySheet") && $week['slug'] == "blank") : ?>
@@ -41,11 +38,10 @@ $title = "CSU-NVB - Tâches hebdomadaires";
             else:
                  $text = "Mode édition";
            endif; ?>
-
-            <form action="?action=modTemplate" method="POST">
+            <form action="?action=todoEditionMode" method="POST">
                 <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
                 <input type="hidden" name="edition" value="<?= $edition ?>">
-                <button type="submit" class='btn btn-primary m-1 float-right'><?= $text ?></button>
+                <button type="submit" class='btn btn-warning m-1 float-right'><?= $text ?></button>
             </form>
         <?php endif; ?>
         <?=  slugsButtonTodo($week['slug'], $week['id'])?>
@@ -85,9 +81,9 @@ $title = "CSU-NVB - Tâches hebdomadaires";
     </div>
     <br>
 </div>
-<!-- Affichage de la pop-up pour les quittances -->
-<div class="modal fade" id="todoModal" tabindex="-1" role="dialog" aria-labelledby="modal-taskValidation"
-     aria-hidden="true">
+
+<!-- Pop-up pour les quittances de tâches -->
+<div class="modal fade" id="todoModal" tabindex="-1" role="dialog" aria-labelledby="modal-taskValidation" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -113,9 +109,8 @@ $title = "CSU-NVB - Tâches hebdomadaires";
         </div>
     </div>
 </div>
-<!-- -->
-<div class="modal fade" id="deletingTaskModal" tabindex="-1" role="dialog" aria-labelledby="modal-taskDelete"
-     aria-hidden="true">
+<!-- Pop up pour la suppression de tâches -->
+<div class="modal fade" id="deletingTaskModal" tabindex="-1" role="dialog" aria-labelledby="modal-taskDelete" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
