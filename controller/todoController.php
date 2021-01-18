@@ -113,20 +113,18 @@ function deleteTemplate(){
     header('Location: ?action=showtodo&id='.$todosheetID);
 }
 
-function modTemplate()
+function todoEditionMode()
 {
     $edition = $_POST['edition'];
     $todosheetID = $_POST['todosheetID'];
 
     if (!$edition){
         $edition = true;
-
+        showtodo($todosheetID,$edition);
     } else {
         $edition = false;
+        header('Location: ?action=showtodo&id='.$todosheetID);
     }
-
-    showtodo($todosheetID,$edition);
-
 }
 
 function destroyTaskTodo(){

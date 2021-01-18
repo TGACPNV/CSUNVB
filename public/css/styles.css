@@ -24,6 +24,10 @@ textarea{
     font-size: 36px;
 }
 
+.btn:disabled{
+    cursor: default;
+}
+
 /* ------------------------------------------------------------
 * Styles CSS utilisés pour l'affichage des listes de feuilles
  -------------------------------------------------------------- */
@@ -85,7 +89,11 @@ table.table-bordered > tbody > tr > td{
 /* ------------------------------------------------------------
 * Styles CSS utilisés pour l'affichage de la vue des tâches hebdomadaires
  -------------------------------------------------------------- */
-
+.trashButtons{
+    cursor: pointer;
+    background-color: red;
+}
+/* -- -- -- */
 .week {
     background-color: white;
     display: flex;
@@ -94,7 +102,6 @@ table.table-bordered > tbody > tr > td{
     padding: 2px;
     margin: 2px;
 }
-
 
 .day {
     /*background-color: pink;
