@@ -222,8 +222,8 @@ function getAllTemplateNames()
 function getTemplateSheet($templateName)
 {
     return selectOne("SELECT id, week AS last_week
-                            FROM todosheets
-                            Where template_name =:template", ["template" => $templateName]);
+                      FROM todosheets
+                      Where template_name =:template", ["template" => $templateName]);
 }
 
 /**
@@ -251,3 +251,15 @@ function deletethingsID($todoTaskID){
 function getOpenTodoSheetNumber($baseID){
     return selectOne("SELECT COUNT(todosheets.id) as number FROM  todosheets inner join status on status.id = todosheets.status_id where status.slug = 'open' and todosheets.base_id =:base_id", ['base_id' => $baseID])['number'];
 }
+
+function getTaskName($todoTaskID){
+    return execute("SELECT description
+                          FROM todos
+                          LEFT JOIN todothings on todos.todothing_id = todothings.id 
+                          WHERE todos.id =:task_id",['task_id' => $todoTaskID]);
+}
+
+//SELECT description
+//FROM todos
+//LEFT JOIN todothings on todos.todothing_id = todothings.id
+//WHERE todos.id = 120
