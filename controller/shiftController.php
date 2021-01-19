@@ -205,7 +205,7 @@ function shiftDeleteSheet()
     if ($res == false) {
         setFlashMessage("Une erreur est survenue. Impossible de supprimer la feuille de garde.");
     } else {
-        setFlashMessage("La feuille de garde a été correctement supprimé.");
+        setFlashMessage("La feuille de garde a été correctement supprimée.");
     }
     redirect("listshift", getBaseIDForShift($_POST["id"]));
 }
