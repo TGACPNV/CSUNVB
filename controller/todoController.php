@@ -164,7 +164,7 @@ function todoSheetSwitchState(){
     changeSheetState($sheetID, $newSlug);
     $message = "La semaine ".$sheet['week']." a été ";
 
-    switch($newSlug){
+    switch($newSlug){  /* todo : utiliser displayname */
         case "open":
             $message = $message."ouverte.";
             break;
