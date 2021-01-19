@@ -139,9 +139,12 @@ function destroyTaskTodo()
 
     $todosheetID = $_POST['todosheetID'];
     $todoTaskID = $_POST['taskID'];
+    $todoTaskName = getTaskName($_POST['taskID']);
+    $message = "La tâche ".$todoTaskName." a été supprimée !";
     deletethingsID($todoTaskID);
 
-    showtodo($todosheetID, true);
+    setFlashMessage($message);
+    showtodo($todosheetID,true);
 }
 
 function loadAModel($weekID, $template_name)
