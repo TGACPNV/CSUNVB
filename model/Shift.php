@@ -7,7 +7,6 @@
 
 
 
-
 function getshiftchecksForAction($action_id, $shiftsheet_id, $day)
 {
     $checks = selectMany('SELECT shiftchecks.time, users.initials as initials FROM shiftchecks inner join users on users.id = shiftchecks.user_id where shiftaction_id =:action_id and shiftsheet_id =:shiftsheet_id and day=:day', ['action_id' => $action_id, 'shiftsheet_id' => $shiftsheet_id, 'day' => $day]);
@@ -147,16 +146,6 @@ function commentActionForShift($action_id,$shiftSheet_id,$message){
     return execute("Insert into shiftcomments(shiftsheet_id,shiftaction_id,user_id,message)values(:shiftSheet_id,:action_id,:user_id,:message)", ["user_id" => $_SESSION['user']['id'],"shiftSheet_id" => $shiftSheet_id, "action_id" => $action_id, "message" => $message]);
 }
 
-function updateDataShift($id,$novaDay,$novaNight,$bossDay,$bossNight,$teammateDay,$teammateNight){
-    if($novaDay=="NULL")$novaDay=null;
-    if($novaNight=="NULL")$novaNight=null;
-    if($bossDay=="NULL")$bossDay=null;
-    if($bossNight=="NULL")$bossNight=null;
-    if($teammateDay=="NULL")$teammateDay=null;
-    if($teammateNight=="NULL")$teammateNight=null;
-    return execute("update shiftsheets set daynova_id =:novaDay, nightnova_id =:novaNight, dayboss_id =:bossDay, nightboss_id =:bossNight, dayteammate_id =:teammateDay, nightteammate_id =:teammateNight WHERE id=:id",["id" => $id,"novaDay" => $novaDay,"novaNight" => $novaNight,"bossDay" => $bossDay,"bossNight" => $bossNight,"teammateDay" => $teammateDay,"teammateNight" => $teammateNight]);
-}
-
 function getStateFromSheet($id){
     return selectOne("SELECT status.slug FROM status LEFT JOIN shiftsheets ON shiftsheets.status_id = status.id WHERE shiftsheets.id =:sheetID", ["sheetID"=>$id]);
 }
@@ -178,33 +167,6 @@ function getModelByID($id){
     return selectOne("select * from shiftmodels where id=:id", ["id" => $id]);
 }
 
-/**
- * crée une copie d'model de feuille de garde
- * @param $modelID identifant de la feuille à copier
- * @return identifiant du nouveau model
- */
-function copyModel($modelID){
-    execute("INSERT INTO `shiftmodels` (NAME) VALUES (null)", []);
-    $newID = selectOne("SELECT MAX(id) AS max FROM shiftmodels", [])["max"];
-    $actionToCopy = selectMany('SELECT shiftactions.id FROM shiftmodel_has_shiftaction
-INNER JOIN shiftactions
-ON shiftactions.id = shiftmodel_has_shiftaction.shiftaction_id
-WHERE shiftmodel_id = :model_id ', ['model_id' => $modelID]);
-    foreach ($actionToCopy as $action){
-        execute("INSERT INTO `shiftmodel_has_shiftaction` (shiftaction_id,shiftmodel_id) VALUES (:actionID,:modelID)", ["modelID"=> $newID, "actionID" => $action["id"]]);
-    }
-    return $newID;
-}
-
-/**
- * modifie le modele sur lequel se base une feuille de garde
- * @param $sheetID identifiant de la feuille de garde
- * @param $newID identifiant du nouveau modele
- * @return bool|null
- */
-function updateModelID($sheetID, $newID){
-    return execute("update shiftsheets set shiftmodel_id = :newID where id= :sheetID",["newID"=>$newID,"sheetID"=>$sheetID]);
-}
 
 function addShiftAction($modelID,$actionID){
     return execute("INSERT INTO `shiftmodel_has_shiftaction` (shiftaction_id,shiftmodel_id) VALUES (:actionID,:modelID)", ["modelID"=> $modelID, "actionID" => $actionID]);
@@ -230,28 +192,110 @@ function getShiftActionName($actionID){
     return selectOne("SELECT text from shiftactions where id=:actionID", ["actionID" => $actionID])["text"];
 }
 
-function setSlugForShift($id,$slug){
+
+/**
+ * setSlugForShift : update the status for a shiftsheet
+ * @param int $id : id of the shiftsheet
+ * @param string $slug : status's slug, values possible values ("blank", "open" , "close" , "reopen", "archive")
+ * @return bool : true = ok / false = fail
+ */
+function setSlugForShift($id, $slug){
     return execute("update shiftsheets set status_id= (select id from status where slug =:slug) WHERE id=:id",["slug" => $slug,"id" => $id]);
 }
 
+
+/**
+ * shiftSheetDelete : delete a shiftsheet ( currently only used for deleting "blank", to delete "archive you need to add some "delete on cascade" in the database )
+ * @param int $id : id of the shiftsheet
+ * @return bool : true = ok / false = fail
+ */
 function shiftSheetDelete($id){
     return execute("DELETE FROM shiftsheets WHERE id=:id",["id" => $id]);
 }
 
+/**
+ * getShiftModels : get the list of models where name si not null ( = not a hidden model ) and suggested = 1 ( suggested in the list for shiftsheet creation )
+ * @return array : array of models with id and name
+ */
 function getShiftModels(){
     $models = selectMany("SELECT id,name FROM shiftModels where name <> '' and suggested = 1",[]);
     return $models;
 }
 
+/**
+ * getLastShiftModel : get id of most recent closed or reopened ( in correction ) shiftsheet for the selected base
+ * @param int $baseID : id of the selected base
+ * @return int : id of the model
+ */
 function getLastShiftModel($baseID){
     $modelID = selectOne("SELECT shiftmodel_id from shiftsheets where DATE = ( SELECT MAX(DATE) FROM shiftsheets WHERE base_id = :baseID and (status_id = (SELECT id FROM status WHERE slug = 'close') or status_id = (SELECT id FROM status WHERE slug = 'reopen'))) AND base_id = :baseID",["baseID" => $baseID])["shiftmodel_id"];
     return $modelID;
 }
 
+/**
+ * enableShiftModel : remove the model to the suggested list for the creation of sheet
+ * @param int $modelID : id of the model
+ * @return bool : true = ok / false = fail
+ */
 function disableShiftModel($modelID){
     return execute("UPDATE shiftmodels SET suggested = 0 WHERE id = :id",["id"=>$modelID]);
 }
 
-function enableShiftModel($modelID,$modelName){
+/**
+ * enableShiftModel : add the model to the suggested list for the creation of sheet and give him a name
+ * @param int $modelID : id of the model
+ * @param int $modelName : name for the model to display
+ * @return bool : true = ok / false = fail
+ */
+function enableShiftModel($modelID, $modelName){
     return execute("UPDATE shiftmodels SET suggested = 1, name =:name WHERE id = :id",["id"=>$modelID, "name" => $modelName]);
+}
+
+/**
+ * updateModelID : change the model of the shiftsheet
+ * @param int $shiftSheetID : id of the shiftsheet
+ * @param int $newModelID : id for the new model to use
+ * @return bool : true = ok / false = fail
+ */
+function updateModelID($shiftSheetID, $newModelID){
+    return execute("update shiftsheets set shiftmodel_id = :newModelID where id= :shiftSheetID",["shiftSheetID"=>$shiftSheetID,"newModelID"=>$newModelID]);
+}
+
+/**
+ * copyModel : create a copy of the model
+ * @param int $modelID : id of the model to copy
+ * @return int : id of the copy
+ */
+function copyModel($modelID){
+    execute("INSERT INTO `shiftmodels` (NAME) VALUES (null)", []);
+    $newID = selectOne("SELECT MAX(id) AS max FROM shiftmodels", [])["max"];
+    $actionToCopy = selectMany('SELECT shiftactions.id FROM shiftmodel_has_shiftaction
+INNER JOIN shiftactions
+ON shiftactions.id = shiftmodel_has_shiftaction.shiftaction_id
+WHERE shiftmodel_id = :model_id ', ['model_id' => $modelID]);
+    foreach ($actionToCopy as $action){
+        execute("INSERT INTO `shiftmodel_has_shiftaction` (shiftaction_id,shiftmodel_id) VALUES (:actionID,:modelID)", ["modelID"=> $newID, "actionID" => $action["id"]]);
+    }
+    return $newID;
+}
+
+/**
+ * updateDataShift : update the informations for the shiftsheet
+ * @param int $id : id of the shiftsheet
+ * @param int $novaDay : id of the nova used for the day
+ * @param int $novaNight : id of the nova used for the night
+ * @param int $bossDay : id of the person for the day boss
+ * @param int $bossNight : id of the person for the night boss
+ * @param int $teammateDay : id of the person for the day teammate
+ * @param int $teammateNight : id of the person for the night teammate
+ * @return bool : true = ok / false = fail
+ */
+function updateDataShift($id, $novaDay, $novaNight, $bossDay, $bossNight, $teammateDay, $teammateNight){
+    if($novaDay=="NULL")$novaDay=null;
+    if($novaNight=="NULL")$novaNight=null;
+    if($bossDay=="NULL")$bossDay=null;
+    if($bossNight=="NULL")$bossNight=null;
+    if($teammateDay=="NULL")$teammateDay=null;
+    if($teammateNight=="NULL")$teammateNight=null;
+    return execute("update shiftsheets set daynova_id =:novaDay, nightnova_id =:novaNight, dayboss_id =:bossDay, nightboss_id =:bossNight, dayteammate_id =:teammateDay, nightteammate_id =:teammateNight WHERE id=:id",["id" => $id,"novaDay" => $novaDay,"novaNight" => $novaNight,"bossDay" => $bossDay,"bossNight" => $bossNight,"teammateDay" => $teammateDay,"teammateNight" => $teammateNight]);
 }
