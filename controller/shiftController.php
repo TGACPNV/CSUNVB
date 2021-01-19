@@ -6,7 +6,7 @@
 
 /**
  * newShiftSheet : create a new sheet for a shift. It is created on the base we are currently watching the list, with the model selected
- * @param $baseID
+ * @param int $baseID
  * show a message if it has been done correctly
  */
 function newShiftSheet($baseID)
@@ -28,7 +28,7 @@ function newShiftSheet($baseID)
 
 /**
  * listshift : show a list of all existing shiftsheet for a certain base
- * @param null $selectedBaseID : id of the base we want to show  the shiftsheets. By default : correspond to the one we are logged on.
+ * @param int $selectedBaseID : id of the base we want to show  the shiftsheets. By default : correspond to the one we are logged on.
  */
 function listshift($selectedBaseID = null)
 {
@@ -46,7 +46,7 @@ function listshift($selectedBaseID = null)
 
 /**
  * showshift : show the detailed view of a shiftsheet
- * @param $shiftid : id of the sheet we want to visualize
+ * @param int $shiftid : id of the sheet we want to visualize
  */
 function showshift($shiftid)
 {
@@ -109,7 +109,7 @@ function updateShift()
 }
 /**
  * addActionForShift : add an action to a shiftsheet
- * @param $sheetID : id of the sheet where the action is added
+ * @param int $sheetID : id of the sheet where the action is added
  * show a message if it has been added correctly
  */
 function addActionForShift($sheetID)
@@ -126,7 +126,7 @@ function addActionForShift($sheetID)
 
 /**
  * creatActionForShift : create an action if it doesn't exist and add it to the shiftsheet
- * @param $sheetID : id of the sheet the action is added to
+ * @param int $sheetID : id of the sheet the action is added to
  * show a message if it has been added correctly
  */
 function creatActionForShift($sheetID)
@@ -148,7 +148,7 @@ function creatActionForShift($sheetID)
 
 /**
  * removeActionForShift : remove an action from the list of active action on a certain shiftsheet
- * @param $sheetID : id of the sheet the action is removed of
+ * @param int $sheetID : id of the sheet the action is removed of
  * show a message if it has been removed correctly
  */
 function removeActionForShift($sheetID)
@@ -165,8 +165,8 @@ function removeActionForShift($sheetID)
 
 /**
  * configureModel : duplicate shiftsheetmodel IF it is user on another sheet, so that those are not modified
- * @param $sheetID : id of the shiftsheet
- * @param $modelID : id of the shiftsheet's model
+ * @param int $sheetID : id of the shiftsheet
+ * @param int $modelID : id of the shiftsheet's model
  * @return int : id of the model used (new or not, depending on uses)
  */
 function configureModel($sheetID, $modelID)
