@@ -85,6 +85,20 @@ CREATE TABLE IF NOT EXISTS `csunvb_csu`.`users` (
   UNIQUE INDEX `initials_UNIQUE` (`initials` ASC) )
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `csunvb_csu`.`status`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `csunvb_csu`.`status` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `slug` VARCHAR(25) NOT NULL,
+  `displayname` VARCHAR(25) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `slug` (`slug` ASC) ,
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) )
+ENGINE = InnoDB;
+
+
 -- -----------------------------------------------------
 -- Table `csunvb_csu`.`drugsheets`
 -- -----------------------------------------------------
@@ -105,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `csunvb_csu`.`drugsheets` (
     FOREIGN KEY (`status_id`)
     REFERENCES `csunvb_csu`.`status` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION))
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -301,18 +315,6 @@ CREATE TABLE IF NOT EXISTS `csunvb_csu`.`drugsheet_use_batch` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
--- -----------------------------------------------------
--- Table `csunvb_csu`.`status`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `csunvb_csu`.`status` (
-     `id` INT NOT NULL AUTO_INCREMENT,
-     `slug` VARCHAR(25) NOT NULL,
-     `displayname` VARCHAR(25) NOT NULL,
-     PRIMARY KEY (`id`),
-     UNIQUE INDEX `slug` (`slug` ASC) ,
-     UNIQUE INDEX `id_UNIQUE` (`id` ASC) )
-    ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `csunvb_csu`.`todosheets`
