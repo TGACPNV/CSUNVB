@@ -18,7 +18,7 @@ function listtodoforbase($selectedBaseID)
 
     $baseList = getbases();
     $templates = getAllTemplateNames();
-    $maxID = getTodosheetMaxID($selectedBaseID);
+    $lastClosedWeek = getLastWeekClosed($selectedBaseID);
 
     require_once VIEW . 'todo/list.php';
 }
@@ -209,6 +209,7 @@ function todoDeleteSheet()
     $sheet = getTodosheetByID($sheetID);
 
     deleteTodoSheet($sheetID);
+
     setFlashMessage("La semaine " . $sheet['week'] . " a correctement été supprimée.");
     header('Location: ?action=listtodoforbase&id=' . $sheet['base_id']);
 }
