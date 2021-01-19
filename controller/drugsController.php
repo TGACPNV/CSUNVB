@@ -11,7 +11,7 @@ function listDrugSheets($selectedBaseID = null) {
     $baseList = getbases();
     $slugs = getSlugs();
     foreach($slugs as $slug) {
-        $drugSheetList[$slug['slug']] = getDrugSheetsByState($slug['slug']);
+        $drugSheetList[$slug['slug']] = getDrugSheetsByState($selectedBaseID, $slug['slug']);
     }
     require_once VIEW . 'drugs/list.php';
 }
@@ -26,8 +26,7 @@ function showDrugSheet($drugSheetID) {
         $batchesByDrugId[$p["drug_id"]][] = $p;
     }
     $drugs = getDrugsInDrugSheet($drugSheetID);
-    $site = getbasebyid($drugsheet['base_id'])['name'];
-    $buttonState = getDrugSheetStateButton(getDrugSheetState($drugsheet["base_id"], $drugsheet["week"])["state"]);
+    $site = getbasebyid($drugsheet['base_id']);
     require_once VIEW . 'drugs/show.php';
 }
 

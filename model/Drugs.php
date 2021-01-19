@@ -20,11 +20,20 @@ function updateDrugName($updatedName, $drugID) {
  *  Retourne une sheet précise
  */
 function getDrugSheetById($sheetID) {
-    return selectOne("SELECT * FROM drugsheets WHERE id = '$sheetID'");
+    return selectOne("SELECT drugsheets.id AS id, week, base_id, slug, displayname
+                             FROM drugsheets 
+                             LEFT JOIN status ON drugsheets.status_id = status.id
+                             WHERE drugsheets.id =:sheetID", ['sheetID' => $sheetID]);
 }
 
-function getDrugSheetsByState($state) {
-    return selectMany("SELECT * FROM drugsheets WHERE state = '$state'");
+function getDrugSheetsByState($baseID, $slug) {
+    $query = "SELECT week, drugsheets.id, base_id
+            FROM drugsheets
+            JOIN bases ON drugsheets.base_id = bases.id
+            JOIN status ON drugsheets.status_id = status.id
+            WHERE bases.id = :baseID AND status.slug =:slug
+            ORDER BY week DESC;";
+    return selectMany($query, ['baseID' => $baseID, 'slug' => $slug]);
 }
 
 function getSlugs() {
@@ -122,4 +131,8 @@ function getDrugSheetState($baseID, $week) {
 
 function getStateFromDrugs($id){
     return selectOne("SELECT status.slug FROM status LEFT JOIN drugsheets ON drugsheets.status_id = status.id WHERE drugsheets.id =:sheetID", ["sheetID"=>$id]);
+}
+
+function getOpenDrugsSheetNumber($baseID){
+    return selectOne("SELECT COUNT(drugsheets.id) as number FROM  drugsheets inner join status on status.id = drugsheets.status_id where status.slug = 'open' and drugsheets.base_id =:base_id", ['base_id' => $baseID])['number'];
 }
