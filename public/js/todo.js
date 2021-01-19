@@ -19,6 +19,10 @@ buttons.forEach((item) => {
 
         if(type == "2" && status == "validate"){
             document.getElementById("modal-todoValue").type = "text";
+            document.getElementById("modal-todoValue").required = true;
+        }else{
+            document.getElementById("modal-todoValue").type = "hidden";
+            document.getElementById("modal-todoValue").required = false;
         }
 
         document.getElementById("modal-todoType").value = type;
