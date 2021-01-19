@@ -50,7 +50,6 @@ require MODEL . "Nova.php";
 require MODEL . "Shift.php";
 require MODEL . "Todo.php";
 
-require('../FPDF/fpdf.php');
 
 /**
  * Check if user logged in and perform requested action when true

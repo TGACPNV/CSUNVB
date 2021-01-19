@@ -320,7 +320,7 @@ function checkOpen($page, $baseID){
  * @param $models liste des modèles, avec leur id ("id") et noms ("name")
  * @return string code html pour créer le header
  */
-function headerForList($page, $bases, $selectedBaseID, $models)
+function headerForList($page, $bases, $selectedBaseID, $models, $emptyBase)
 {
     switch ($page) {
         case "shift":
@@ -328,6 +328,8 @@ function headerForList($page, $bases, $selectedBaseID, $models)
             $switchBaseAction = "listshift";
             $newSheetAction = "?action=newShiftSheet&id=" . $selectedBaseID;
             $newSheetBtnName = "Nouvelle Feuille de garde";
+            $dateInput = "<input type='date' name='date' value='".getNextDateForShift($selectedBaseID)."'>";
+            // <input type="week" name="week" value="2017-W01"> exemple for week
             break;
         default:
             return "<h1>Header pour la page non défini</h1>";
@@ -346,11 +348,16 @@ function headerForList($page, $bases, $selectedBaseID, $models)
 
     //Création d'une nouvelle feuille
     if (ican('createsheet') && $_SESSION['base']['id'] == $selectedBaseID) {
-        $header .= "<div class='newSheetZone'><form method='POST' action='" . $newSheetAction . "' class='float-right'>Utiliser le modèle :<select name='selectedModel'><option value='lastModel' selected=selected>Dernier rapport en date</option>";
+        $header .= "<div class='newSheetZone'><form method='POST' action='" . $newSheetAction . "' class='float-right'>Utiliser le modèle :<select name='selectedModel'>";
+        if($emptyBase == false){
+            $header .= "<option value='lastModel' selected=selected>Dernier rapport clôturé</option>";
+        }
         foreach ($models as $model) {
             $header .= "<option value='" . $model['id'] . "'>" . $model['name'] . "</option>";
         }
-        $header .= "</select> <button class='btn btn-primary m-1'>" . $newSheetBtnName . "</button></form></div>";
+        $header .= "</select> <button class='btn btn-primary m-1'>" . $newSheetBtnName . "</button>";
+        $header .= $dateInput;
+        $header .= "</form></div>";
     }
     return $header;
 }

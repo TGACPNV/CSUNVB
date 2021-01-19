@@ -3,8 +3,8 @@ ob_start();
 $title = "CSU-NVB - Remise de garde";
 ?>
 <div class="row m-2">
-    <h1>Remise de Garde du <?= date('d.m.Y', strtotime($shiftsheet['date'])) ?> à <?= $shiftsheet['baseName'] ?> <?= showSheetState($shiftsheet['id'], "shift") ?></h1>
-    <input type="hidden" id="shiftDate" value="<?=$shiftsheet['date']?>">
+    <h1>Remise de Garde</h1>
+    <h2>Jour : <?= date('d.m.Y', strtotime($shiftsheet['date'])) ?> - Base de <?= $shiftsheet['baseName'] ?> [<?= $shiftsheet['displayname'] ?>]</h2>
 </div>
 <form action="?action=updateShift&id=<?= $shiftsheet['id'] ?>" method="POST">
     <input type=hidden name="id" value= <?= $shiftsheet['id'] ?>>
@@ -104,20 +104,41 @@ $title = "CSU-NVB - Remise de garde";
         </div>
     </div>
 </form>
-<div class='d-flex float-right'>
+<div class='d-flex float-right d-print-none'>
     <form>
         <input type="hidden" name="action" value="listshift">
         <input type="hidden" name="id" value="<?= $shiftsheet["base_id"] ?>">
         <button type="submit" class='btn btn-primary m-1'>Retour à la liste</button>
     </form>
 </div>
-<div class='d-flex float-right'>
+<div class='d-flex float-right d-print-none'>
     <?= slugButtons("shift", $shiftsheet, $shiftsheet["status"])?>
-    <form  method='POST' action='?action=shiftPDF&id=<?=$shiftsheet["id"]?>'>
+    <form  method='POST'>
         <input type='hidden' name='id' value='" . $sheet["id"] . "'>
         <input type='hidden' name='newSlug' value='open'>
-        <button type='submit' class='btn btn-primary m-1'>Télécharger en PDF</button>
+        <button type='submit' class='btn btn-primary m-1' onclick="print_page()">Télécharger en PDF</button>
     </form>
+</div>
+<div class='d-flex float-right d-print-none'>
+    <?php if ($model["suggested"] == 0) : ?>
+        <button type="submit"
+                class="btn btn-primary toggleShiftModal m-1"
+                data-content="Enregistrer comme nouveau modèle :<br><br><strong>Nom :</strong>"
+                data-action_id="<?= $shiftsheet["model"] ?>" data-day="1" data-action="?action=addShiftModel"
+                data-comment="text" style="width:200px;">
+            Enregistrer comme modèle
+        </button>
+    <?php else : ?>
+        <?php if ( $model["name"] != "Vide") : ?>
+            <button type="submit"
+                    class="btn btn-primary toggleShiftModal m-1"
+                    data-content="Voulez-vous vraiment retirer le modèle ?<br><strong><?= $model["name"] ?></strong><br>Il ne sera plus proposé à la création de nouveaux rapports"
+                    data-action_id="<?= $shiftsheet["model"] ?>" data-action="?action=removeShiftModel"
+                    data-comment="hidden">
+                Retirer le modèle
+            </button>
+        <?php endif; ?>
+    <?php endif; ?>
 </div>
 
 <?php foreach ($sections as $section): ?>
@@ -151,7 +172,7 @@ $title = "CSU-NVB - Remise de garde";
                                 class="btn <?= (count($action["checksDay"]) == 0) ? 'btn-warning' : 'btn-success' ?> toggleShiftModal"
                                 data-content="Valider <?= $action['text'] ?> : Jour"
                                 data-action_id="<?= $action['id'] ?>" data-day="1" data-action="?action=checkShift"
-                                data-comment="hidden" style="width: 100%;">
+                                data-comment="hidden">
                             <?php if (count($action["checksDay"]) == 0): ?>
                                 A Valider
                             <?php else: ?>
@@ -170,7 +191,7 @@ $title = "CSU-NVB - Remise de garde";
                                 class="btn <?= (count($action["checksNight"]) == 0) ? 'btn-warning' : 'btn-success' ?> toggleShiftModal"
                                 data-content="Valider <?= $action['text'] ?> : Nuit"
                                 data-action_id="<?= $action['id'] ?>" data-day="0" data-action="?action=checkShift"
-                                data-comment="hidden" style=" width: 100%;">
+                                data-comment="hidden"">
                             <?php if (count($action["checksNight"]) == 0): ?>
                                 A Valider
                             <?php else: ?>
@@ -203,7 +224,7 @@ $title = "CSU-NVB - Remise de garde";
                         <?php endforeach; ?>
 
 
-                        <button type="submit" class="btn bg-white btn-block m-1 toggleShiftModal"
+                        <button type="submit" class="btn bg-white btn-block m-1 toggleShiftModal d-print-none"
                                 data-content="Ajouter un commentaire  à <?= $action['text'] ?>"
                                 data-action_id="<?= $action['id'] ?>" data-action="?action=commentShift"
                                 data-comment="text" style="width:200px;">
@@ -262,6 +283,14 @@ $title = "CSU-NVB - Remise de garde";
         </tbody>
     </table>
 <?php endforeach; ?>
+
+<div style='clear: both;  font-size: 14px; font-family: Helvetica; color: #8d8d8d; background: transparent;'>Modèle utilisée :
+<?php if ($model["name"] == ""): ?>
+    Aucun
+<?php else: ?>
+    <?= $model["name"] ?>
+<?php endif; ?>
+</div>
 
 <div class="modal fade" id="shiftModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
      aria-hidden="true">

@@ -1,11 +1,12 @@
-
 -- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
+DROP DATABASE IF EXISTS `csunvb_csu`;
 CREATE DATABASE IF NOT EXISTS `csunvb_csu`; /*!40100 COLLATE 'utf8_unicode_ci' */
+
 -- -----------------------------------------------------
 -- Schema csunvb_csu
 -- -----------------------------------------------------
@@ -597,6 +598,7 @@ CREATE TABLE IF NOT EXISTS `csunvb_csu`.`shiftmodel_has_shiftaction` (
   INDEX `fk_shiftactions_has_shiftmodels_shiftactions1_idx` (`shiftaction_id` ASC) ,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `shiftmodelscol_has_shiftactions_UNIQUE` (`id` ASC) ,
+  UNIQUE INDEX `uniqueactionpermodel` (`shiftaction_id` ASC, `shiftmodel_id` ASC),
   CONSTRAINT `fk_shiftactions_has_shiftmodels_shiftactions1`
     FOREIGN KEY (`shiftaction_id`)
     REFERENCES `csunvb_csu`.`shiftactions` (`id`)
