@@ -123,7 +123,7 @@ $title = "CSU-NVB - Remise de garde";
     <?php if ($model["suggested"] == 0) : ?>
         <button type="submit"
                 class="btn btn-primary toggleShiftModal m-1"
-                data-content="Enregistrer ce rapport comme nouveau modèle :<br><br><strong>Nom :</strong>"
+                data-content="Enregistrer comme nouveau modèle :<br><br><strong>Nom :</strong>"
                 data-action_id="<?= $shiftsheet["model"] ?>" data-day="1" data-action="?action=addShiftModel"
                 data-comment="text" style="width:200px;">
             Enregistrer comme modèle
