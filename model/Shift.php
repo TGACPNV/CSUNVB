@@ -120,6 +120,10 @@ function getDateOfLastSheet($baseID)
 function getNextDateForShift($baseID)
 {
     $newDate = selectOne("SELECT DATE_ADD( :lastDate, INTERVAL 1 DAY) as newDate", ['lastDate' => getDateOfLastSheet($baseID)])["newDate"];
+    if($newDate == NULL){
+        $now = selectOne("select NOW()",[])["NOW()"];
+        $newDate = selectOne("SELECT DATE_FORMAT('".$now."', '%Y-%m-%d') as date",[])["date"];
+    }
     return $newDate;
 }
 
