@@ -8,11 +8,11 @@ function getDrugs() {
 }
 
 function addNewDrug($drugName) {
-    return insert("INSERT INTO drugs (name) values ('$drugName')");
+    return insert("INSERT INTO drugs (name) values (:drug)", ['drug' => $drugName]);
 }
 
 function updateDrugName($updatedName, $drugID) {
-    return execute("UPDATE drugs SET name='$updatedName' WHERE id='$drugID'");
+    return execute("UPDATE drugs SET name='$updatedName' WHERE id=:drug", ['drug' => $drugID]);
 }
 
 //-------------------------------------- drugs --------------------------------------------
@@ -44,7 +44,7 @@ function getDrugsInDrugSheet($sheetID) {
     return selectMany("SELECT drugs.name,drugs.id FROM drugsheet_use_batch
                              JOIN batches ON drugsheet_use_batch.batch_id=batches.id
                              JOIN drugs ON batches.drug_id=drugs.id
-                             WHERE drugsheet_use_batch.drugsheet_id = '$sheetID'");
+                             WHERE drugsheet_use_batch.drugsheet_id =:sheet", ['sheet' => $sheetID]);
 }
 /**
  * Retourne la liste des drugsheets pour une base donnée.
@@ -58,7 +58,7 @@ function getDrugSheets($base_id) {
  * Les données retournées sont dans un tableau indexé par id (i.e: [ 12 => [ "id" => 12, "value" => ...], 17 => [ "id" => 17, "value" => ...] ]
  */
 function getNovasForSheet($drugSheetID) {
-    return selectMany("SELECT novas.id as id, number FROM novas INNER JOIN drugsheet_use_nova ON nova_id = novas.id WHERE drugsheet_id ='$drugSheetID'");
+    return selectMany("SELECT novas.id as id, number FROM novas INNER JOIN drugsheet_use_nova ON nova_id = novas.id WHERE drugsheet_id =:drugsheet", ['drugsheet' => $drugSheetID]);
 }
 
 /**
@@ -67,53 +67,53 @@ function getNovasForSheet($drugSheetID) {
  * @return array|mixed|null
  */
 function getBatchesForSheet($drugSheetID) {
-    return selectMany("SELECT batches.id AS id, number, drug_id FROM batches INNER JOIN drugsheet_use_batch ON batches.id = batch_id WHERE drugsheet_id='$drugSheetID'");
+    return selectMany("SELECT batches.id AS id, number, drug_id FROM batches INNER JOIN drugsheet_use_batch ON batches.id = batch_id WHERE drugsheet_id=:drugsheet", ['drugsheet' => $drugSheetID ]);
 }
 
 /**
  * Retourne le pharmacheck du jour donné pour un batch précis lors de son utilisation dans une drugsheet
  */
 function getPharmaCheckByDateAndBatch($date, $batch, $drugSheetID) {
-    $res = selectOne("SELECT start,end FROM pharmachecks WHERE date='$date' AND batch_id='$batch' AND drugsheet_id='$drugSheetID'");
-    return $res;
+    return selectOne("SELECT start,end FROM pharmachecks WHERE date=:batchdate AND batch_id=:batch AND drugsheet_id=:drugsheet", ['batchdate' => $date, 'batch' => $batch, 'drugsheet' => $drugSheetID]);
+
 }
 
 /**
  * Retourne le novacheck du jour donné pour un médicament précis dans une nova lors de son utilisation dans une drugsheet
  */
 function getNovaCheckByDateAndDrug($date, $drug, $nova, $drugSheetID) {
-    return selectOne("SELECT start,end FROM novachecks WHERE date='$date' AND drug_id='$drug' AND nova_id='$nova' AND drugsheet_id='$drugSheetID'");
+    return selectOne("SELECT start,end FROM novachecks WHERE date=:batchdate AND drug_id=:drug AND nova_id=:nova AND drugsheet_id=:drugsheet", ['batchdate' => $date, 'drug' => $drug, 'nova' => $nova, 'drugsheet' => $drugSheetID]);
 }
 
 /**
  * Retourne le restock du jour donné pour un batch précis dans une nova lors de son utilisation dans une drugsheet
  */
 function getRestockByDateAndDrug($date, $batch, $nova) {
-    $res = selectOne("SELECT quantity FROM restocks WHERE date='$date' AND batch_id='$batch' AND nova_id='$nova'");
+    $res = selectOne("SELECT quantity FROM restocks WHERE date=:batchdate AND batch_id=:batch AND nova_id=:nova", ['batchdate' => $date, 'batch' => $batch, 'nova' => $nova]);
     return $res ? $res['quantity'] : ''; // chaîne vide si pas de restock
 }
 
 function getLatestDrugSheetWeekNb($base_id) {
-    return selectOne("SELECT id,MAX(week) as 'week' FROM drugsheets WHERE base_id ='$base_id' GROUP BY base_id");
+    return selectOne("SELECT id,MAX(week) as 'week' FROM drugsheets WHERE base_id =:base GROUP BY base_id", ['base' => $base_id]);
 }
 
 function insertDrugSheet($base_id, $lastWeek) {
     //TODO: slug
     //magnifique, passe a la nouvelle annee grace a +48 si 52eme semaine
     (($lastWeek % 100) == 52) ? $lastWeek += 49 : $lastWeek++;
-    return insert("INSERT INTO drugsheets (base_id,state,week) VALUES ('$base_id', 'blank', '$lastWeek')");
+    return insert("INSERT INTO drugsheets (base_id,state,week) VALUES (:base, 'blank', :lastweek)", ['base'=> $base_id, 'lastweek' => $lastWeek]);
 }
 
 function cloneLatestDrugSheet($newSheetID, $oldSheetID) {
     //clone last used novas
-    $queryResult = selectMany("SELECT nova_id FROM drugsheet_use_nova WHERE drugsheet_id = '$oldSheetID'");
+    $queryResult = selectMany("SELECT nova_id FROM drugsheet_use_nova WHERE drugsheet_id =:oldsheet", ['oldsheet'=>$oldSheetID]);
     foreach( $queryResult as $nova) {
-        insert("INSERT INTO drugsheet_use_nova (nova_id,drugsheet_id) VALUES ('$nova[nova_id]','$newSheetID')");
+        insert("INSERT INTO drugsheet_use_nova (nova_id,drugsheet_id) VALUES (:nova,:newsheet)", ['nova' => $nova['nova_id'], 'newsheet'=> $newSheetID]);
     }
     //clone last used drugs
-    $queryResult = selectMany("SELECT batch_id FROM drugsheet_use_batch WHERE drugsheet_id = '$oldSheetID'");
+    $queryResult = selectMany("SELECT batch_id FROM drugsheet_use_batch WHERE drugsheet_id =:oldsheet", ['oldsheet' => $oldSheetID]);
     foreach( $queryResult as $batch) {
-        insert("INSERT INTO drugsheet_use_batch (batch_id,drugsheet_id) VALUES ('$batch[batch_id]','$newSheetID')");
+        insert("INSERT INTO drugsheet_use_batch (batch_id,drugsheet_id) VALUES (:batch, :newsheet)", ['batch' => $batch['batch_id'], 'newsheet' => $newSheetID]);
     }
 }
 
