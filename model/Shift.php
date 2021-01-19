@@ -126,14 +126,11 @@ function getNewDate($baseID){
     return $newDate;
 }
 
-function checkOpen($page,$base_id){
-    $numberOpen = selectOne("SELECT COUNT(shiftsheets.id) as number FROM  shiftsheets inner join status on status.id = shiftsheets.status_id where status.slug = 'open' and shiftsheets.base_id =:base_id", ['base_id' => $base_id])["number"];
-    if($numberOpen > 0){
-        return true;
-    }else{
-        return false;
-    }
+function getOpenShiftSheet($base_id){
+    return selectOne("SELECT COUNT(shiftsheets.id) as number FROM  shiftsheets inner join status on status.id = shiftsheets.status_id where status.slug = 'open' and shiftsheets.base_id =:base_id", ['base_id' => $base_id])["number"];
 }
+
+
 function getNbshiftsheet($status,$base_id){
     return selectOne("SELECT COUNT(shiftsheets.id) as number FROM  shiftsheets inner join status on status.id = shiftsheets.status_id where status.slug = :status and shiftsheets.base_id =:base_id", ['status' => $status, 'base_id' => $base_id])["number"];
 }
