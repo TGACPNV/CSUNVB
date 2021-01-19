@@ -592,6 +592,7 @@ CREATE TABLE IF NOT EXISTS `csunvb_csu`.`shiftmodel_has_shiftaction` (
   INDEX `fk_shiftactions_has_shiftmodels_shiftactions1_idx` (`shiftaction_id` ASC) ,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `shiftmodelscol_has_shiftactions_UNIQUE` (`id` ASC) ,
+  UNIQUE INDEX `uniqueactionpermodel` (`shiftaction_id` ASC, `shiftmodel_id` ASC),
   CONSTRAINT `fk_shiftactions_has_shiftmodels_shiftactions1`
     FOREIGN KEY (`shiftaction_id`)
     REFERENCES `csunvb_csu`.`shiftactions` (`id`)
