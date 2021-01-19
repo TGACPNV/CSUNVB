@@ -284,6 +284,14 @@ $title = "CSU-NVB - Remise de garde";
     </table>
 <?php endforeach; ?>
 
+<div style='clear: both;  font-size: 14px; font-family: Helvetica; color: #8d8d8d; background: transparent;'>Modèle utilisée :
+<?php if ($model["name"] == ""): ?>
+    Aucun
+<?php else: ?>
+    <?= $model["name"] ?>
+<?php endif; ?>
+</div>
+
 <div class="modal fade" id="shiftModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
