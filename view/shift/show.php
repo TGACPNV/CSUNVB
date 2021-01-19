@@ -121,13 +121,23 @@ $title = "CSU-NVB - Remise de garde";
 </div>
 <div class='d-flex float-right d-print-none'>
     <?php if ($model["suggested"] == 0) : ?>
-        <button type="submit"
-                class="btn btn-primary toggleShiftModal m-1"
-                data-content="Enregistrer comme nouveau modèle :<br><br><strong>Nom :</strong>"
-                data-action_id="<?= $shiftsheet["model"] ?>" data-day="1" data-action="?action=addShiftModel"
-                data-comment="text" style="width:200px;">
-            Enregistrer comme modèle
-        </button>
+        <?php if ( $model["name"] == "") : ?>
+            <button type="submit"
+                    class="btn btn-primary toggleShiftModal m-1"
+                    data-content="Enregistrer comme nouveau modèle :<br><br><strong>Nom :</strong>"
+                    data-action_id="<?= $shiftsheet["model"] ?>" data-day="1" data-action="?action=addShiftModel"
+                    data-comment="text" style="width:200px;">
+                Enregistrer comme modèle
+            </button>
+        <?php else : ?>
+            <button type="submit"
+                    class="btn btn-primary toggleShiftModal m-1"
+                    data-content="Enregistrer comme nouveau modèle :<br><br><strong>Nom :</strong>"
+                    data-action_id="<?= $shiftsheet["model"] ?>" data-day="1" data-action="?action=addShiftModel"
+                    data-comment="text" style="width:200px;">
+                Ré-activer le modèle
+            </button>
+        <?php endif; ?>
     <?php else : ?>
         <?php if ( $model["name"] != "Vide") : ?>
             <button type="submit"
@@ -284,7 +294,7 @@ $title = "CSU-NVB - Remise de garde";
     </table>
 <?php endforeach; ?>
 
-<div style='clear: both;  font-size: 14px; font-family: Helvetica; color: #8d8d8d; background: transparent;'>Modèle utilisée :
+<div style='clear: both;  font-size: 14px; font-family: Helvetica; background: transparent;'>Modèle utilisée :
 <?php if ($model["name"] == ""): ?>
     Aucun
 <?php else: ?>

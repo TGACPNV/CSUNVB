@@ -187,7 +187,7 @@ function listTodoOrDrugsSheet($slug, $sheets, $zone)
 
 function listShiftSheet($slug, $shiftList, $zone)
 {
-    $html = "<h3>Semaine(s) " . showState($slug, 1) . "</h3>
+    $html = "<h3>Rapport(s) " . showState($slug, 1) . "</h3>
                     <button class='btn dropdownButton'><i class='fas fa-caret-square-down' data-list='" . $slug . "' ></i></button>
                     </div>";
     if (count($shiftList) > 0) {
@@ -202,7 +202,11 @@ function listShiftSheet($slug, $shiftList, $zone)
         $body = "";
         foreach ($shiftList as $shift) {
             $body .= "<tr>
-                <td>" . date('d.m.Y', strtotime($shift['date'])) . "</td>
+                <td>" . date('d.m.Y', strtotime($shift['date']));
+            if(isset($shift["modelImage"])){
+                $body .= "<i class='fas fa-file-alt template' title='Modèle : " . $shift["modelImage"] . "'></i>";
+            }
+                $body .= "</td>
                 <td>Jour : " . $shift['novaDay'] . "<br>Nuit : " . $shift['novaNight'] . "</td>
                 <td>Jour : " . $shift['bossDay'] . "<br>Nuit : " . $shift['bossNight'] . "</td>
                 <td>Jour : " . $shift['teammateDay'] . "<br>Nuit : " . $shift['teammateNight'] . "</td>";

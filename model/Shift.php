@@ -68,9 +68,10 @@ function getAllShiftForBase($baseID)
 
 function getShiftWithStatus($baseID, $slugID)
 {
-    return selectMany('SELECT shiftsheets.id, shiftsheets.date, shiftsheets.base_id, status.displayname AS status, status.slug AS statusslug,novaDay.number AS novaDay, novaNight.number AS novaNight, bossDay.initials AS bossDay, bossNight.initials AS bossNight,teammateDay.initials AS teammateDay, teammateNight.initials AS teammateNight
+    return selectMany('SELECT shiftsheets.id, shiftsheets.date, shiftsheets.base_id, status.displayname AS status, status.slug AS statusslug,novaDay.number AS novaDay, novaNight.number AS novaNight, bossDay.initials AS bossDay, bossNight.initials AS bossNight,teammateDay.initials AS teammateDay, teammateNight.initials AS teammateNight, shiftmodels.name as model, shiftmodels.id as model_id 
 FROM shiftsheets
 INNER JOIN status ON status.id = shiftsheets.status_id
+INNER JOIN shiftmodels ON shiftmodels.id = shiftsheets.shiftmodel_id
 LEFT JOIN novas novaDay ON novaDay.id = shiftsheets.daynova_id
 LEFT JOIN novas novaNight ON novaNight.id = shiftsheets.nightnova_id
 LEFT JOIN users bossDay ON bossDay.id = shiftsheets.dayboss_id
@@ -225,13 +226,19 @@ function shiftSheetDelete($id)
     return execute("DELETE FROM shiftsheets WHERE id=:id", ["id" => $id]);
 }
 
+function getShiftModels()
+{
+    $models = selectMany("SELECT id,name FROM shiftModels where name <> ''", []);
+    return $models;
+}
+
+
 /**
  * getShiftModels : get the list of models where name si not null ( = not a hidden model ) and suggested = 1 ( suggested in the list for shiftsheet creation )
  * @return array : array of models with id and name
  */
-function getShiftModels()
-{
-    $models = selectMany("SELECT id,name FROM shiftModels where name <> '' and suggested = 1", []);
+function getSuggestedShiftModels(){
+    $models = selectMany("SELECT id,name FROM shiftModels where name <> ''  and suggested = 1", []);
     return $models;
 }
 

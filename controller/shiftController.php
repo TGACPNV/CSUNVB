@@ -36,6 +36,15 @@ function listshift($selectedBaseID = null)
     $bases = getbases();
     $sheets = getAllShiftForBase($selectedBaseID);
     $models = getShiftModels();
+    $suggestedModels = getSuggestedShiftModels();
+    foreach ($models as $model){
+        foreach ($sheets["close"] as &$sheet){
+            if($model["id"] == $sheet["model_id"]){
+                $sheet["modelImage"] = $model["name"];
+                break;
+            }
+        }
+    }
     if(count($sheets["close"])==0 and count($sheets["reopen"])==0){
         $emptyBase = true;
     }else{
