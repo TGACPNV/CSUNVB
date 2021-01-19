@@ -91,7 +91,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `csunvb_csu`.`drugsheets` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `week` INT NOT NULL,
-  `state` VARCHAR(45) NOT NULL,
+  `status_id` INT NOT NULL,
   `base_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `drugSHEETUNIQ` (`week` ASC, `base_id` ASC) ,
@@ -100,7 +100,12 @@ CREATE TABLE IF NOT EXISTS `csunvb_csu`.`drugsheets` (
     FOREIGN KEY (`base_id`)
     REFERENCES `csunvb_csu`.`bases` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_drugsheets_status1`
+    FOREIGN KEY (`status_id`)
+    REFERENCES `csunvb_csu`.`status` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION))
 ENGINE = InnoDB;
 
 

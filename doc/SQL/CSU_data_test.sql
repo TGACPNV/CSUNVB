@@ -82,7 +82,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `drugsheets` WRITE;
 /*!40000 ALTER TABLE `drugsheets` DISABLE KEYS */;
-INSERT INTO `drugsheets` VALUES (23,2044,'open',2);
+INSERT INTO `drugsheets` VALUES (23,2044,2,2);
 /*!40000 ALTER TABLE `drugsheets` ENABLE KEYS */;
 UNLOCK TABLES;
 
