@@ -1,6 +1,6 @@
 <?php
 /**
- * file with the main action -> the one used on every branch and common to every groups
+ * file with the main action -> the one used on every branch and common to every groups, when it is an user action. The admin actions are on the adminController
  */
 
 
