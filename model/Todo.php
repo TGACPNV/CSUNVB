@@ -16,8 +16,6 @@ function getTodosheetByID($sheetID)
 
 }
 
-
-
 /**
  * Function that gets all data from a weekly sheet based on week number and base id *
  * @param $baseID : ID of the desired base
@@ -29,6 +27,15 @@ function getTodosheetByBaseAndWeek($baseID, $weekNbr)
     return selectOne("SELECT * FROM todosheets where base_id =:baseID and week = :weekNbr", ['baseID' => $baseID, 'weekNbr' => $weekNbr]);
 }
 
+
+function getAllTodoSheetsForBase($baseID){
+    $slugs = selectMany("SELECT id,slug as name FROM status",[]);
+    foreach ($slugs as $slug){
+        $sheets[$slug['name']]= getWeeksBySlugs($baseID,$slug['name']);
+    }
+    return  $sheets;
+}
+
 /**
  * Function that gets all weekly sheets based on base ID and slug name
  * @param $baseID : ID of the desired base
@@ -37,7 +44,7 @@ function getTodosheetByBaseAndWeek($baseID, $weekNbr)
  */
 function getWeeksBySlugs($baseID, $slug)
 {
-    $query = "SELECT t.week, t.id, t.template_name
+    $query = "SELECT t.week, t.id, t.template_name, t.base_id
             FROM todosheets t
             JOIN bases b ON t.base_id = b.id
             JOIN status ON t.status_id = status.id
@@ -48,11 +55,8 @@ function getWeeksBySlugs($baseID, $slug)
 
 
 function getStateFromTodo($id){
-    return selectOne("SELECT status.slug FROM status LEFT JOIN todosheets ON todosheets.status_id = status.id WHERE todosheets.id =:sheetID", ["sheetID"=>$id]);
+    return selectOne("SELECT status.slug, status.displayname FROM status LEFT JOIN todosheets ON todosheets.status_id = status.id WHERE todosheets.id =:sheetID", ["sheetID"=>$id]);
 }
-
-
-
 
 
 /**
@@ -222,14 +226,6 @@ function getTemplateSheet($templateName)
                             Where template_name =:template", ["template" => $templateName]);
 }
 
-/*
-function closeStatus(){
-    return selectOne("SELECT slug
-                      FROM status
-                      Where slug = 'close'", []);
-
-}*/
-
 /**
  * @param $id
  * @param $slug
@@ -237,23 +233,7 @@ function closeStatus(){
  */
 function changeSheetState($id, $slug)
 {
-    switch($slug){
-        case "open":
-            $statusID =2;
-            break;
-        case "reopen":
-            $statusID =4;
-            break;
-        case "close":
-            $statusID =3;
-            break;
-        case "archive":
-            $statusID =5;
-            break;
-        default:
-            break;
-    }
-    return execute("UPDATE todosheets SET status_id=:statusID WHERE id=:id", ['id' => $id, 'statusID' => $statusID]);
+    return execute("UPDATE todosheets SET status_id= (SELECT id FROM status WHERE slug =:slug) WHERE id=:id", ['id' => $id, 'slug' => $slug]);
 }
 
 /**
@@ -268,3 +248,6 @@ function deletethingsID($todoTaskID){
     return execute("DELETE FROM todos WHERE id =:task_id",['task_id' => $todoTaskID]);
 }
 
+function getOpenTodoSheetNumber($baseID){
+    return selectOne("SELECT COUNT(todosheets.id) as number FROM  todosheets inner join status on status.id = todosheets.status_id where status.slug = 'open' and todosheets.base_id =:base_id", ['base_id' => $baseID])['number'];
+}

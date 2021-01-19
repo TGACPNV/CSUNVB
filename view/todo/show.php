@@ -4,9 +4,10 @@ $title = "CSU-NVB - Tâches hebdomadaires";
 ?>
 <div>
     <h1>Tâches hebdomadaires</h1>
-    <h2>Semaine <?= $week['week'] ?> - Base de <?= $base['name']?> <?= showSheetState($week['id'], "todo") ?></h2>
+    <h2>Semaine <?= $week['week'] ?> - Base de <?= $base['name']?> [<?= $week['displayname'] ?>]</h2>
     <div class="d-flex justify-content-end d-print-none">
-        <button type='submit' class='btn btn-primary m-1 float-right' onclick="window.print()">Télécharger en PDF</button>
+
+        <button type='submit' class='btn btn-primary m-1 float-right' onclick="window.print()" <?= !$edition ? '':'disabled'?> >Télécharger en PDF</button>
         <form>
             <input type="hidden" name="action" value="listtodoforbase">
             <input type="hidden" name="id" value="<?= $base['id'] ?>">
@@ -44,7 +45,7 @@ $title = "CSU-NVB - Tâches hebdomadaires";
                 <button type="submit" class='btn btn-warning m-1 float-right'><?= $text ?></button>
             </form>
         <?php endif; ?>
-        <?=  slugsButtonTodo($week['slug'], $week['id'])?>
+        <?=  slugButtons("todo", $week, $week['slug'])?>
     </div>
 </div>
 <div>

@@ -12,11 +12,7 @@ function listtodo(){
 function listtodoforbase($selectedBaseID){
 
     // Récupération des semaines en fonction de leur état (slug) et de la base choisie
-    $openWeeks = getWeeksBySlugs($selectedBaseID, 'open');
-    $closeWeeks = getWeeksBySlugs($selectedBaseID, 'close');
-    $blankWeeks = getWeeksBySlugs($selectedBaseID, 'blank');
-    $reopenWeeks = getWeeksBySlugs($selectedBaseID, 'reopen');
-    //$archiveWeeks = getWeeksBySlugs($selectedBaseID, 'archive');
+    $sheets = getAllTodoSheetsForBase($selectedBaseID);
 
     $baseList = getbases();
     $templates = getAllTemplateNames();
@@ -159,7 +155,7 @@ function switchTodoStatus(){
 /**
  * Fonction qui permet de changer l'état d'une feuille
  */
-function switchSheetState(){
+function todoSheetSwitchState(){
     $sheetID = $_POST['id'];
     $newSlug = $_POST['newSlug'];
 
@@ -189,7 +185,7 @@ function switchSheetState(){
     header('Location: ?action=listtodoforbase&id='.$sheet['base_id']);
 }
 
-function deleteSheet(){
+function todoDeleteSheet(){
     $sheetID = $_POST['id'];
     $sheet = getTodosheetByID($sheetID);
 

@@ -43,24 +43,7 @@ $title = "CSU-NVB - Tâches hebdomadaires";
         <?php endif; ?>
     </div>
 </div>
-<div> <!-- Sections d'affichage des différentes feuilles -->
-    <div> <!-- Feuilles ouvertes -->
-        <?= showSheetsTodoByStatus("open", $openWeeks) ?>
-    </div>
-    <br>
-    <div> <!-- Feuilles en préparation -->
-        <?= showSheetsTodoByStatus("blank", $blankWeeks) ?>
-    </div>
-    <br>
-    <div> <!-- Feuilles en correction -->
-        <?= showSheetsTodoByStatus("reopen", $reopenWeeks) ?>
-    </div>
-    <br>
-    <div> <!-- Feuilles fermées -->
-        <?= showSheetsTodoByStatus("close", $closeWeeks) ?>
-    </div>
-    <br>
-</div>
+<?= listSheet("todo", $sheets)?>
 
 <?php
 $content = ob_get_clean();
