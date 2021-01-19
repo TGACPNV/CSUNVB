@@ -462,6 +462,8 @@ function headerForList($page, $bases, $selectedBaseID, $models, $emptyBase)
             $switchBaseAction = "listshift";
             $newSheetAction = "?action=newShiftSheet&id=" . $selectedBaseID;
             $newSheetBtnName = "Nouvelle Feuille de garde";
+            $dateInput = "<input type='date' name='trip-start' value='".getNewDate($selectedBaseID)."'>";
+            // <input type="week" name="week" value="2017-W01"> exemple for week
             break;
         default:
             return "<h1>Header pour la page non défini</h1>";
@@ -487,7 +489,9 @@ function headerForList($page, $bases, $selectedBaseID, $models, $emptyBase)
         foreach ($models as $model) {
             $header .= "<option value='" . $model['id'] . "'>" . $model['name'] . "</option>";
         }
-        $header .= "</select> <button class='btn btn-primary m-1'>" . $newSheetBtnName . "</button></form></div>";
+        $header .= "</select> <button class='btn btn-primary m-1'>" . $newSheetBtnName . "</button>";
+        $header .= $dateInput;
+        $header .= "</form></div>";
     }
     return $header;
 }
