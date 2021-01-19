@@ -14,7 +14,7 @@ ob_start();
     <div class="d-flex justify-content-end d-print-none">
         <button type='submit' class='btn btn-primary m-1 float-right' onclick="window.print()">Télécharger en PDF</button>
         <form>
-            <input type="hidden" name="action" value="listtodoforbase">
+            <input type="hidden" name="action" value="listDrugSheets">
             <input type="hidden" name="id" value="<?= $site['id'] ?>">
             <button type="submit" class='btn btn-primary m-1 float-right'>Retour à la liste</button>
         </form>
