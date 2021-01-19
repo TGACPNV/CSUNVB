@@ -30,6 +30,7 @@ function showDrugSheet($drugSheetID) {
     require_once VIEW . 'drugs/show.php';
 }
 
+
 function newDrugSheet($baseID = null) {
     if (is_null($baseID))
         $baseID = $_SESSION["base"]["id"];

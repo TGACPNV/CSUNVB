@@ -101,7 +101,7 @@ function insertDrugSheet($base_id, $lastWeek) {
     //TODO: slug
     //magnifique, passe a la nouvelle annee grace a +48 si 52eme semaine
     (($lastWeek % 100) == 52) ? $lastWeek += 49 : $lastWeek++;
-    return insert("INSERT INTO drugsheets (base_id,state,week) VALUES (:base, 'blank', :lastweek)", ['base'=> $base_id, 'lastweek' => $lastWeek]);
+    return insert("INSERT INTO drugsheets (base_id,status_id,week) VALUES (:base, 1, :lastweek)", ['base'=> $base_id, 'lastweek' => $lastWeek]);
 }
 
 function cloneLatestDrugSheet($newSheetID, $oldSheetID) {
