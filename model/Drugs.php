@@ -136,3 +136,8 @@ function getStateFromDrugs($id){
 function getOpenDrugsSheetNumber($baseID){
     return selectOne("SELECT COUNT(drugsheets.id) as number FROM  drugsheets inner join status on status.id = drugsheets.status_id where status.slug = 'open' and drugsheets.base_id =:base_id", ['base_id' => $baseID])['number'];
 }
+function removeDrugSheet($sheetID) {
+	execute("DELETE FROM drugsheet_use_batch WHERE drugsheet_id =:sheet_id", ['sheet_id' => $sheetID]);
+	execute("DELETE FROM drugsheet_use_nova WHERE drugsheet_id =:sheet_id", ['sheet_id' => $sheetID]);
+	execute("DELETE FROM drugsheets WHERE id =:sheet_id", ['sheet_id' => $sheetID]);
+}

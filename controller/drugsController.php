@@ -43,6 +43,13 @@ function hasOpenDrugSheet($baseID) {
     return boolval(getOpenDrugSheet($baseID));
 }
 
+function drugsDeleteSheet($baseID = null) {
+    if (is_null($baseID))
+        $baseID = $_SESSION["base"]["id"];
+    removeDrugSheet($_POST['id']);
+    redirect("listDrugSheets", $baseID);
+}
+
 //TODO: replace with switch
 function openDrugSheet() {
     updateSheetState($_POST["id"], "open");
