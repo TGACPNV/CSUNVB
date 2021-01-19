@@ -3,8 +3,8 @@ ob_start();
 $title = "CSU-NVB - Remise de garde";
 ?>
 <div class="row m-2">
-    <h1>Remise de Garde du <?= date('d.m.Y', strtotime($shiftsheet['date'])) ?> à <?= $shiftsheet['baseName'] ?> <?= showSheetState($shiftsheet['id'], "shift") ?></h1>
-    <input type="hidden" id="shiftDate" value="<?=$shiftsheet['date']?>">
+    <h1>Remise de Garde</h1>
+    <h2>Jour : <?= date('d.m.Y', strtotime($shiftsheet['date'])) ?> - Base de <?= $shiftsheet['baseName'] ?> [<?= $shiftsheet['displayname'] ?>]</h2>
 </div>
 <form action="?action=updateShift&id=<?= $shiftsheet['id'] ?>" method="POST">
     <input type=hidden name="id" value= <?= $shiftsheet['id'] ?>>
@@ -224,7 +224,7 @@ $title = "CSU-NVB - Remise de garde";
                         <?php endforeach; ?>
 
 
-                        <button type="submit" class="btn bg-white btn-block m-1 toggleShiftModal"
+                        <button type="submit" class="btn bg-white btn-block m-1 toggleShiftModal d-print-none"
                                 data-content="Ajouter un commentaire  à <?= $action['text'] ?>"
                                 data-action_id="<?= $action['id'] ?>" data-action="?action=commentShift"
                                 data-comment="text" style="width:200px;">

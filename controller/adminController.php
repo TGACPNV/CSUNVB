@@ -74,7 +74,7 @@ function adminDrugs()
 function newDrug(){
     if(isset($_POST['nameDrug'])){
         if($_POST['nameDrug']==" " || $_POST['nameDrug']==""){
-            setFlashMessage("Le nom de la base ne peut pas être vide.");
+            setFlashMessage("Le nom du médicament ne peut pas être vide.");
         }
         else {
             $res = addNewDrug($_POST['nameDrug']);

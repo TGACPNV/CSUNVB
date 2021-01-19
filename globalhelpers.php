@@ -73,31 +73,13 @@ function showSheetState($id, $zone){
         /** $slug = getStateFromDrugs($id); */
         $slug = "tsers";
     }
-    else{
 
+    if(isset($slug['displayname'])){
+        $state = "[". $slug['displayname']."]";
     }
-    // todo (VB) : Utilisation de la base de données (displayname)
-    switch($slug){
-        case "blank":
-            $state = "[En préparation]";
-            break;
-        case "open":
-            $state = "[Active]";
-            break;
-        case "reopen":
-            $state = "[En correction]";
-            break;
-        case "close":
-            $state = "[Fermée]";
-            break;
-        case "archived":
-            $state = "[Archivée]";
-            break;
-        default:
-            $state = "[Non défini]";
-            break;
+    else {
+        $state = "[Non défini]";
     }
-
     return $state;
 }
 
