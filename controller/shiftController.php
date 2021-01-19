@@ -17,7 +17,7 @@ function newShiftSheet($baseID)
         $modelID = $_POST["selectedModel"];
     }
     
-    $result = addNewShiftSheet($baseID, $modelID);
+    $result = addNewShiftSheet($baseID, $modelID, $_POST["date"]);
     if ($result == false) {
         setFlashMessage("Une erreur est survenue. Impossible d'ajouter la feuille de garde.");
     } else {

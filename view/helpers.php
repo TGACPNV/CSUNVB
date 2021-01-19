@@ -462,7 +462,7 @@ function headerForList($page, $bases, $selectedBaseID, $models, $emptyBase)
             $switchBaseAction = "listshift";
             $newSheetAction = "?action=newShiftSheet&id=" . $selectedBaseID;
             $newSheetBtnName = "Nouvelle Feuille de garde";
-            $dateInput = "<input type='date' name='trip-start' value='".getNewDate($selectedBaseID)."'>";
+            $dateInput = "<input type='date' name='date' value='".getNextDateForShift($selectedBaseID)."'>";
             // <input type="week" name="week" value="2017-W01"> exemple for week
             break;
         default:
