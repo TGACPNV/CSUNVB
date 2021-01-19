@@ -107,7 +107,6 @@ function updateShift()
     }
     redirect("showshift", $_GET["id"]);
 }
-
 /**
  * addActionForShift : add an action to a shiftsheet
  * @param $sheetID : id of the sheet where the action is added
