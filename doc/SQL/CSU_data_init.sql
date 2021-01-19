@@ -124,7 +124,7 @@ UNLOCK TABLES;
 INSERT INTO `status` VALUES
 (1,'blank','En préparation'),
 (2,'open','Actif'),
-(3,'close','Fermé'),
+(3,'close','Clôturé'),
 (4,'reopen','En correction'),
 (5,'archive','Archivé');
 
