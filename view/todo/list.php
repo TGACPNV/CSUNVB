@@ -28,7 +28,7 @@ $title = "CSU-NVB - Tâches hebdomadaires";
             <form method="POST" action="?action=addWeek" class="float-right">
                 <select name="selectModel">
                     <?php if (!is_null($maxID['id'])): ?>
-                        <option value='lastValue' selected=selected>Dernière semaine en date</option>
+                        <option value='lastValue' selected=selected>Dernière semaine clôturée</option>
                     <?php endif; ?>
                     <?php foreach ($templates as $template) : ?>
                         <option value='<?= $template['template_name'] ?>'><?= $template['template_name'] ?></option>
