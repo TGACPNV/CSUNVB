@@ -83,7 +83,7 @@ WHERE shiftsheets.base_id =:base_id and status.id =:slugID order by date DESC;',
 
 function getshiftsheetByID($id)
 {
-    return selectOne('SELECT bases.name as baseName,bases.id as baseID, shiftsheets.id, shiftsheets.date, shiftsheets.base_id,shiftsheets.shiftmodel_id as model, status.slug AS status,novaDay.number AS novaDay, novaNight.number AS novaNight, bossDay.initials AS bossDay, bossNight.initials AS bossNight,teammateDay.initials AS teammateDay, teammateNight.initials AS teammateNight
+    return selectOne('SELECT bases.name as baseName,bases.id as baseID, shiftsheets.id, shiftsheets.date, shiftsheets.base_id,shiftsheets.shiftmodel_id as model, status.slug AS status, status.displayname AS displayname, novaDay.number AS novaDay, novaNight.number AS novaNight, bossDay.initials AS bossDay, bossNight.initials AS bossNight,teammateDay.initials AS teammateDay, teammateNight.initials AS teammateNight
 FROM shiftsheets
 INNER JOIN bases ON bases.id = shiftsheets.base_id
 INNER JOIN status ON status.id = shiftsheets.status_id
@@ -158,7 +158,7 @@ function updateDataShift($id,$novaDay,$novaNight,$bossDay,$bossNight,$teammateDa
 }
 
 function getStateFromSheet($id){
-    return selectOne("SELECT status.slug FROM status LEFT JOIN shiftsheets ON shiftsheets.status_id = status.id WHERE shiftsheets.id =:sheetID", ["sheetID"=>$id]);
+    return selectOne("SELECT status.slug, status.displayname FROM status LEFT JOIN shiftsheets ON shiftsheets.status_id = status.id WHERE shiftsheets.id =:sheetID", ["sheetID"=>$id]);
 }
 
 
