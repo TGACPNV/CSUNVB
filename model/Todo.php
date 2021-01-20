@@ -253,10 +253,10 @@ function getOpenTodoSheetNumber($baseID){
 }
 
 function getTaskName($todoTaskID){
-    return execute("SELECT description
+    return selectOne("SELECT description
                           FROM todos
                           LEFT JOIN todothings on todos.todothing_id = todothings.id 
-                          WHERE todos.id =:task_id",['task_id' => $todoTaskID]);
+                          WHERE todos.id =:task_id",['task_id' => $todoTaskID])['description'];
 }
 
 //SELECT description
