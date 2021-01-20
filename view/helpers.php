@@ -361,3 +361,19 @@ function headerForList($page, $bases, $selectedBaseID, $models, $emptyBase)
     }
     return $header;
 }
+
+function dropdownTodoMissingTask($missingTasks){
+    $html = "<label for='task'>Tâche </label>";
+
+    for($i = 1; $i<=7; $i++){
+        $html = $html."<select name='task' id='day".$i."'><option value='default'></option>";
+
+        foreach ($missingTasks as $task) {
+            $html = $html."<option value'".$task['id']."'>".$task['description']."</option>";
+
+        }
+        $html = $html."</select>";
+    }
+
+    return $html;
+}
