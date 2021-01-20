@@ -27,6 +27,11 @@ function showDrugSheet($drugSheetID) {
     }
     $drugs = getDrugsInDrugSheet($drugSheetID);
     $site = getbasebyid($drugsheet['base_id']);
+
+    //ici pour faire un check dès la generation de la page, systeme absolument affreux, a ameliorer
+    $cellType = ($drugsheet['slug'] == "close") ? "p" : "input";
+    $UIDs = array();
+
     require_once VIEW . 'drugs/show.php';
 }
 
