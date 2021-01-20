@@ -45,3 +45,30 @@ trashButtons.forEach((item) => {
 
     }, false);
 })
+
+// Code lié aux listes de tâches manquantes (Ajout de tâche)
+var dropdownLists = document.querySelectorAll('.missingTasksChoice');
+
+dropdownLists.forEach((item) => {
+    item.addEventListener('change', function (event) {
+
+        var day = document.getElementById('missingTaskDay').value;
+        var time = document.getElementById('missingTaskTime').value;
+
+        var elements = document.getElementsByClassName('missingTodoTaskList');
+        var label = document.getElementById('missingTaskLabel');
+
+        label.classList.add('d-none');
+
+        for (var i = 0; i < elements.length; i ++) {
+            elements[i].classList.add('d-none');
+        }
+
+        if(day != 'default' && time != 'default'){
+            var id = "day"+day+"time"+time;
+            document.getElementById(id).classList.remove('d-none');
+            label.classList.remove('d-none');
+        }
+
+    }, false);
+})

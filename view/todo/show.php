@@ -54,22 +54,22 @@ $title = "CSU-NVB - Tâches hebdomadaires";
         <form action="POST" action="?action=addTask" class="d-flex justify-content-between">
             <div class="d-flex">
                 <div>
-                    <label for="day">Jour de la semaine </label>
-                    <select name="day" id="day" style="width: 100px;">
-                        <option value="default" selected></option>
+                    <label for="missingTaskDay" style="padding: 0 15px">Jour de la semaine </label>
+                    <select name="day" id="missingTaskDay" class='missingTasksChoice' style="width: 100px;">
+                        <option value="default"></option>
                         <?php foreach ($dates as $index => $date) : ?>
                             <option name="day" value="<?= $index + 1 ?>" ><?= $days[$index + 1] ?></option>
                         <?php endforeach; ?>
                     </select>
                     <br>
-                    <label for="dayTime">Créneau </label>
-                    <select name="dayTime" id="dayTime" style="width: 100px;" class="float-right">
-                        <option value="default" selected></option>
+                    <label for="missingTaskTime" style="padding: 0 15px">Créneau </label>
+                    <select name="dayTime" id="missingTaskTime" style="width: 100px;" class="missingTasksChoice float-right">
+                        <option value="default"></option>
                         <option name="dayTime" value="1" >Jour</option>
                         <option name="dayTime" value="0" >Nuit</option>
                     </select>
                 </div>
-                <div style="padding: 20px;" >
+                <div style="padding: 20px 20px 0;" >
                         <?= dropdownTodoMissingTask($todoThings[1][1]) ?>
                 </div>
             </div>

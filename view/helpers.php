@@ -363,10 +363,10 @@ function headerForList($page, $bases, $selectedBaseID, $models, $emptyBase)
 }
 
 function dropdownTodoMissingTask($missingTasks){
-    $html = "<label for='task'>Tâche </label>";
+    $html = "<label for='task' class='d-none' id='missingTaskLabel' style='padding-right: 15px'>Tâche</label>";
 
     for($i = 1; $i<=7; $i++){
-        $html = $html."<select name='task' id='day".$i."'><option value='default'></option>";
+        $html = $html."<select name='task' id='day".$i."time1' class='missingTodoTaskList d-none'>";
 
         foreach ($missingTasks as $task) {
             $html = $html."<option value'".$task['id']."'>".$task['description']."</option>";
