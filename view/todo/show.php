@@ -48,8 +48,39 @@ $title = "CSU-NVB - Tâches hebdomadaires";
         <?=  slugButtons("todo", $week, $week['slug'])?>
     </div>
 </div>
-<div>
-    <div class="week text-center p-0">
+
+<?php if(ican ("modifySheet") && $edition) : ?> <!-- Zone d'ajout de nouvelle tâche -->
+    <div class="d-print-none" style="border: solid; padding: 5px; margin: 2px; margin-top: 15px; margin-bottom: 15px">
+        <form action="POST" action="?action=addTask" class="d-flex justify-content-between">
+            <div class="d-flex">
+                <div>
+                    <label for="day">Jour de la semaine </label>
+                    <select name="day" id="day" style="width: 100px;">
+                        <option value="default" selected></option>
+                        <?php foreach ($dates as $index => $date) : ?>
+                            <option name="day" value="<?= $index + 1 ?>" ><?= $days[$index + 1] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <br>
+                    <label for="dayTime">Créneau </label>
+                    <select name="dayTime" id="dayTime" style="width: 100px;" class="float-right">
+                        <option value="default" selected></option>
+                        <option name="dayTime" value="1" >Jour</option>
+                        <option name="dayTime" value="0" >Nuit</option>
+                    </select>
+                </div>
+                <div style="padding: 20px;" >
+                        <?= dropdownTodoMissingTask($todoThings[1][1]) ?>
+                </div>
+            </div>
+
+            <button type="submit" class='btn btn-primary m-1'>Ajouter la tâche</button>
+        </form>
+    </div>
+<?php endif; ?>
+
+<div> <!-- Affichage des tâches -->
+    <div class="week text-center p-0" style="margin-top: 15px">
         <?php foreach ($dates as $index => $date) : ?>
             <div class='bg-dark text-white col-md font-weight-bold'><?= $days[$index + 1] ?>
                 <br><?= displayDate($date, 0) ?></div>
