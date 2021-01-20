@@ -30,7 +30,6 @@ function showDrugSheet($drugSheetID) {
     require_once VIEW . 'drugs/show.php';
 }
 
-
 function newDrugSheet($baseID = null) {
     if (is_null($baseID))
         $baseID = $_SESSION["base"]["id"];
@@ -49,19 +48,7 @@ function drugsDeleteSheet($baseID = null) {
     removeDrugSheet($_POST['id']);
     redirect("listDrugSheets", $baseID);
 }
-
-//TODO: replace with switch
-function openDrugSheet() {
-    updateSheetState($_POST["id"], "open");
-    redirect("listDrugSheets", $_SESSION["base"]["id"]);
-}
-
-function closeDrugSheet() {
-    updateSheetState($_POST["id"], "close");
-    redirect("listDrugSheets", $_SESSION["base"]["id"]);
-}
-
-function reopenDrugSheet() {
-    updateSheetState($_POST["id"], "reopened");
+function drugSheetSwitchState() {
+    updateSheetState($_POST["id"], getStatusID($_POST['newSlug']));
     redirect("listDrugSheets", $_SESSION["base"]["id"]);
 }
