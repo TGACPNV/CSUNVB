@@ -4,7 +4,7 @@
 
 /**
  * Function that gets all data from a weekly sheet based on it's ID
- * @param $sheetID : ID of the desired sheet
+ * @param int $sheetID : ID of the desired sheet
  * @return array|mixed|null
  */
 function getTodosheetByID($sheetID)
@@ -18,8 +18,8 @@ function getTodosheetByID($sheetID)
 
 /**
  * Function that gets all data from a weekly sheet based on week number and base id *
- * @param $baseID : ID of the desired base
- * @param $weekNbr : Number of the desired week. format: yynn where yy is 2 digit year and nn is week number
+ * @param int $baseID : ID of the desired base
+ * @param int $weekNbr : Number of the desired week. format: yynn where yy is 2 digit year and nn is week number
  * @return array|mixed|null
  */
 function getTodosheetByBaseAndWeek($baseID, $weekNbr)
@@ -38,8 +38,8 @@ function getAllTodoSheetsForBase($baseID){
 
 /**
  * Function that gets all weekly sheets based on base ID and slug name
- * @param $baseID : ID of the desired base
- * @param $slug : Name of desired slug. Values: blank, open, close, reopen
+ * @param int $baseID : ID of the desired base
+ * @param string $slug : Name of desired slug. Values: blank, open, close, reopen
  * @return array|mixed|null
  */
 function getWeeksBySlugs($baseID, $slug)
@@ -61,22 +61,35 @@ function getStateFromTodo($id){
 
 /**
  * Function that gets the latest week for a defined base
- * @param $baseID : ID of the desired base
+ * @param int $baseID : ID of the desired base
  * @return array|mixed|null
  */
 function getLastWeek($baseID)
 {
-    return selectOne("SELECT MAX(week) as 'last_week', MAX(id) AS 'id'
+    return selectOne("SELECT MAX(week) as 'week', id
                             FROM todosheets
-                            Where base_id =:baseID
-                            GROUP BY base_id", ["baseID" => $baseID]);
+                            WHERE base_id =:baseID", ["baseID" => $baseID]);
+}
+
+/**
+ * Function that gets the latest closed week for a defined base
+ * @param int $baseID : ID of the desired base
+ * @return array|mixed|null
+ */
+function getLastWeekClosed($baseID)
+{
+    return selectOne("SELECT MAX(week) as 'week', t.id
+                            FROM todosheets t
+                            JOIN status ON t.status_id = status.id
+                            Where base_id =:baseID 
+                            AND slug = 'close'", ["baseID" => $baseID]);
 }
 
 
 /**
  * Function that creates a new weekly sheet
- * @param $baseID : ID of the desired base
- * @param $weekNbr : Number of the desired week. format: yynn where yy is 2 digit year and nn is week number
+ * @param int $baseID : ID of the desired base
+ * @param int $weekNbr : Number of the desired week. format: yynn where yy is 2 digit year and nn is week number
  * @return string|null
  */
 function createNewSheet($baseID, $weekNbr)

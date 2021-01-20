@@ -2,21 +2,23 @@
 
 /** Fonction qui permet l'affichage des semaines de tâches pour la base par défaut (où on est loggé)
  */
-function listtodo(){
+function listtodo()
+{
     listtodoforbase($_SESSION['base']['id']);
 }
 
 /** Fonction qui permet l'affichage des semaines de tâches pour une base spécifique
  * @param $selectedBaseID : l'ID de la base dont les semaines sont à afficher
  */
-function listtodoforbase($selectedBaseID){
+function listtodoforbase($selectedBaseID)
+{
 
     // Récupération des semaines en fonction de leur état (slug) et de la base choisie
     $sheets = getAllTodoSheetsForBase($selectedBaseID);
 
     $baseList = getbases();
     $templates = getAllTemplateNames();
-    $maxID = getTodosheetMaxID($selectedBaseID);
+    $lastClosedWeek = getLastWeekClosed($selectedBaseID);
 
     require_once VIEW . 'todo/list.php';
 }
@@ -25,19 +27,20 @@ function listtodoforbase($selectedBaseID){
  * Fonction qui affiche les tâches d'une semaine spécifique
  * @param $todo_id : l'ID de la feuille de tâche à afficher
  */
-function showtodo($todo_id, $edition = false){
+function showtodo($todo_id, $edition = false)
+{
     $week = getTodosheetByID($todo_id);
     $base = getbasebyid($week['base_id']);
     $dates = getDaysForWeekNumber($week['week']);
     $template = getTemplateName($todo_id);
 
 
-    for ($daynight=0; $daynight <= 1; $daynight++) {
+    for ($daynight = 0; $daynight <= 1; $daynight++) {
         for ($dayofweek = 1; $dayofweek <= 7; $dayofweek++) {
-            $todoThings[$daynight][$dayofweek] = readTodoThingsForDay($todo_id,$daynight,$dayofweek);
-            foreach ($todoThings[$daynight][$dayofweek] as $key => $todoThing){
-                if($todoThing['type'] == "2" && !is_null($todoThing['value'])){
-                    $todoThings[$daynight][$dayofweek][$key]['description'] = str_replace("....", "".$todoThing['value']."", "".$todoThing['description']."");
+            $todoThings[$daynight][$dayofweek] = readTodoThingsForDay($todo_id, $daynight, $dayofweek);
+            foreach ($todoThings[$daynight][$dayofweek] as $key => $todoThing) {
+                if ($todoThing['type'] == "2" && !is_null($todoThing['value'])) {
+                    $todoThings[$daynight][$dayofweek][$key]['description'] = str_replace("....", "" . $todoThing['value'] . "", "" . $todoThing['description'] . "");
                 }
             }
 
@@ -54,29 +57,34 @@ function showtodo($todo_id, $edition = false){
  * Fonction qui ajoute à la bbd dans todosheets les données relative à base_id et week
  * @param $base : id de la base
  */
-function addWeek(){
+function addWeek()
+{
     $baseID = $_SESSION['base']['id']; // On ne peut ajouter une feuille que dans la base où l'on se trouve
 
     $week = getLastWeek($baseID); // Récupère la dernière semaine
 
-    if($_POST['selectModel'] == 'lastValue'){
-        $template = $week;
-    }else{
+    if ($_POST['selectModel'] == 'lastValue') {
+        $template = getLastWeekClosed($baseID);
+    } else {
         $template = getTemplateSheet($_POST['selectModel']);
     }
 
-    $week['last_week'] = nextWeekNumber($week['last_week']);
+    if(isset($week['week'])){
+        $newWeekNumber = nextWeekNumber($week['week']);
+    } else{
+        $newWeekNumber = date("yW");
+    }
 
     $todos = readTodoForASheet($template['id']);
 
-    $newWeekID = createNewSheet($baseID, $week['last_week']);
+    $newWeekID = createNewSheet($baseID, $newWeekNumber);
 
     foreach ($todos as $todo) {
         addTodoThing($todo['id'], $newWeekID, $todo['day']);
     }
 
-    setFlashMessage("La semaine ".$week['last_week']." a été créée.");
-    header('Location: ?action=listtodoforbase&id='.$baseID);
+    setFlashMessage("La semaine " . $newWeekNumber . " a été créée.");
+    header('Location: ?action=listtodoforbase&id=' . $baseID);
 }
 
 /**
@@ -84,29 +92,32 @@ function addWeek(){
  * @param $weekNbr : le numéro de la semaine
  * @return false|string
  */
-function nextWeekNumber($weekNbr){
-    $year = 2000 + intdiv($weekNbr,100);
-    $week = $weekNbr%100;
+function nextWeekNumber($weekNbr)
+{
+    $year = 2000 + intdiv($weekNbr, 100);
+    $week = $weekNbr % 100;
 
-    $time = strtotime(sprintf("%4dW%02d", $year , $week));
+    $time = strtotime(sprintf("%4dW%02d", $year, $week));
     $nextWeek = date(strtotime("+ 1 week", $time));
 
-    return  date("yW", $nextWeek);
+    return date("yW", $nextWeek);
 }
 
 
-function modelWeek(){
+function modelWeek()
+{
     $todosheetID = $_POST['todosheetID'];
 
-    updateTemplateName($todosheetID,$_POST['template_name']);
-    header('Location: ?action=showtodo&id='.$todosheetID);
+    updateTemplateName($todosheetID, $_POST['template_name']);
+    header('Location: ?action=showtodo&id=' . $todosheetID);
 }
 
-function deleteTemplate(){
+function deleteTemplate()
+{
     $todosheetID = $_POST['todosheetID'];
 
     deleteTemplateName($todosheetID);
-    header('Location: ?action=showtodo&id='.$todosheetID);
+    header('Location: ?action=showtodo&id=' . $todosheetID);
 }
 
 function todoEditionMode()
@@ -114,16 +125,17 @@ function todoEditionMode()
     $edition = $_POST['edition'];
     $todosheetID = $_POST['todosheetID'];
 
-    if (!$edition){
+    if (!$edition) {
         $edition = true;
-        showtodo($todosheetID,$edition);
+        showtodo($todosheetID, $edition);
     } else {
         $edition = false;
-        header('Location: ?action=showtodo&id='.$todosheetID);
+        header('Location: ?action=showtodo&id=' . $todosheetID);
     }
 }
 
-function destroyTaskTodo(){
+function destroyTaskTodo()
+{
 
     $todosheetID = $_POST['todosheetID'];
     $todoTaskID = $_POST['taskID'];
@@ -131,68 +143,73 @@ function destroyTaskTodo(){
     $message = 'La tâche "'.$todoTaskName.'" a été supprimée !';
     deletethingsID($todoTaskID);
 
-    showtodo($todosheetID,true);
     setFlashMessage($message);
+    showtodo($todosheetID,true);
 }
 
-function loadAModel($weekID, $template_name){
+function loadAModel($weekID, $template_name)
+{
     $toDos = readTodoForASheet($week['id']);  // TODO (noté par XCL) : corriger ce code qui ne fait rien
 }
 
-function switchTodoStatus(){
+function switchTodoStatus()
+{
     $status = $_POST['modal-todoStatus'];
     $todoID = $_POST['modal-todoID'];
     $todoType = $_POST['modal-todoType'];
     $todoValue = $_POST['modal-todoValue'];
     $todosheetID = $_POST['todosheetID'];
 
-    if($status == 'unvalidate'){
+    if ($status == 'unvalidate') {
         unvalidateTodo($todoID, $todoType);
     } else {
         validateTodo($todoID, $todoValue);
     }
 
-    header('Location: ?action=showtodo&id='.$todosheetID);
+    header('Location: ?action=showtodo&id=' . $todosheetID);
 }
 
 /**
  * Fonction qui permet de changer l'état d'une feuille
  */
-function todoSheetSwitchState(){
+function todoSheetSwitchState()
+{
     $sheetID = $_POST['id'];
     $newSlug = $_POST['newSlug'];
 
     $sheet = getTodosheetByID($sheetID);
 
     changeSheetState($sheetID, $newSlug);
-    $message = "La semaine ".$sheet['week']." a été ";
+    $message = "La semaine " . $sheet['week'] . " a été ";
 
-    switch($newSlug){  /* todo : utiliser displayname */
+    switch ($newSlug) {  /* todo : utiliser displayname */
         case "open":
-            $message = $message."ouverte.";
+            $message = $message . "ouverte.";
             break;
         case "reopen":
-            $message = $message."ré-ouverte.";
+            $message = $message . "ré-ouverte.";
             break;
         case "close":
-            $message = $message."fermée.";
+            $message = $message . "fermée.";
             break;
         case "archive":
-            $message = $message."archivée.";
+            $message = $message . "archivée.";
             break;
         default:
             break;
     }
 
     setFlashMessage($message);
-    header('Location: ?action=listtodoforbase&id='.$sheet['base_id']);
+    header('Location: ?action=listtodoforbase&id=' . $sheet['base_id']);
 }
 
-function todoDeleteSheet(){
+function todoDeleteSheet()
+{
     $sheetID = $_POST['id'];
     $sheet = getTodosheetByID($sheetID);
 
     deleteTodoSheet($sheetID);
-    setFlashMessage("La semaine ".$sheet['week']." a correctement été supprimée.");
-    header('Location: ?action=listtodoforbase&id='.$sheet['base_id']);
+
+    setFlashMessage("La semaine " . $sheet['week'] . " a correctement été supprimée.");
+    header('Location: ?action=listtodoforbase&id=' . $sheet['base_id']);
 }
