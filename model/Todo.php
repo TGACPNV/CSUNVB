@@ -272,7 +272,24 @@ function getTaskName($todoTaskID){
                           WHERE todos.id =:task_id",['task_id' => $todoTaskID])['description'];
 }
 
-//SELECT description
-//FROM todos
-//LEFT JOIN todothings on todos.todothing_id = todothings.id
-//WHERE todos.id = 120
+//------------------------------A modifier--------------------------------------------------//
+function selectAtask($week){
+
+    return selectMany("SELECT daything, description, week, day_of_week, todothings.id
+                             FROM todos
+	                         LEFT JOIN todothings ON todos.todothing_id = todothings.id
+	                         LEFT JOIN todosheets ON todos.todosheet_id = todosheets.id
+	                         WHERE week = 2052  
+	                         ORDER BY todothings.id =:week  ASC",['week_id' => $week]);
+
+}
+
+function selectAlltask($week){
+
+    return selectMany("SELECT daything, description, week, day_of_week, todothings.id
+                             FROM todos
+	                         LEFT JOIN todothings ON todos.todothing_id = todothings.id
+	                         LEFT JOIN todosheets ON todos.todosheet_id = todosheets.id 
+	                         ORDER BY todothings.id =:week  ASC",['week_id' => $week]);
+
+}

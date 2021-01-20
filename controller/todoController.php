@@ -213,3 +213,9 @@ function todoDeleteSheet()
     setFlashMessage("La semaine " . $sheet['week'] . " a correctement été supprimée.");
     header('Location: ?action=listtodoforbase&id=' . $sheet['base_id']);
 }
+
+function addTaskWeek()
+{
+    //todo
+
+}
