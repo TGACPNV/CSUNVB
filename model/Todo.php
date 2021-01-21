@@ -273,23 +273,13 @@ function getTaskName($todoTaskID){
 }
 
 //------------------------------A modifier--------------------------------------------------//
-function selectAtask($week){
+
+function readTodoSheet($week){
 
     return selectMany("SELECT daything, description, week, day_of_week, todothings.id
                              FROM todos
 	                         LEFT JOIN todothings ON todos.todothing_id = todothings.id
 	                         LEFT JOIN todosheets ON todos.todosheet_id = todosheets.id
-	                         WHERE week = 2052  
-	                         ORDER BY todothings.id =:week  ASC",['week_id' => $week]);
-
-}
-
-function selectAlltask($week){
-
-    return selectMany("SELECT daything, description, week, day_of_week, todothings.id
-                             FROM todos
-	                         LEFT JOIN todothings ON todos.todothing_id = todothings.id
-	                         LEFT JOIN todosheets ON todos.todosheet_id = todosheets.id 
-	                         ORDER BY todothings.id =:week  ASC",['week_id' => $week]);
+	                         WHERE week =:week",['week_id' => $week]);
 
 }
