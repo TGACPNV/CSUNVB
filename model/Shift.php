@@ -274,6 +274,10 @@ function enableShiftModel($modelID, $modelName)
     return execute("UPDATE shiftmodels SET suggested = 1, name =:name WHERE id = :id", ["id" => $modelID, "name" => $modelName]);
 }
 
+function reEnableShiftModel($modelID){
+    return execute("UPDATE shiftmodels SET suggested = 1 WHERE id = :id", ["id" => $modelID]);
+}
+
 /**
  * updateModelID : change the model of the shiftsheet
  * @param int $shiftSheetID : id of the shiftsheet

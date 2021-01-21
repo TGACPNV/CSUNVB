@@ -281,13 +281,23 @@ $title = "CSU-NVB - Remise de garde";
     <div class="float-right d-print-none">
         <div class="d-flex flex-row">
             <?php if ($model["suggested"] == 0) : ?>
-                <button type="submit"
-                        class="btn btn-primary toggleShiftModal m-1"
-                        data-content="Enregistrer comme nouveau modèle :<br><br><strong>Nom :</strong>"
-                        data-action_id="<?= $shiftsheet["model"] ?>" data-day="1" data-action="?action=addShiftModel"
-                        data-comment="text" style="size:60%">
-                    Enregistrer comme modèle
-                </button>
+                <?php if ($model["name"] != "") : ?>
+                    <button type="submit"
+                            class="btn btn-primary toggleShiftModal m-1"
+                            data-content="Voulez-vous ré-activer le modèle ?<br><strong><?= $model["name"] ?></strong><br>Il sera proposé à la création de nouveaux rapports"
+                            data-action_id="<?= $shiftsheet["model"] ?>" data-action="?action=reAddShiftModel"
+                            data-comment="hidden">
+                        Ré-activer le modèle
+                    </button>
+                <?php else : ?>
+                    <button type="submit"
+                            class="btn btn-primary toggleShiftModal m-1"
+                            data-content="Enregistrer comme nouveau modèle :<br><br><strong>Nom :</strong>"
+                            data-action_id="<?= $shiftsheet["model"] ?>" data-day="1" data-action="?action=addShiftModel"
+                            data-comment="text" style="size:60%">
+                        Enregistrer comme modèle
+                    </button>
+                <?php endif; ?>
             <?php else : ?>
                 <?php if ($model["name"] != "Vide") : ?>
                     <button type="submit"

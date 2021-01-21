@@ -246,3 +246,13 @@ function addShiftModel(){
     }
     redirect("showShift",$_POST["shiftSheet_id"]);
 }
+
+function reAddShiftModel(){
+    $res = reEnableShiftModel($_POST["action_id"],$_POST["comment"]);
+    if ($res == false) {
+        setFlashMessage("Une erreur est survenue. Impossible de réactiver le modèle.");
+    } else {
+        setFlashMessage("Le modèle a été correctement réactivé.");
+    }
+    redirect("showShift",$_POST["shiftSheet_id"]);
+}
