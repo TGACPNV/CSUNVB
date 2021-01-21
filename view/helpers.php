@@ -365,11 +365,21 @@ function headerForList($page, $bases, $selectedBaseID, $models, $emptyBase)
 function dropdownTodoMissingTask($missingTasks){
     $html = "<label for='task' class='d-none' id='missingTaskLabel' style='padding-right: 15px'>Tâche</label>";
 
-    for($i = 1; $i<=7; $i++){
-        $html = $html."<select name='task' id='day".$i."time1' class='missingTodoTaskList d-none'>";
+    foreach ($missingTasks[0] as $index => $nightTask) {
+        $html = $html."<select name='task".$index."time0' id='day".$index."time0' class='missingTodoTaskList d-none'>";
 
-        foreach ($missingTasks as $task) {
-            $html = $html."<option value'".$task['id']."'>".$task['description']."</option>";
+        foreach ($nightTask as $task) {
+            $html = $html."<option value=".$task['id']."'>".$task['description']."</option>";
+
+        }
+        $html = $html."</select>";
+    }
+
+    foreach ($missingTasks[1] as $index => $dayTask) {
+        $html = $html."<select name='task".$index."time1' id='day".$index."time1' class='missingTodoTaskList d-none'>";
+
+        foreach ($dayTask as $task) {
+            $html = $html."<option value=".$task['id']."'>".$task['description']."</option>";
 
         }
         $html = $html."</select>";

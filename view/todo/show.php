@@ -51,7 +51,7 @@ $title = "CSU-NVB - Tâches hebdomadaires";
 
 <?php if(ican ("modifySheet") && $edition) : ?> <!-- Zone d'ajout de nouvelle tâche -->
     <div class="d-print-none" style="border: solid; padding: 5px; margin: 2px; margin-top: 15px; margin-bottom: 15px">
-        <form action="POST" action="?action=addTask" class="d-flex justify-content-between">
+        <form method="POST" action="?action=addTodoTask" class="d-flex justify-content-between">
             <div class="d-flex">
                 <div>
                     <label for="missingTaskDay" style="padding: 0 15px">Jour de la semaine </label>
@@ -69,11 +69,12 @@ $title = "CSU-NVB - Tâches hebdomadaires";
                         <option name="dayTime" value="0" >Nuit</option>
                     </select>
                 </div>
+
                 <div style="padding: 20px 20px 0;" >
-                        <?= dropdownTodoMissingTask($todoThings[1][1]) ?>
+                        <?= dropdownTodoMissingTask($missingTasks) ?>
                 </div>
             </div>
-
+            <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
             <button type="submit" class='btn btn-primary m-1'>Ajouter la tâche</button>
         </form>
     </div>

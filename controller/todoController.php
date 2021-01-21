@@ -34,11 +34,17 @@ function showtodo($todo_id, $edition = false)
     $dates = getDaysForWeekNumber($week['week']);
     $template = getTemplateName($todo_id);
 
+    $allTodoTasks[0] = getIDFromTodoThing(0);
+    $allTodoTasks[1] = getIDFromTodoThing(1);
+
+    $missingTasks = array();
 
     for ($daynight = 0; $daynight <= 1; $daynight++) {
         for ($dayofweek = 1; $dayofweek <= 7; $dayofweek++) {
+
             $todoThings[$daynight][$dayofweek] = readTodoThingsForDay($todo_id, $daynight, $dayofweek);
-            findMissingTaskByDay($todoThings[$daynight][$dayofweek]);
+            $missingTasks[$daynight][$dayofweek] = findMissingTasks($allTodoTasks[$daynight], $todoThings[$daynight][$dayofweek]);
+
             foreach ($todoThings[$daynight][$dayofweek] as $key => $todoThing) {
                 if ($todoThing['type'] == "2" && !is_null($todoThing['value'])) {
                     $todoThings[$daynight][$dayofweek][$key]['description'] = str_replace("....", "" . $todoThing['value'] . "", "" . $todoThing['description'] . "");
@@ -137,20 +143,14 @@ function todoEditionMode()
 
 function destroyTaskTodo()
 {
-
     $todosheetID = $_POST['todosheetID'];
     $todoTaskID = $_POST['taskID'];
-    $todoTaskName =getTaskName($_POST['taskID']);
+    $todoTaskName = getTaskName($_POST['taskID']);
     $message = 'La tâche "'.$todoTaskName.'" a été supprimée !';
     deletethingsID($todoTaskID);
 
     setFlashMessage($message);
     showtodo($todosheetID,true);
-}
-
-function loadAModel($weekID, $template_name)
-{
-    $toDos = readTodoForASheet($week['id']);  // TODO (noté par XCL) : corriger ce code qui ne fait rien
 }
 
 function switchTodoStatus()
@@ -215,46 +215,51 @@ function todoDeleteSheet()
     header('Location: ?action=listtodoforbase&id=' . $sheet['base_id']);
 }
 
-function findMissingTaskByDay($taskList)
+/**
+ * Fonction qui cherche les tâches manquantes d'une liste, à partir d'une liste de référence
+ * @param array $allTasksList : la liste de référence
+ * @param array $taskList : la liste dont on cherche les tâches manquantes
+ * @return array
+ */
+function findMissingTasks($allTasksList, $taskList)
 {
-    $alltasklist = getIDFromTodoThing();
     $missingTask = array();
-    $found = true;
 
-    for ($i = 0; $i < strlen($alltasklist); $i++) {
-        for ($j = 0; $j < strlen($taskList); $j++) {
-            if ($alltasklist[$i]['id'] == $taskList[$j]['id']) {
+    for ($i = 0; $i < count($allTasksList); $i++) {
+        $found = false;
+        for ($j = 0; $j < count($taskList); $j++) {
+            if ($allTasksList[$i]['id'] == $taskList[$j]['todothingID']) {
                 $found = true;
-            } else {
-                $found = false;
+                $j = count($taskList);
             }
         }
-        if ($found = false) {
-            array_push($missingTask, $alltasklist[$i]);
+        if ($found == false) {
+            $missingTask[] = $allTasksList[$i];
         }
     }
+    return $missingTask;
 }
 
-/*function de Vicky :
+function addTodoTask(){
+    $todoSheetID = $_POST['todosheetID'];
+    $time = $_POST['dayTime'];
+    $day = $_POST['day'];
+    $selectedList = "task".$day."time".$time;
+    $taskID = $_POST[$selectedList];
 
-function findMissingTasksByDay($allTasksList, $taskList){
-            $missingTasks = array();
+    var_dump($todoSheetID);
+    var_dump($time);
+    var_dump($day);
+    var_dump($taskID);
+    $taskDescription = getTaskDescription($taskID);
 
-            for($i=0; $i <$allTasksList.lenght; $i++){
-                $found = false;
-                for($j=0; $j < $taskList.lenght; $j++){
-                    if($allTasksList[$i]['id'] == $taskList[$j]['id']){
-                        $found = true;
-                    }
-                }
+    if( addTodoThing($taskID, $todoSheetID, $day) ){
+        $message = 'La tâche "'.$taskDescription.'" a été ajoutée.'; // todo : Message plus parlant pour l'utilisateur
+    }else{
 
-                if(!$found){
-                    array_push($missingTasks,$allTasksList[$i]);
-                }
-            }
+    }
 
-            return $missingTasks;
-        }
- *
- *
- */
+
+    setFlashMessage($message);
+    showtodo($todoSheetID,true);
+}

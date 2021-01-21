@@ -105,7 +105,7 @@ function createNewSheet($baseID, $weekNbr)
  */
 function readTodoThingsForDay($sid, $day, $dayOfWeek)
 {
-    $res = selectMany("SELECT description, type, value, u.initials AS 'initials', todos.id AS id
+    $res = selectMany("SELECT description, type, value, u.initials AS 'initials', todos.id AS id, t.id AS todothingID
                              FROM todos 
                              INNER JOIN todothings t ON todos.todothing_id = t.id
                              LEFT JOIN users u ON todos.user_id = u.id
@@ -136,7 +136,7 @@ function readTodoForASheet($sheetID)
 function addTodoThing($todoID, $weekID, $dayOfWeek)
 {
     $query = "INSERT INTO todos (todothing_id, todosheet_id, day_of_week) VALUE (:todoID, :sheetID, :day)";
-    execute($query, ['todoID' => $todoID, 'sheetID' => $weekID, 'day' => $dayOfWeek]);
+    return execute($query, ['todoID' => $todoID, 'sheetID' => $weekID, 'day' => $dayOfWeek]);
 }
 
 /**
@@ -275,8 +275,12 @@ function getTaskName($todoTaskID){
 //------------------------------A modifier--------------------------------------------------//
 
 //
-function getIDFromTodoThing(){
+function getIDFromTodoThing($daytime){
+    return selectMany("SELECT id, description FROM todothings WHERE daything = :daytime",['daytime' => $daytime]);
+}
 
-    return selectMany("SELECT id
-                             FROM todothings",[]);
+function getTaskDescription($taskID){
+    return selectOne("SELECT description
+                          FROM todothings
+                          WHERE id =:task_id",['task_id' => $taskID])['description'];
 }
