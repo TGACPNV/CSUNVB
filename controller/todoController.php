@@ -38,6 +38,7 @@ function showtodo($todo_id, $edition = false)
     for ($daynight = 0; $daynight <= 1; $daynight++) {
         for ($dayofweek = 1; $dayofweek <= 7; $dayofweek++) {
             $todoThings[$daynight][$dayofweek] = readTodoThingsForDay($todo_id, $daynight, $dayofweek);
+            findMissingTaskByDay($todoThings[$daynight][$dayofweek]);
             foreach ($todoThings[$daynight][$dayofweek] as $key => $todoThing) {
                 if ($todoThing['type'] == "2" && !is_null($todoThing['value'])) {
                     $todoThings[$daynight][$dayofweek][$key]['description'] = str_replace("....", "" . $todoThing['value'] . "", "" . $todoThing['description'] . "");
@@ -214,10 +215,46 @@ function todoDeleteSheet()
     header('Location: ?action=listtodoforbase&id=' . $sheet['base_id']);
 }
 
-function addTaskWeek()
+function findMissingTaskByDay($taskList)
 {
-    $taskslist = getIDFromTodoThing();
+    $alltasklist = getIDFromTodoThing();
+    $missingTask = array();
+    $found = true;
 
-    
-
+    for ($i = 0; $i < strlen($alltasklist); $i++) {
+        for ($j = 0; $j < strlen($taskList); $j++) {
+            if ($alltasklist[$i]['id'] == $taskList[$j]['id']) {
+                $found = true;
+            } else {
+                $found = false;
+            }
+        }
+        if ($found = false) {
+            array_push($missingTask, $alltasklist[$i]);
+        }
+    }
 }
+
+/*function de Vicky :
+
+function findMissingTasksByDay($allTasksList, $taskList){
+            $missingTasks = array();
+
+            for($i=0; $i <$allTasksList.lenght; $i++){
+                $found = false;
+                for($j=0; $j < $taskList.lenght; $j++){
+                    if($allTasksList[$i]['id'] == $taskList[$j]['id']){
+                        $found = true;
+                    }
+                }
+
+                if(!$found){
+                    array_push($missingTasks,$allTasksList[$i]);
+                }
+            }
+
+            return $missingTasks;
+        }
+ *
+ *
+ */
