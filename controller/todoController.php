@@ -216,6 +216,8 @@ function todoDeleteSheet()
 
 function addTaskWeek()
 {
-    //todo
+    $taskslist = getIDFromTodoThing();
+
+    
 
 }

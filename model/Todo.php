@@ -274,12 +274,9 @@ function getTaskName($todoTaskID){
 
 //------------------------------A modifier--------------------------------------------------//
 
-function readTodoSheet($week){
+//
+function getIDFromTodoThing(){
 
-    return selectMany("SELECT daything, description, week, day_of_week, todothings.id
-                             FROM todos
-	                         LEFT JOIN todothings ON todos.todothing_id = todothings.id
-	                         LEFT JOIN todosheets ON todos.todosheet_id = todosheets.id
-	                         WHERE week =:week",['week_id' => $week]);
-
+    return selectMany("SELECT id
+                             FROM todothings",[]);
 }
