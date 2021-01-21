@@ -27,14 +27,18 @@ $title = "CSU-NVB - Tâches hebdomadaires";
         <?php if (ican('createsheet') && ($_SESSION['base']['id'] == $selectedBaseID)) : ?>
             <form method="POST" action="?action=addWeek" class="float-right">
                 <select name="selectModel">
-                    <?php if (isset($lastClosedWeek)): ?>
+                    <?php if (isset($lastClosedWeek['id'])): ?>
                         <option value='lastValue' selected=selected>Dernière semaine clôturée</option>
                     <?php endif; ?>
                     <?php foreach ($templates as $template) : ?>
                         <option value='<?= $template['template_name'] ?>'><?= $template['template_name'] ?></option>
                     <?php endforeach; ?>
                 </select>
-                <button type="submit" class="btn btn-primary m-1 pull-right">Nouvelle semaine</button>
+                <?php if(!isset($lastClosedWeek['id']) && !isset($template[0]['template_name']) ): ?>
+                    <button type="submit" class="btn btn-primary m-1 pull-right" disabled>Nouvelle semaine</button>
+                <?php else: ?>
+                    <button type="submit" class="btn btn-primary m-1 pull-right">Nouvelle semaine</button>
+                <?php endif; ?>
             </form>
         <?php endif; ?>
     </div>
