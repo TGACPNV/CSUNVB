@@ -7,30 +7,34 @@ function adminHome()
 }
 
 /** Users Administration */
+/** Display crew page */
 function adminCrew()
 {
     $users = getUsers();
     require_once VIEW . 'admin/adminCrew.php';
 }
 
-function newUser()      //Pointe sur la page d'ajout d'un user
+/** Display new user page */
+function newUser()
 {
     require_once VIEW . 'admin/newUser.php';
 }
 
-function saveNewUser()         //Crée un utilisateur
+/**
+ * save a new user
+ * show a message if there's a problem
+ */
+function saveNewUser()
 {
-
     $prenomUser = $_POST['prenomUser'];
     $nomUser = $_POST['nomUser'];
     $initialesUser = $_POST['initialesUser'];
     $startPassword = $_POST['startPassword'];
     $hash = password_hash($startPassword, PASSWORD_DEFAULT);
 
-    if($prenomUser == " " || $initialesUser == " " || $nomUser == " "){
+    if ($prenomUser == " " || $initialesUser == " " || $nomUser == " ") {
         setFlashMessage("Ni le prénom, ni le nom, ni les initiales ne peut être un champ vide.");
-    }
-    else {
+    } else {
         $result = addNewUser($prenomUser, $nomUser, $initialesUser, $hash, 0, 1);
         if ($result == 0) {
             setFlashMessage("Une erreur est survenue. Impossible d'ajouter l'utilisateur.");
@@ -41,7 +45,10 @@ function saveNewUser()         //Crée un utilisateur
     adminCrew();
 }
 
-function changeUserAdmin()       //Change un user en admin (et inversément)
+/**
+ * change an user to admin or an admin to user
+ */
+function changeUserAdmin()
 {
     $changeUser = $_GET['idUser'];
     $user = getUser($changeUser);
@@ -56,6 +63,10 @@ function changeUserAdmin()       //Change un user en admin (et inversément)
     adminCrew();
 }
 
+/**
+ * reset an user password
+ * ! the new password is in the flashmessage, it must be copied to be sent further on.
+ */
 function resetUserPassword()
 {
     $newpassword = changePwdState($_GET['idUser']);
@@ -71,12 +82,12 @@ function adminDrugs()
     require_once VIEW . 'admin/adminDrugs.php';
 }
 
-function newDrug(){
-    if(isset($_POST['nameDrug'])){
-        if($_POST['nameDrug']==" " || $_POST['nameDrug']==""){
+function newDrug()
+{
+    if (isset($_POST['nameDrug'])) {
+        if ($_POST['nameDrug'] == " " || $_POST['nameDrug'] == "") {
             setFlashMessage("Le nom du médicament ne peut pas être vide.");
-        }
-        else {
+        } else {
             $res = addNewDrug($_POST['nameDrug']);
             if ($res == false) {
                 setFlashMessage("Une erreur est survenue. Impossible d'ajouter le médicament.");
@@ -85,24 +96,23 @@ function newDrug(){
             }
         }
         adminDrugs();
-    }
-    else {
+    } else {
         require_once VIEW . 'admin/newDrug.php';
     }
 }
 
-function updateDrug(){
+function updateDrug()
+{
     $idDrug = $_GET['idDrug'];
-    if(isset($_POST['updateNameDrug'])){
-        $res =updateDrugName($_POST['updateNameDrug'], $idDrug);
+    if (isset($_POST['updateNameDrug'])) {
+        $res = updateDrugName($_POST['updateNameDrug'], $idDrug);
         if ($res == false) {
             setFlashMessage("Une erreur est survenue. Impossible de renommer le médicament.");
         } else {
             setFlashMessage("Le médicament a été correctement renommé.");
         }
         adminDrugs();
-    }
-    else {
+    } else {
         require_once VIEW . 'admin/updateDrug.php';
     }
 }
@@ -115,12 +125,12 @@ function adminBases()
     require_once VIEW . 'admin/adminBases.php';
 }
 
-function newBase(){
-    if(isset($_POST['nameBase'])){
-        if($_POST['nameBase']==" " || $_POST['nameBase']==""){
+function newBase()
+{
+    if (isset($_POST['nameBase'])) {
+        if ($_POST['nameBase'] == " " || $_POST['nameBase'] == "") {
             setFlashMessage("Le nom de la base ne peut pas être vide.");
-        }
-        else {
+        } else {
             $res = addNewBase($_POST['nameBase']);
             if ($res == false) {
                 setFlashMessage("Une erreur est survenue. Impossible d'ajouter la base.");
@@ -129,8 +139,7 @@ function newBase(){
             }
         }
         adminBases();
-    }
-    else {
+    } else {
         require_once VIEW . 'admin/newBase.php';
     }
 }
@@ -161,17 +170,17 @@ function adminNovas()
     require_once VIEW . 'admin/adminNovas.php';
 }
 
-function newNova(){
-    if(isset($_POST['nameNova'])){
-            $res = addNewNova($_POST['nameNova']);
-            if ($res == false) {
-                setFlashMessage("Une erreur est survenue. Impossible d'ajouter la nova.");
-            } else {
-                setFlashMessage("La nova a été correctement ajoutée.");
-            }
-            adminNovas();
-    }
-    else {
+function newNova()
+{
+    if (isset($_POST['nameNova'])) {
+        $res = addNewNova($_POST['nameNova']);
+        if ($res == false) {
+            setFlashMessage("Une erreur est survenue. Impossible d'ajouter la nova.");
+        } else {
+            setFlashMessage("La nova a été correctement ajoutée.");
+        }
+        adminNovas();
+    } else {
         require_once VIEW . 'admin/newNova.php';
     }
 }
@@ -179,7 +188,7 @@ function newNova(){
 function updateNova()
 {
     $idNova = $_GET['idNova'];
-    if(isset($_POST['updateNameNova'])){
+    if (isset($_POST['updateNameNova'])) {
         $res = updateNameNova($_POST['updateNameNova'], $idNova);
         if ($res == false) {
             setFlashMessage("Une erreur est survenue. Impossible de renommer la nova.");
@@ -187,8 +196,7 @@ function updateNova()
             setFlashMessage("La nova a été correctement renommée.");
         }
         adminNovas();
-    }
-    else {
+    } else {
         require_once VIEW . 'admin/updateNova.php';
     }
 }
