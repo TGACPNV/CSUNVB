@@ -4,15 +4,15 @@
  **/
 
 
-function cellUpdate(UID, time, value) {
-    document.GetElementById("save").style.visibility = visible;
-    /*
-    document.cookie = UID + time "=" + document.getElementById("UID" + time).value;
+function cellUpdate(UID, time = '') {
+    document.getElementById("save").removeAttribute("hidden");
+    document.cookie = "drug" + UID + time + "=" + document.getElementById(UID + time).value;
     drugCheck(UID);
-    */
 }
 
-function sendData
+function sendData() {
+    window.open("?action=updateDrugSheet", "_self");
+}
 
 function drugCheck(UID) {
     let expectedAmount = Number(document.getElementById(UID + "start").value);

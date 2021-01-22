@@ -21,6 +21,7 @@ ob_start();
         </form>
     </div>
 </div>
+<button class='btn btn-primary m-1 float-right' id="save" hidden onclick="sendData()">Enregistrer les données</button>
 <div class="float-right d-print-none">
     <?= slugButtons("drug", $drugsheet, $drugsheet['slug']) ?>
 </div>
@@ -54,13 +55,13 @@ ob_start();
                     <td id="<?= $UID ?>">
                         <input  type="number" min="0" class="text-center"
                                 value="<?= (is_numeric($ncheck["start"]) ? $ncheck["start"] : '0') ?>"
-                                onchange="drugCheck('<?= $UID ?>');"
+                                onchange="cellUpdate('<?= $UID ?>', 'start');"
                                 id="<?= $UID ?>start"
                                 <?= ($drugsheet['slug'] == "close") ? "readonly" : '' ?>
                         >
                         <input  type="number" min="0" class="text-center"
                                 value="<?= (is_numeric($ncheck["end"]) ? $ncheck["end"] : '0') ?>"
-                                onchange="drugCheck('<?= $UID ?>');"
+                                onchange="cellUpdate('<?= $UID ?>', 'end');"
                                 id="<?= $UID ?>end"
                                 <?= ($drugsheet['slug'] == "close") ? "readonly" : '' ?>
                     >
@@ -77,7 +78,7 @@ ob_start();
                     <td class="text-center">
                         <input  type="number" min="0" class="text-center"
                                 value="<?= (is_numeric($pcheck['start']) ? $pcheck['start'] : '0') ?>"
-                                onchange="drugCheck('<?= $UID ?>');"
+                                onchange="cellUpdate('<?= $UID ?>', 'start');"
                                 id="<?= $UID ?>start"
                                 <?= ($drugsheet['slug'] == "close") ? "readonly" : '' ?>
                         >
@@ -86,7 +87,7 @@ ob_start();
                         <td class="text-center">
                             <input type="number" min="0" class="<?= $UID ?> nova text-center"
                                     value="<?= (getRestockByDateAndDrug($date, $batch['id'], $nova['id']) + 0) //+0 auto converts to a number, even if null ?>"
-                                    onchange="drugCheck('<?= $UID ?>')"
+                                    onchange="cellUpdate('<?= $UID ?>')"
                                     <?= ($drugsheet['slug'] == "close") ? "readonly" : '' ?>
                             >
                         </td>
@@ -94,7 +95,7 @@ ob_start();
                     <td id="<?= $UID ?>" class="text-center">
                         <input  type="number" min="0" class="text-center"
                                 value="<?= is_numeric($pcheck['end']) ? $pcheck['end'] : '0'?>" class="text-center"
-                                onchange="drugCheck('<?= $UID ?>');"
+                                onchange="cellUpdate('<?= $UID ?>', 'end');"
                                 id="<?= $UID ?>end"
                                 <?= ($drugsheet['slug'] == "close") ? "readonly" : '' ?>
                         >

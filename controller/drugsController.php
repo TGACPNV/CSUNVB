@@ -57,3 +57,10 @@ function drugSheetSwitchState() {
     updateSheetState($_POST["id"], getStatusID($_POST['newSlug']));
     redirect("listDrugSheets", $_SESSION["base"]["id"]);
 }
+
+function updateDrugSheet() {
+    foreach ($_COOKIE as $cookie) {
+        if($cookie)
+    }
+    unset($COOKIE);
+}
