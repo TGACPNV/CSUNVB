@@ -157,7 +157,7 @@ function destroyTaskTodo()
     $todosheetID = $_POST['todosheetID'];
     $todoTaskID = $_POST['taskID'];
     $todoTaskName = getTaskName($_POST['taskID']);
-    $message = 'La tâche "'.$todoTaskName.'" a été supprimée !';
+    $message = 'La tâche  <strong>'.$todoTaskName.'</strong> a été supprimée !';
     deletethingsID($todoTaskID);
 
     setFlashMessage($message);
@@ -269,7 +269,7 @@ function addTodoTask(){
     $isAdded = addTodoThing($taskID, $todoSheetID, $day);
 
     if( isset($isAdded) ){
-        $message = 'La tâche "'.$taskDescription.'" a été ajoutée.'; // todo : Message plus parlant pour l'utilisateur
+        $message = 'La tâche <strong>'.$taskDescription.'</strong> a été ajoutée.'; // todo : Message plus parlant pour l'utilisateur
     }else{
         $message = "Erreur lors de l'ajout de tâche.";
     }
