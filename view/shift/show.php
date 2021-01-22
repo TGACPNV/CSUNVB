@@ -129,7 +129,7 @@ $title = "CSU-NVB - Remise de garde";
         <thead class="thead-dark">
         <th></th>
         <th class="SH_checkCase">Jour</th>
-        <th class="SH_checkCase">Nuit</th>
+        <th class="">Nuit</th>
         <th>Remarques</th>
         </thead>
         <tbody>
@@ -152,7 +152,7 @@ $title = "CSU-NVB - Remise de garde";
                 <?php if ($enableshiftsheetFilling): ?>
                     <td class="SH_checkCase">
                         <button type="submit"
-                                class="btn <?= (count($action["checksDay"]) == 0) ? 'btn-warning' : 'btn-success' ?> toggleShiftModal m-2"
+                                class="btn <?= (count($action["checksDay"]) == 0) ? 'btn-warning' : 'btn-success' ?> toggleShiftModal"
                                 data-content="Valider <?= $action['text'] ?> : Jour"
                                 data-action_id="<?= $action['id'] ?>" data-day="1" data-action="?action=checkShift"
                                 data-comment="hidden">
@@ -171,7 +171,7 @@ $title = "CSU-NVB - Remise de garde";
 
                     <td class="SH_checkCase">
                         <button type="submit"
-                                class="btn <?= (count($action["checksNight"]) == 0) ? 'btn-warning' : 'btn-success' ?> toggleShiftModal m-2"
+                                class="btn <?= (count($action["checksNight"]) == 0) ? 'btn-warning' : 'btn-success' ?> toggleShiftModal"
                                 data-content="Valider <?= $action['text'] ?> : Nuit"
                                 data-action_id="<?= $action['id'] ?>" data-day="0" data-action="?action=checkShift"
                                 data-comment="hidden"
