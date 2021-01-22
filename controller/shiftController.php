@@ -5,9 +5,9 @@
  */
 
 /**
- * newShiftSheet : create a new sheet for a shift. It is created on the base we are currently watching the list, with the model selected
+ * newShiftSheet : create a new sheet for a shift. It is created for the active base with the selected model
  * @param int $baseID
- * show a message if it has been done correctly
+ * shows a message to confirm action or an error message
  */
 function newShiftSheet($baseID)
 {
@@ -27,8 +27,8 @@ function newShiftSheet($baseID)
 }
 
 /**
- * listshift : show a list of all existing shiftsheet for a certain base
- * @param int $selectedBaseID : id of the base we want to show  the shiftsheets. By default : correspond to the one we are logged on.
+ * listshift : show a list of all existing shiftsheet for a selected base
+ * @param int $selectedBaseID : id of the base we want to show the shiftsheets for. By default it is the based selected when logging in..
  */
 function listshift($selectedBaseID = null)
 {
@@ -55,7 +55,7 @@ function listshift($selectedBaseID = null)
 
 /**
  * showshift : show the detailed view of a shiftsheet
- * @param int $shiftid : id of the sheet we want to visualize
+ * @param int $shiftid : id of the sheet we want to see
  */
 function showshift($shiftid)
 {
@@ -70,9 +70,9 @@ function showshift($shiftid)
 }
 
 /**
- * checkShift : validate if a task has been done and who has done it
+ * checkShift : Mark a task as completed and who did it
  * @param none
- * show a message if it has been done correctly
+ * shows a message to confirm action or an error message
  */
 function checkShift()
 {
@@ -86,9 +86,9 @@ function checkShift()
 }
 
 /**
- * commentShift : add a comment on a certain task
+ * commentShift : add a comment to a task
  * @param none
- * show a message if it has been added correctly
+ * shows a message to confirm action or an error message
  */
 function commentShift()
 {
@@ -104,7 +104,7 @@ function commentShift()
 /**
  * updateShift : update the data of the sheet -> vehicle, teammates ...
  * @param none
- * show a message if it has been done correctly
+ * show a message to confirm action or an error message
  */
 function updateShift()
 {
@@ -119,7 +119,7 @@ function updateShift()
 /**
  * addActionForShift : add an action to a shiftsheet
  * @param int $sheetID : id of the sheet where the action is added
- * show a message if it has been added correctly
+ * show a message to confirm action or an error message
  */
 function addActionForShift($sheetID)
 {
@@ -136,7 +136,7 @@ function addActionForShift($sheetID)
 /**
  * creatActionForShift : create an action if it doesn't exist and add it to the shiftsheet
  * @param int $sheetID : id of the sheet the action is added to
- * show a message if it has been added correctly
+ * show a message to confirm action or an error message
  */
 function creatActionForShift($sheetID)
 {
@@ -157,8 +157,8 @@ function creatActionForShift($sheetID)
 
 /**
  * removeActionForShift : remove an action from the list of active action on a certain shiftsheet
- * @param int $sheetID : id of the sheet the action is removed of
- * show a message if it has been removed correctly
+ * @param int $sheetID : id of the sheet the action is removed from
+ * shows a message to confirm action or an error message
  */
 function removeActionForShift($sheetID)
 {
@@ -173,14 +173,14 @@ function removeActionForShift($sheetID)
 }
 
 /**
- * configureModel : duplicate shiftsheetmodel IF it is user on another sheet, so that those are not modified
+ * configureModel : create a model from an existing shiftsheet
  * @param int $sheetID : id of the shiftsheet
  * @param int $modelID : id of the shiftsheet's model
  * @return int : id of the model used (new or not, depending on uses)
  */
 function configureModel($sheetID, $modelID)
 {
-    //si le modèle ne possède pas de nom, il n'est pas utilisé pour créer d'autre feuille, il n'y a donc pas besoin de le mofifier
+    //If the model does not have a name it is not being used. no need to copy it
     if (getModelBYID($modelID)["name"] != "") {
         $newID = copyModel($modelID);
         updateModelID($sheetID, $newID);
@@ -191,7 +191,7 @@ function configureModel($sheetID, $modelID)
 
 /**
  * shiftSheetSwitchState : change the state of a shiftsheet
- * show a message if it has been removed correctly
+ * shows a message to confirm action or an error message
  */
 function shiftSheetSwitchState()
 {
@@ -206,7 +206,7 @@ function shiftSheetSwitchState()
 
 /**
  * shiftDeleteSheet : delete a shiftsheet
- * show a message if it has been removed correctly
+ * shows a message to confirm action or an error message
  */
 function shiftDeleteSheet()
 {
@@ -220,8 +220,8 @@ function shiftDeleteSheet()
 }
 
 /**
- * removeShiftModel : remove the model from the list of suggested model
- * show a message if it has been removed correctly
+ * removeShiftModel : remove the model from the list of suggested models
+ * shows a message to confirm action or an error message
  */
 function removeShiftModel(){
     $res = disableShiftModel($_POST["action_id"]);
@@ -234,8 +234,8 @@ function removeShiftModel(){
 }
 
 /**
- * addShiftModel : add a model to the list of model
- * show a message if it has been removed correctly
+ * addShiftModel : add a model to the list of models
+ * shows a message to confirm action or an error message
  */
 function addShiftModel(){
     $res = enableShiftModel($_POST["action_id"],$_POST["comment"]);
@@ -246,6 +246,7 @@ function addShiftModel(){
     }
     redirect("showShift",$_POST["shiftSheet_id"]);
 }
+
 
 function reAddShiftModel(){
     $res = reEnableShiftModel($_POST["action_id"],$_POST["comment"]);
