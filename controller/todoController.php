@@ -1,31 +1,33 @@
 <?php
 
-/** Fonction qui permet l'affichage des semaines de tâches pour la base par défaut (où on est loggé) todo:translate
+/**
+ * Function that creates the display of weekly tasks (todosheet) for the base selected at login
  */
 function listtodo()
 {
     listtodoforbase($_SESSION['base']['id']);
 }
 
-/** Fonction qui permet l'affichage des semaines de tâches pour une base spécifique todo:translate
- * @param $selectedBaseID : l'ID de la base dont les semaines sont à afficher
+/**
+ * Function that creates the display of weekly tasks (todosheet) specified by base ID
+ * @param int $baseID : ID of specified base
  */
-function listtodoforbase($selectedBaseID)
+function listtodoforbase($baseID)
 {
 
     // Récupération des semaines en fonction de leur état (slug) et de la base choisie
-    $sheets = getAllTodoSheetsForBase($selectedBaseID);
+    $sheets = getAllTodoSheetsForBase($baseID);
 
     $baseList = getbases();
     $templates = getAllTemplateNames();
-    $lastClosedWeek = getLastWeekClosed($selectedBaseID);
+    $lastClosedWeek = getLastWeekClosed($baseID);
 
     require_once VIEW . 'todo/list.php';
 }
 
 /**
- * Fonction qui affiche les tâches d'une semaine spécifique todo:translate
- * @param $sheetID : l'ID de la feuille de tâche à afficher
+ * Function that creates the display of weekly tasks (todosheet) specified by todosheet ID
+ * @param int $sheetID : ID of specified todosheet
  */
 function showtodo($sheetID, $edition = false)
 {
@@ -42,7 +44,7 @@ function showtodo($sheetID, $edition = false)
     for ($daynight = 0; $daynight <= 1; $daynight++) {
         for ($dayofweek = 1; $dayofweek <= 7; $dayofweek++) {
 
-            $todoThings[$daynight][$dayofweek] = readTodoThingsForDay($sheetID, $daynight, $dayofweek);
+            $todoThings[$daynight][$dayofweek] = readTodoThingsForDay($sheetID, $daynight, $dayofweek); //todo:add explanation
             $missingTasks[$daynight][$dayofweek] = findMissingTasks($allTodoTasks[$daynight], $todoThings[$daynight][$dayofweek]);
 
             foreach ($todoThings[$daynight][$dayofweek] as $key => $todoThing) {
@@ -61,8 +63,8 @@ function showtodo($sheetID, $edition = false)
 
 
 /**
- * Fonction qui ajoute à la bbd dans todosheets les données relative à base_id et week todo:translate
- * @param $base : id de la base
+ * Function that creates a new todosheet in the database from a template or last closed todosheet
+ * Shows a message if successful
  */
 function addWeek()
 {
@@ -95,8 +97,8 @@ function addWeek()
 }
 
 /**
- * Fonction qui retourne le numéro de semaine de la semaine suivante todo:translate
- * @param $weekNbr : le numéro de la semaine
+ * Function that returns the next week number or specified week
+ * @param int $weekNbr
  * @return false|string
  */
 function nextWeekNumber($weekNbr)
@@ -110,8 +112,8 @@ function nextWeekNumber($weekNbr)
     return date("yW", $nextWeek);
 }
 
-/**todo:complete
- *
+/**
+ *Function used to call updateTemplateName and pass needed data
  */
 function modelWeek()
 {
@@ -121,8 +123,8 @@ function modelWeek()
     header('Location: ?action=showtodo&id=' . $todosheetID);
 }
 
-/**todo:complete
- *
+/**
+ *Function used to call deleteTemplate and pass needed data
  */
 function deleteTemplate()
 {
@@ -132,8 +134,8 @@ function deleteTemplate()
     header('Location: ?action=showtodo&id=' . $todosheetID);
 }
 
-/**todo:complete
- *
+/**
+ *Function used to activate amd deactivate editing mode
  */
 function todoEditionMode()
 {
@@ -149,8 +151,8 @@ function todoEditionMode()
     }
 }
 
-/**todo:complete
- *
+/**
+ *Function to delete a task from a todosheet
  */
 function destroyTaskTodo()
 {
@@ -164,18 +166,18 @@ function destroyTaskTodo()
     showtodo($todosheetID,true);
 }
 
-/**todo:complete
- *
+/**
+ *  Function to mark a task as done or not done
  */
-function switchTodoStatus()
+function switchTodoStatus() //todo. change name
 {
-    $status = $_POST['modal-todoStatus'];
+    $status = $_POST['modal-todoStatus']; //todo:check name
     $todoID = $_POST['modal-todoID'];
     $todoType = $_POST['modal-todoType'];
     $todoValue = $_POST['modal-todoValue'];
     $todosheetID = $_POST['todosheetID'];
 
-    if ($status == 'unvalidate') {
+    if ($status == 'unvalidate') { //todo: change name
         invalidateTodo($todoID, $todoType);
     } else {
         validateTodo($todoID, $todoValue);
@@ -185,7 +187,7 @@ function switchTodoStatus()
 }
 
 /**
- * Fonction qui permet de changer l'état d'une feuille todo:translate
+ * Function to change the active status of a sheet
  */
 function todoSheetSwitchState()
 {
@@ -218,8 +220,9 @@ function todoSheetSwitchState()
     header('Location: ?action=listtodoforbase&id=' . $sheet['base_id']);
 }
 
-/**todo:complete
- *
+/**
+ * Function to delete a todosheet from databas
+ * Shows a message if successful
  */
 function todoDeleteSheet()
 {
@@ -233,9 +236,9 @@ function todoDeleteSheet()
 }
 
 /**
- * Fonction qui cherche les tâches manquantes d'une liste, à partir d'une liste de référence todo : translate
- * @param array $allTasksList : la liste de référence
- * @param array $taskList : la liste dont on cherche les tâches manquantes
+ * Function that looks for missing tasks from a todosheet from a reference list
+ * @param array $allTasksList : reference list
+ * @param array $taskList : existing list to check
  * @return array
  */
 function findMissingTasks($allTasksList, $taskList)
@@ -257,6 +260,10 @@ function findMissingTasks($allTasksList, $taskList)
     return $missingTask;
 }
 
+/**
+ * Function to add a task to a todosheet
+ * Shows a message if successful or an error
+ */
 function addTodoTask(){
     $todoSheetID = $_POST['todosheetID'];
     $time = $_POST['dayTime'];
