@@ -13,23 +13,12 @@ function getTodosheetByID($sheetID)
                              FROM todosheets
                              LEFT JOIN status ON todosheets.status_id = status.id
                              WHERE todosheets.id =:sheetID", ['sheetID' => $sheetID]);
-
 }
 
-///**
-// * Function that gets all data from a weekly todosheets based on week number and base id *
-// * @param int $baseID : ID of the desired base
-// * @param int $weekNbr : Number of the desired week. format: yynn where yy is 2 digit year and nn is week number
-// * @return array|mixed|null
-// */
-//function getTodosheetByBaseAndWeek($baseID, $weekNbr)
-//{
-//    return selectOne("SELECT * FROM todosheets where base_id =:baseID and week = :weekNbr", ['baseID' => $baseID, 'weekNbr' => $weekNbr]);
-//}
 
 /** Function that returns all todosheets for a base specified by ID
  * @param  int $baseID : ID of specified base
- * @return array
+ * @return array :  all todosheets for a specified base, odered by slug
  */
 function getAllTodoSheetsForBase($baseID){
     $slugs = selectMany("SELECT id,slug as name FROM status",[]);
@@ -41,8 +30,8 @@ function getAllTodoSheetsForBase($baseID){
 
 /**
  * Function that gets all weekly todosheets based on base ID and slug name
- * @param int $baseID : ID of the desired base
- * @param string $slug : Name of desired slug. Values: blank, open, close, reopen
+ * @param int $baseID : ID of the specified base
+ * @param string $slug : Name of specified slug. Values: blank, open, close, reopen, archived
  * @return array|mixed|null
  */
 function getWeeksBySlugs($baseID, $slug)
@@ -68,7 +57,7 @@ function getStateFromTodo($sheetID){
 
 /**
  * Function that gets the latest week for a defined base
- * @param int $baseID : ID of the desired base
+ * @param int $baseID : ID of the specified base
  * @return array|mixed|null
  */
 function getLastWeek($baseID)
@@ -80,7 +69,7 @@ function getLastWeek($baseID)
 
 /**
  * Function that gets the latest closed week for a defined base
- * @param int $baseID : ID of the desired base
+ * @param int $baseID : ID of the specified base
  * @return array|mixed|null
  */
 function getLastWeekClosed($baseID)
@@ -95,8 +84,8 @@ function getLastWeekClosed($baseID)
 
 /**
  * Function that creates a new weekly sheet
- * @param int $baseID : ID of the desired base
- * @param int $weekNbr : Number of the desired week. format: yynn where yy is 2 digit year and nn is week number
+ * @param int $baseID : ID of the specified base
+ * @param int $weekNbr : Number of the specified week. format: yynn where yy is 2 digit year and nn is week number
  * @return string|null
  */
 function createNewSheet($baseID, $weekNbr)
@@ -106,7 +95,7 @@ function createNewSheet($baseID, $weekNbr)
 
 /**
  * Function that returns all tasks that match the 3 parameters
- * @param int $sheetID : ID of the desired todosheet
+ * @param int $sheetID : ID of the specified todosheet
  * @param int $daynight : day or night (0 or 1)
  * @param int $dayOfWeek : day of the week (1-7)
  * @return array|mixed|null
@@ -153,13 +142,13 @@ function addTodoThing($taskID, $sheetID, $dayOfWeek)
 /**
  * Function to change name of a template
  * @param int $sheetID : specified sheet id
- * @param string $template_name : new name for template todo: check
+ * @param string $templateName : new name for template
  * @return bool|null
  */
-function updateTemplateName($sheetID, $template_name)
+function updateTemplateName($sheetID, $templateName)
 {
     return execute(
-        "UPDATE todosheets SET template_name=:template_name WHERE id =:id", ['template_name' => $template_name, 'id' => $sheetID]);
+        "UPDATE todosheets SET template_name=:templateName WHERE id =:id", ['templateName' => $templateName, 'id' => $sheetID]);
 }
 
 /**
@@ -177,7 +166,7 @@ function deleteTemplateName($sheetID)
 /**
  * Function to invalidate a task (mark as not completed)
  * @param int $todoTaskID : ID of task in sheet
- * @param int $type : if task has an addition "value" associated or not
+ * @param int $type : if task has an addition "value" associated or not (1 or 2)
  * @return bool|null
  */
 function invalidateTodo($todoTaskID, $type)
@@ -193,7 +182,7 @@ function invalidateTodo($todoTaskID, $type)
 /**
  * Function to validate a task (mark as completed)
  * @param int $todoTaskID : ID of task in sheet
- * @param int $value : value needed needed to be added +for some tasks
+ * @param int $value : value needed to be added for some tasks
  * @return bool|null
  */
 function validateTodo($todoTaskID, $value)
@@ -210,7 +199,7 @@ function validateTodo($todoTaskID, $value)
 
 /**
  * Function to get template name for specified sheet id
- * @param $sheetID
+ * @param int $sheetID
  * @return array|mixed|null
  */
 function getTemplateName($sheetID)
@@ -221,21 +210,8 @@ function getTemplateName($sheetID)
     return selectOne($query, ['id' => $sheetID]);
 }
 
-/**todo:not used
- * Function to get highest id value from todosheets (latest sheet)
- * @param $baseID
- * @return array|mixed|null
- */
-function getTodosheetMaxID($baseID)
-{
-    $query = "SELECT MAX(id) AS id
-              FROM todosheets
-              WHERE base_id =:id";
-    return selectOne($query, ['id' => $baseID]);
-}
-
 /**
- * Function to get all template names
+ * Function to get all template names and their IDs
  * @return array|mixed|null
  */
 function getAllTemplateNames()
@@ -259,9 +235,9 @@ function getTemplateSheet($templateName)
 }
 
 /**
- *Function to change to state of a todosheets specified by id to specified slug
+ *Function to change to state of a todosheets specified by id and slug
  * @param int $sheetID
- * @param string $slug
+ * @param string $slug : Name of specified slug. Values: blank, open, close, reopen, archived
  * @return bool|null
  */
 function changeSheetState($sheetID, $slug)
@@ -288,8 +264,8 @@ function deletethingsID($todoTaskID){
 }
 
 /**
- * Function that returns number of open todosheets todo: check
- * @param $baseID
+ * Function that returns number of open todosheets
+ * @param int $baseID
  * @return mixed
  */
 function getOpenTodoSheetNumber($baseID){
@@ -297,8 +273,8 @@ function getOpenTodoSheetNumber($baseID){
 }
 
 /**
- * Function that returns name of a task specified by id
- * @param $todoTaskID
+ * Function that returns description of a task specified by id (FROM THE todos TABLE)
+ * @param int $todoTaskID
  * @return mixed
  */
 function getTaskName($todoTaskID){
@@ -310,15 +286,16 @@ function getTaskName($todoTaskID){
 
 
 /**
- * Function that returns all task is  todo
+ * Function that returns all task by day or night
+ *  @param int $daynight : 0 for night and 1 for day
  * @return array|mixed|null
  */
-function getTasksByTime($daytime){
-    return selectMany("SELECT id, description FROM todothings WHERE daything = :daytime",['daytime' => $daytime]);
+function getTasksByTime($daynight){
+    return selectMany("SELECT id, description FROM todothings WHERE daything = :daynight",['daynight' => $daynight]);
 }
 
-/** todo
- * @param $taskID
+/** Function that returns description of a task specified by id (FROM THE todothings TABLE)
+ * @param int $taskID
  * @return mixed
  */
 function getTaskDescription($taskID){

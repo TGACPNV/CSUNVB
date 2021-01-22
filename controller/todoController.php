@@ -44,8 +44,8 @@ function showtodo($sheetID, $edition = false)
     for ($daynight = 0; $daynight <= 1; $daynight++) {
         for ($dayofweek = 1; $dayofweek <= 7; $dayofweek++) {
 
-            $todoThings[$daynight][$dayofweek] = readTodoThingsForDay($sheetID, $daynight, $dayofweek); //todo:add explanation
-            $missingTasks[$daynight][$dayofweek] = findMissingTasks($allTodoTasks[$daynight], $todoThings[$daynight][$dayofweek]);
+            $todoThings[$daynight][$dayofweek] = readTodoThingsForDay($sheetID, $daynight, $dayofweek);
+            $missingTasks[$daynight][$dayofweek] = findMissingTasks($allTodoTasks[$daynight], $todoThings[$daynight][$dayofweek]); // Find tasks that are not present so they can be added
 
             foreach ($todoThings[$daynight][$dayofweek] as $key => $todoThing) {
                 if ($todoThing['type'] == "2" && !is_null($todoThing['value'])) {
@@ -64,7 +64,6 @@ function showtodo($sheetID, $edition = false)
 
 /**
  * Function that creates a new todosheet in the database from a template or last closed todosheet
- * Shows a message if successful
  */
 function addWeek()
 {
@@ -92,7 +91,7 @@ function addWeek()
         addTodoThing($todo['id'], $newWeekID, $todo['day']);
     }
 
-    setFlashMessage("La semaine " . $newWeekNumber . " a été créée.");
+    setFlashMessage("La semaine " . $newWeekNumber . " a été créée."); // todo : afficher le message uniquement si la tâche a réellement été faite
     header('Location: ?action=listtodoforbase&id=' . $baseID);
 }
 
@@ -144,7 +143,7 @@ function todoEditionMode()
 
     if (!$edition) {
         $edition = true;
-        showtodo($todosheetID, $edition);
+        showtodo($todosheetID, $edition); // todo : faire une redirection
     } else {
         $edition = false;
         header('Location: ?action=showtodo&id=' . $todosheetID);
@@ -163,21 +162,21 @@ function destroyTaskTodo()
     deletethingsID($todoTaskID);
 
     setFlashMessage($message);
-    showtodo($todosheetID,true);
+    showtodo($todosheetID,true); // todo : faire une redirection
 }
 
 /**
  *  Function to mark a task as done or not done
  */
-function switchTodoStatus() //todo. change name
+function switchTodoValidation()
 {
-    $status = $_POST['modal-todoStatus']; //todo:check name
+    $status = $_POST['modal-todoStatus'];
     $todoID = $_POST['modal-todoID'];
     $todoType = $_POST['modal-todoType'];
     $todoValue = $_POST['modal-todoValue'];
     $todosheetID = $_POST['todosheetID'];
 
-    if ($status == 'unvalidate') { //todo: change name
+    if ($status == 'invalidate') {
         invalidateTodo($todoID, $todoType);
     } else {
         validateTodo($todoID, $todoValue);
@@ -199,7 +198,7 @@ function todoSheetSwitchState()
     changeSheetState($sheetID, $newSlug);
     $message = "La semaine " . $sheet['week'] . " a été ";
 
-    switch ($newSlug) {  /* todo : utiliser displayname */
+    switch ($newSlug) {  /* todo : utilisation des displayname (base de donnée) possible ? */
         case "open":
             $message = $message . "ouverte.";
             break;
@@ -276,11 +275,11 @@ function addTodoTask(){
     $isAdded = addTodoThing($taskID, $todoSheetID, $day);
 
     if( isset($isAdded) ){
-        $message = 'La tâche <strong>'.$taskDescription.'</strong> a été ajoutée.'; // todo : Message plus parlant pour l'utilisateur
+        $message = 'La tâche <strong>'.$taskDescription.'</strong> a été ajoutée.'; // todo : Message plus parlant pour l'utilisateur (ex: ajout du jour)
     }else{
         $message = "Erreur lors de l'ajout de tâche.";
     }
 
     setFlashMessage($message);
-    showtodo($todoSheetID,true);
+    showtodo($todoSheetID,true); // todo : faire une redirection
 }

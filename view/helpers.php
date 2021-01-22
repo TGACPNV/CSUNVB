@@ -20,22 +20,6 @@ function setFlashMessage($message)
     $_SESSION['flashmessage'] = $message;
 }
 
-// todo (VB) : supprimer dès que les vues 'list' sont homogènes
-function getDrugSheetStateButton($state)
-{
-    switch ($state) {
-        case "closed":
-            return "reopen";
-        case "open":
-        case "reopened":
-            return "close";
-        default:
-            return "open";
-    }
-}
-
-
-
 function buttonTask($initials, $desription, $taskID, $type, $slug, $edition, $day)
 {
     if ($slug == 'open' || $slug == 'reopen') {
@@ -44,7 +28,7 @@ function buttonTask($initials, $desription, $taskID, $type, $slug, $edition, $da
             return "<button type='button' class='btn btn-secondary toggleTodoModal btn-block m-1 tasks' data-title='Quittancer une tâche' data-id='" . $taskID . "' data-status='validate' data-type='" . $type . "' data-content='" . $messageQuittance . "'>" . $desription . "<div class='bg-white rounded mt-1'><br></div></button>";
         } else {
             $messageQuittance = 'Vous êtes sur le point de retirer la quittance de la tâche suivante : <br> "' . $desription . '".';
-            return "<button type='button' class='btn btn-success toggleTodoModal btn-block m-1 tasks' data-title='Retirer une quittance' data-id='" . $taskID . "' data-status='unvalidate' data-type='" . $type . "' data-content='" . $messageQuittance . "'>" . $desription . "<div class='text-dark bg-white rounded mt-1'>" . $initials . "</div></button>";
+            return "<button type='button' class='btn btn-success toggleTodoModal btn-block m-1 tasks' data-title='Retirer une quittance' data-id='" . $taskID . "' data-status='invalidate' data-type='" . $type . "' data-content='" . $messageQuittance . "'>" . $desription . "<div class='text-dark bg-white rounded mt-1'>" . $initials . "</div></button>";
         }
     }elseif($slug == 'blank' && $edition)
     {
@@ -362,6 +346,11 @@ function headerForList($page, $bases, $selectedBaseID, $models, $emptyBase)
     return $header;
 }
 
+/**
+ * Fonction qui génère l'ensemble des listes déroulantes, en fonction du jour et du créneau
+ * @param array $missingTasks Ensemble des tâches manquantes dans une semaine (todoSheet)
+ * @return string
+ */
 function dropdownTodoMissingTask($missingTasks){
     $html = "<label for='task' class='d-none' id='missingTaskLabel' style='padding-right: 15px'>Tâche</label>";
 

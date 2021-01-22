@@ -5,6 +5,7 @@
  **/
 
 // Code lié à la pop-up de vérification de validation de tâches
+// Permet l'affichage de la pop-up de vérification pour les quitances
 var buttons = document.querySelectorAll('.toggleTodoModal');
 
 buttons.forEach((item) => {
@@ -14,7 +15,7 @@ buttons.forEach((item) => {
         document.getElementById("modal-validationContent").innerHTML = this.getAttribute("data-content");
         document.getElementById("modal-todoID").value = this.getAttribute("data-id");
 
-        var status = this.getAttribute("data-status"); // 'validate' si la tache n'est pas validée, 'unvalidate' dans le cas contraire
+        var status = this.getAttribute("data-status"); // 'validate' si la tache n'est pas validée, 'invalidate' dans le cas contraire
         var type = this.getAttribute("data-type");
 
         if(type == "2" && status == "validate"){
@@ -34,6 +35,7 @@ console.log(buttons.length);
 
 
 // Code lié à la pop-up de vérification de suppression de tâches
+// Permet l'affichage de la pop-up de vérification pour la suppression des tâches
 var trashButtons = document.querySelectorAll('.trashButtons');
 
 trashButtons.forEach((item) => {
@@ -47,6 +49,7 @@ trashButtons.forEach((item) => {
 })
 
 // Code lié aux listes de tâches manquantes (Ajout de tâche)
+// Permet l'affichage des listes déroulantes en fonction des choix de jour et créneau
 var dropdownLists = document.querySelectorAll('.missingTasksChoice');
 
 dropdownLists.forEach((item) => {
