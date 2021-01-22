@@ -75,7 +75,7 @@ $title = "CSU-NVB - Tâches hebdomadaires";
                 </div>
             </div>
             <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
-            <button type="submit" class='btn btn-primary m-1'>Ajouter la tâche</button>
+            <button type="submit" id="addTodoTaskBtn" class='btn btn-primary m-1' disabled>Ajouter la tâche</button>
         </form>
     </div>
 <?php endif; ?>

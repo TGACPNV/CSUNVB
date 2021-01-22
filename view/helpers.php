@@ -369,7 +369,7 @@ function dropdownTodoMissingTask($missingTasks){
         $html = $html."<select name='task".$index."time0' id='day".$index."time0' class='missingTodoTaskList d-none'>";
 
         foreach ($nightTask as $task) {
-            $html = $html."<option value=".$task['id']."'>".$task['description']."</option>";
+            $html = $html."<option value=".$task['id'].">".$task['description']."</option>";
 
         }
         $html = $html."</select>";
@@ -379,7 +379,7 @@ function dropdownTodoMissingTask($missingTasks){
         $html = $html."<select name='task".$index."time1' id='day".$index."time1' class='missingTodoTaskList d-none'>";
 
         foreach ($dayTask as $task) {
-            $html = $html."<option value=".$task['id']."'>".$task['description']."</option>";
+            $html = $html."<option value=".$task['id'].">".$task['description']."</option>";
 
         }
         $html = $html."</select>";

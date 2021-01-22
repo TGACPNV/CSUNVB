@@ -271,9 +271,6 @@ function addTodoTask(){
     $selectedList = "task".$day."time".$time;
     $taskID = $_POST[$selectedList];
 
-    var_dump($todoSheetID);
-    var_dump($day);
-    var_dump($taskID);
     $taskDescription = getTaskDescription($taskID);
 
     $isAdded = addTodoThing($taskID, $todoSheetID, $day);
@@ -283,7 +280,6 @@ function addTodoTask(){
     }else{
         $message = "Erreur lors de l'ajout de tâche.";
     }
-
 
     setFlashMessage($message);
     showtodo($todoSheetID,true);
