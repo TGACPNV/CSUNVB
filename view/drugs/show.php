@@ -50,7 +50,7 @@ ob_start();
                 <td></td>
                 <?php foreach ($novas as $nova): ?>
                     <?php $ncheck = getNovaCheckByDateAndDrug($date, $drug['id'], $nova['id'], $drugsheet['id']); // not great practice, but it spares repeated queries on the db ?>
-                    <?php $UID = $nova["number"] . $drug["name"] . $date ?>
+                    <?php $UID = 'n' . $nova["number"] . 'd' . $drug["id"] . 'D' . $date ?>
                     <td id="<?= $UID ?>">
                         <input  type="number" min="0" class="text-center"
                                 value="<?= (is_numeric($ncheck["start"]) ? $ncheck["start"] : '0') ?>"
@@ -70,7 +70,7 @@ ob_start();
                 <td></td>
             </tr>
             <?php foreach ($batchesByDrugId[$drug["id"]] as $batch): ?>
-                <?php $UID = "pharma" . $drug["name"] . $date ?>
+                <?php $UID = "pharma_" . 'b' . $batch['id'] . 'D' . $date ?>
                 <?php $pcheck = getPharmaCheckByDateAndBatch($date, $batch['id'], $drugsheet['id']); ?>
                 <tr>
                     <td class="text-right"><?= $batch['number'] ?></td>

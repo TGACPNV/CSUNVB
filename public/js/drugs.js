@@ -4,9 +4,16 @@
  **/
 
 
-function cellUpdate(UID, ID, time, drugID = false) {
-    document.cookie
+function cellUpdate(UID, time, value) {
+    document.GetElementById("save").style.visibility = visible;
+    /*
+    document.cookie = UID + time "=" + document.getElementById("UID" + time).value;
+    drugCheck(UID);
+    */
 }
+
+function sendData
+
 function drugCheck(UID) {
     let expectedAmount = Number(document.getElementById(UID + "start").value);
     let endAmount = Number(document.getElementById(UID + "end").value);
@@ -25,5 +32,4 @@ function drugCheck(UID) {
     else {
         document.getElementById(UID).removeAttribute("style");
     }
-
 }
