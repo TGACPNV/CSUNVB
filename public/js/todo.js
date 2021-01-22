@@ -57,8 +57,7 @@ dropdownLists.forEach((item) => {
 
         var elements = document.getElementsByClassName('missingTodoTaskList');
         var label = document.getElementById('missingTaskLabel');
-
-        label.classList.add('d-none');
+        var button = document.getElementById('addTodoTaskBtn');
 
         for (var i = 0; i < elements.length; i ++) {
             elements[i].classList.add('d-none');
@@ -68,6 +67,10 @@ dropdownLists.forEach((item) => {
             var id = "day"+day+"time"+time;
             document.getElementById(id).classList.remove('d-none');
             label.classList.remove('d-none');
+            button.disabled = false;
+        }else{
+            label.classList.add('d-none');
+            button.disabled = true;
         }
 
     }, false);
