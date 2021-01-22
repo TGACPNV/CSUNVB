@@ -3,8 +3,8 @@
 
 
 /**
- * Function that gets all data from a weekly todosheets based on it's ID
- * @param int $sheetID : ID of the desired todosheet
+ * Function that gets all data from a weekly todosheets specified by ID
+ * @param int $sheetID : ID of specified todosheet
  * @return array|mixed|null
  */
 function getTodosheetByID($sheetID)
@@ -27,8 +27,8 @@ function getTodosheetByID($sheetID)
 //    return selectOne("SELECT * FROM todosheets where base_id =:baseID and week = :weekNbr", ['baseID' => $baseID, 'weekNbr' => $weekNbr]);
 //}
 
-/** Function that returns all todosheets for a base ID
- * @param  int $baseID : ID of the desired base
+/** Function that returns all todosheets for a base specified by ID
+ * @param  int $baseID : ID of specified base
  * @return array
  */
 function getAllTodoSheetsForBase($baseID){
