@@ -142,6 +142,7 @@ function readTodoForASheet($sheetID)
  * @param int $taskID : specified task id
  * @param int $sheetID : specified sheet id
  * @param int $dayOfWeek : day of the week (1-7)
+ * @return bool|null
  */
 function addTodoThing($taskID, $sheetID, $dayOfWeek)
 {
@@ -309,11 +310,17 @@ function getTaskName($todoTaskID){
 
 
 /**
- * Function that returns all task is
+ * Function that returns all task is  todo
  * @return array|mixed|null
  */
-function getAllTodoThing(){
+function getTasksByTime($daytime){
+    return selectMany("SELECT id, description FROM todothings WHERE daything = :daytime",['daytime' => $daytime]);
+}
 
+/** todo
+ * @param $taskID
+ * @return mixed
+ */
 function getTaskDescription($taskID){
     return selectOne("SELECT description
                           FROM todothings

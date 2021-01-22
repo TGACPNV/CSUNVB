@@ -34,8 +34,8 @@ function showtodo($sheetID, $edition = false)
     $dates = getDaysForWeekNumber($week['week']);
     $template = getTemplateName($sheetID);
 
-    $allTodoTasks[0] = getIDFromTodoThing(0);
-    $allTodoTasks[1] = getIDFromTodoThing(1);
+    $allTodoTasks[0] = getTasksByTime(0);
+    $allTodoTasks[1] = getTasksByTime(1);
 
     $missingTasks = array();
 
@@ -265,15 +265,16 @@ function addTodoTask(){
     $taskID = $_POST[$selectedList];
 
     var_dump($todoSheetID);
-    var_dump($time);
     var_dump($day);
     var_dump($taskID);
     $taskDescription = getTaskDescription($taskID);
 
-    if( addTodoThing($taskID, $todoSheetID, $day) ){
+    $isAdded = addTodoThing($taskID, $todoSheetID, $day);
+
+    if( isset($isAdded) ){
         $message = 'La tâche "'.$taskDescription.'" a été ajoutée.'; // todo : Message plus parlant pour l'utilisateur
     }else{
-
+        $message = "Erreur lors de l'ajout de tâche.";
     }
 
 
