@@ -17,14 +17,14 @@ $title = "CSU-NVB - Tâches hebdomadaires";
             <h1 class="mr-3">Tâches hebdomadaires à </h1>
             <select onchange="this.form.submit()" name="id" size="1" class="bigfont mb-3">
                 <?php foreach ($baseList as $base) : ?>
-                    <option value="<?= $base['id'] ?>" <?= ($selectedBaseID == $base['id']) ? 'selected' : '' ?>
+                    <option value="<?= $base['id'] ?>" <?= ($baseID == $base['id']) ? 'selected' : '' ?>
                             name="base"><?= $base['name'] ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
     </form>
     <div class="newSheetZone"> <!-- Liste déroulante pour le choix du modèle et bouton de nouvelle semaine -->
-        <?php if (ican('createsheet') && ($_SESSION['base']['id'] == $selectedBaseID)) : ?>
+        <?php if (ican('createsheet') && ($_SESSION['base']['id'] == $baseID)) : ?>
             <form method="POST" action="?action=addWeek" class="float-right">
                 <select name="selectModel">
                     <?php if (isset($lastClosedWeek['id'])): ?>
