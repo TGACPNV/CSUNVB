@@ -52,26 +52,18 @@ ob_start();
                     <?php $ncheck = getNovaCheckByDateAndDrug($date, $drug['id'], $nova['id'], $drugsheet['id']); // not great practice, but it spares repeated queries on the db ?>
                     <?php $UID = $nova["number"] . $drug["name"] . $date ?>
                     <td id="<?= $UID ?>">
-                    <?= ($drugsheet['slug'] == "close") ?
-                        '<p data-value="' . (is_numeric($ncheck["start"]) ? $ncheck["start"] : '0') . '" id="'. $UID .'start" class="text-center">'
-                        . (is_numeric($ncheck["start"]) ? $ncheck["start"] : '0') .
-                        '</p>'
-                        :
-                        '<input data-value="' . (is_numeric($ncheck["start"]) ? $ncheck["start"] : '0') . '" type="number" min="0" class="text-center"
-                                value="' . (is_numeric($ncheck["start"]) ? $ncheck["start"] : '0') . '"
-                                onchange="drugCheck(\''. $UID .'\');"
-                                id="'. $UID .'start">';
-                    ?>
-                    <?= ($drugsheet['slug'] == "close") ?
-                        '<p data-value="' . (is_numeric($ncheck["end"]) ? $ncheck["end"] : '0') . '" id="'. $UID .'end" class="text-center">'
-                        . (is_numeric($ncheck["end"]) ? $ncheck["end"] : '0') .
-                        '</p>'
-                        :
-                        '<input data-value="' . (is_numeric($ncheck["end"]) ? $ncheck["end"] : '0') . '" type="number" min="0" class="text-center"
-                                value="' . (is_numeric($ncheck["end"]) ? $ncheck["end"] : '0') . '"
-                                onchange="drugCheck(\''. $UID .'\');"
-                                id="'. $UID .'end">';
-                    ?>
+                        <input  type="number" min="0" class="text-center"
+                                value="<?= (is_numeric($ncheck["start"]) ? $ncheck["start"] : '0') ?>"
+                                onchange="drugCheck('<?= $UID ?>');"
+                                id="<?= $UID ?>start"
+                                <?= ($drugsheet['slug'] == "close") ? "readonly" : '' ?>
+                        >
+                        <input  type="number" min="0" class="text-center"
+                                value="<?= (is_numeric($ncheck["end"]) ? $ncheck["end"] : '0') ?>"
+                                onchange="drugCheck('<?= $UID ?>');"
+                                id="<?= $UID ?>end"
+                                <?= ($drugsheet['slug'] == "close") ? "readonly" : '' ?>
+                    >
                     </td>
                 <?php array_push($UIDs, $UID); ?>
                 <?php endforeach; ?>
@@ -79,46 +71,33 @@ ob_start();
             </tr>
             <?php foreach ($batchesByDrugId[$drug["id"]] as $batch): ?>
                 <?php $UID = "pharma" . $drug["name"] . $date ?>
-                <?php $pcheck = getPharmaCheckByDateAndBatch($date, $batch['id'], $drugsheet['id']); // not great practice, but  it spares repeated queries on the db ?>
+                <?php $pcheck = getPharmaCheckByDateAndBatch($date, $batch['id'], $drugsheet['id']); ?>
                 <tr>
                     <td class="text-right"><?= $batch['number'] ?></td>
                     <td class="text-center">
-                        <?= ($drugsheet['slug'] == "close") ?
-                            '<p data-value="' . (is_numeric($pcheck['start']) ? $pcheck['start'] : '0') . '" id="'. $UID .'start" class="text-center">'
-                            . (is_numeric($pcheck['start']) ? $pcheck['start'] : '0') .
-                            '</p>'
-                            :
-                            '<input data-value="' . (is_numeric($pcheck['start']) ? $pcheck['start'] : '0') . '" type="number" min="0" class="text-center"
-                                value="' . (is_numeric($pcheck['start']) ? $pcheck['start'] : '0') . '"
-                                onchange="drugCheck(\''. $UID .'\');"
-                                id="'. $UID .'start">';
-                        ?>
+                        <input  type="number" min="0" class="text-center"
+                                value="<?= (is_numeric($pcheck['start']) ? $pcheck['start'] : '0') ?>"
+                                onchange="drugCheck('<?= $UID ?>');"
+                                id="<?= $UID ?>start"
+                                <?= ($drugsheet['slug'] == "close") ? "readonly" : '' ?>
+                        >
                     </td>
                     <?php foreach ($novas as $nova): ?>
                         <td class="text-center">
-                        <?= ($drugsheet['slug'] == "close") ?
-                            '<p data-value="' . (getRestockByDateAndDrug($date, $batch['id'], $nova['id']) + 0) . '" class="'. $UID .' nova text-center">'
-                            . (getRestockByDateAndDrug($date, $batch['id'], $nova['id']) + 0) .
-                            '</p>'
-                            :
-                            '<input data-value="' . (getRestockByDateAndDrug($date, $batch['id'], $nova['id']) + 0) . '" 
-                                type="number" min="0" class="' . $UID .' nova text-center"
-                                value="' . (getRestockByDateAndDrug($date, $batch['id'], $nova['id']) + 0) . '"
-                                onchange="drugCheck(\''. $UID .'\');">';
-                        ?>
+                            <input type="number" min="0" class="<?= $UID ?> nova text-center"
+                                    value="<?= (getRestockByDateAndDrug($date, $batch['id'], $nova['id']) + 0) //+0 auto converts to a number, even if null ?>"
+                                    onchange="drugCheck('<?= $UID ?>')"
+                                    <?= ($drugsheet['slug'] == "close") ? "readonly" : '' ?>
+                            >
                         </td>
                     <?php endforeach; ?>
                     <td id="<?= $UID ?>" class="text-center">
-                        <?= ($drugsheet['slug'] == "close") ?
-                            '<p data-value="' . (is_numeric($pcheck['end']) ? $pcheck['end'] : '0') . '" id="'. $UID .'end" class="text-center">'
-                            . (is_numeric($pcheck['end']) ? $pcheck['end'] : '0') .
-                            '</p>'
-                            :
-                            '<input data-value="' . (is_numeric($pcheck['end']) ? $pcheck['end'] : '0') . '" type="number" min="0"
-                                value="' . (is_numeric($pcheck['end']) ? $pcheck['end'] : '0') . '" class="text-center"
-                                onchange="drugCheck(\''. $UID .'\');"
-                                id="'. $UID .'end">';
-                        ?>
+                        <input  type="number" min="0" class="text-center"
+                                value="<?= is_numeric($pcheck['end']) ? $pcheck['end'] : '0'?>" class="text-center"
+                                onchange="drugCheck('<?= $UID ?>');"
+                                id="<?= $UID ?>end"
+                                <?= ($drugsheet['slug'] == "close") ? "readonly" : '' ?>
+                        >
                     </td>
                 </tr>
             <?php array_push($UIDs, $UID); ?>

@@ -75,7 +75,6 @@ function getBatchesForSheet($drugSheetID) {
  */
 function getPharmaCheckByDateAndBatch($date, $batch, $drugSheetID) {
     return selectOne("SELECT start,end FROM pharmachecks WHERE date=:batchdate AND batch_id=:batch AND drugsheet_id=:drugsheet", ['batchdate' => $date, 'batch' => $batch, 'drugsheet' => $drugSheetID]);
-
 }
 
 /**
