@@ -1,4 +1,4 @@
 node_modules
 *.idea/*
 .const.php
-_icescrum_api_token.js
+*_icescrum*
