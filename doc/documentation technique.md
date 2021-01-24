@@ -19,7 +19,27 @@ Cependant il faudra demander un identifiant au chef de projet de manière à vou
 
 ### Quelles sont les données / informations que ce site manipule ?
 
-Ce site internet est lié à une base de donnée qui va contenir plusieures choses comme les utilisateurs (secouristes), Les médicaments, les différentes ambulances.
+
+Ce site internet est lié à une base de données qui contient toutes les donné nécessaire pour la gestion administratif.
+
+#### Le site est composé de 4 grande section :
+-	Grille des taches hebdomadaires: 
+     
+Montre toutes les taches à faire pendant la semaine, une table pour le jour et l’autre pour la nuit avec possibilité de valider les taches finies.
+
+-	Grille des remises de garde: 
+
+Montre les ambulances et leurs équipages et un rapport pour chaque garde.
+
+-	Gestion des drogues hebdomadaires: 
+     
+Gestion des stockes de médicaments dans la base et dans les ambulances.
+
+-	Administration: 
+     
+Administration du site
+
+
 
 ### De quels composants le site est-il fait ? 
 
@@ -35,7 +55,7 @@ Il faut aussi être à l'aise avec le html et le css pour tout ce qui est de la 
 
 Il est aussi nécessaire de connaître le sql car il y aura plusieures requête SQL pour interroger la base de donnée.
 
-Le choix de ces languages paraissent évidents pour le développement d'un site intenet.
+Le choix de ces languages paraissent évidents pour le développement d'un site internet.
 
 ### Qu'est-ce que je dois installer sur mon poste de travail pour pouvoir commencer à bosser sur ce site ?
 Les logiciels suivant sont nécessaires pour pouvoir travailler:
