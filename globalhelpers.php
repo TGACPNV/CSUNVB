@@ -7,7 +7,7 @@ setlocale(LC_ALL, 'fr_CH'); // pour les format de dates
  */
 function getVersion()
 {
-    return "2/Sprint 4";
+    return "2.0";
 }
 
 /**
