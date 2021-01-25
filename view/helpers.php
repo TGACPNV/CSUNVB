@@ -69,7 +69,7 @@ function showState($slug, $plural = 0)
             $result = "en préparation";
             break;
         case "open":
-            $result = "active";
+            $result = "actif";
             if ($plural) {
                 $result = $result . "(s)";
             }
@@ -78,13 +78,13 @@ function showState($slug, $plural = 0)
             $result = "en correction";
             break;
         case "close":
-            $result = "clôturée";
+            $result = "clôturé";
             if ($plural) {
                 $result = $result . "(s)";
             }
             break;
         case "archive":
-            $result = "archivée";
+            $result = "archivé";
             if ($plural) {
                 $result = $result . "(s)";
             }
