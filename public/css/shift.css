@@ -22,6 +22,7 @@
 .SH_sectionName{
     font-size: x-large;
     font-weight: bold;
+    display: block;/** used for good display in the pdf **/
 }
 
 /** title for actions in the page showshift **/
