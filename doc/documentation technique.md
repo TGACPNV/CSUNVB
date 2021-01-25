@@ -39,7 +39,7 @@ Ce site internet est lié à une base de données qui contient toutes les donné
 
 ### De quels composants le site est-il fait ? 
 
-Le site est basé sur la méthode MCV (Model, controleur, vue).
+Le site est basé sur la méthode MVC (Model, vue, controleur).
 - Il y as un dossier Doc contenant la documentation
 - Il y as un dossier public qui contient l'index, le js, le CSS et les assets.
 - A la racine on trouve les fichiers globalhelpers.php (les fonctions communes a toutes les parties), path.php (les chemins), policies.php (les politiques d'accès)
@@ -66,9 +66,10 @@ Résumé:
 Les logiciels suivant sont ceux que nous avaons utiliser pour travailler. Des alternatives sont possible mais attention à la compatibilité.
 
 
-- Un environnement de développement: PhpStorm https://www.jetbrains.com/fr-fr/phpstorm/
+- Un environnement de développement: PhpStorm 2019.3.x https://www.jetbrains.com/fr-fr/phpstorm/
+- PHP version 7.4.x dernière version
 - Serveur de base de données: MySQL Community Server 8.0.23 https://dev.mysql.com/downloads/mysql/
-- Client de base de données: MySQL Workbench (distribué avec MySQL serveur), Heidi SQL https://www.heidisql.com/
+- Client de base de données: MySQL Workbench (distribué avec MySQL serveur), Heidi SQL v11.2 https://www.heidisql.com/
 
 ### Est-ce qu'on a des conventions de codage ?
 
