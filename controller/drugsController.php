@@ -59,8 +59,4 @@ function drugSheetSwitchState() {
 }
 
 function updateDrugSheet() {
-    foreach ($_COOKIE as $cookie) {
-        if($cookie)
-    }
-    unset($COOKIE);
 }
