@@ -74,14 +74,14 @@ function getBatchesForSheet($drugSheetID) {
  * Retourne le pharmacheck du jour donné pour un batch précis lors de son utilisation dans une drugsheet
  */
 function getPharmaCheckByDateAndBatch($date, $batch, $drugSheetID) {
-    return selectOne("SELECT start,end FROM pharmachecks WHERE date=:batchdate AND batch_id=:batch AND drugsheet_id=:drugsheet", ['batchdate' => $date, 'batch' => $batch, 'drugsheet' => $drugSheetID]);
+    return selectOne("SELECT id,start,end FROM pharmachecks WHERE date=:batchdate AND batch_id=:batch AND drugsheet_id=:drugsheet", ['batchdate' => $date, 'batch' => $batch, 'drugsheet' => $drugSheetID]);
 }
 
 /**
  * Retourne le novacheck du jour donné pour un médicament précis dans une nova lors de son utilisation dans une drugsheet
  */
 function getNovaCheckByDateAndDrug($date, $drug, $nova, $drugSheetID) {
-    return selectOne("SELECT start,end FROM novachecks WHERE date=:batchdate AND drug_id=:drug AND nova_id=:nova AND drugsheet_id=:drugsheet", ['batchdate' => $date, 'drug' => $drug, 'nova' => $nova, 'drugsheet' => $drugSheetID]);
+    return selectOne("SELECT id,start,end FROM novachecks WHERE date=:batchdate AND drug_id=:drug AND nova_id=:nova AND drugsheet_id=:drugsheet", ['batchdate' => $date, 'drug' => $drug, 'nova' => $nova, 'drugsheet' => $drugSheetID]);
 }
 
 /**

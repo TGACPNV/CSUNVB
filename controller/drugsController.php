@@ -59,8 +59,11 @@ function drugSheetSwitchState() {
 }
 
 function updateDrugSheet() {
-    foreach ($_COOKIE as $cookie) {
-        if($cookie)
+    foreach ($_COOKIE as $cookieName => $cookieData) {
+        //when switching to PHP8, replace with str_contains
+        if(strpos($cookieName,"drug")) {
+            $SQLid = explode("_", $cookieName);
+        }
     }
     unset($COOKIE);
 }

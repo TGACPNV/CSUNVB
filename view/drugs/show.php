@@ -51,18 +51,18 @@ ob_start();
                 <td></td>
                 <?php foreach ($novas as $nova): ?>
                     <?php $ncheck = getNovaCheckByDateAndDrug($date, $drug['id'], $nova['id'], $drugsheet['id']); // not great practice, but it spares repeated queries on the db ?>
-                    <?php $UID = 'n' . $nova["number"] . 'd' . $drug["id"] . 'D' . $date ?>
+                    <?php $UID = 'nova_' . $ncheck['id']; ?>
                     <td id="<?= $UID ?>">
                         <input  type="number" min="0" class="text-center"
                                 value="<?= (is_numeric($ncheck["start"]) ? $ncheck["start"] : '0') ?>"
-                                onchange="cellUpdate('<?= $UID ?>', 'start');"
-                                id="<?= $UID ?>start"
+                                onchange="cellUpdate('<?= $UID ?>', '_start');"
+                                id="<?= $UID ?>_start"
                                 <?= ($drugsheet['slug'] == "close") ? "readonly" : '' ?>
                         >
                         <input  type="number" min="0" class="text-center"
                                 value="<?= (is_numeric($ncheck["end"]) ? $ncheck["end"] : '0') ?>"
-                                onchange="cellUpdate('<?= $UID ?>', 'end');"
-                                id="<?= $UID ?>end"
+                                onchange="cellUpdate('<?= $UID ?>', '_end');"
+                                id="<?= $UID ?>_end"
                                 <?= ($drugsheet['slug'] == "close") ? "readonly" : '' ?>
                     >
                     </td>
@@ -71,15 +71,15 @@ ob_start();
                 <td></td>
             </tr>
             <?php foreach ($batchesByDrugId[$drug["id"]] as $batch): ?>
-                <?php $UID = "pharma_" . 'b' . $batch['id'] . 'D' . $date ?>
                 <?php $pcheck = getPharmaCheckByDateAndBatch($date, $batch['id'], $drugsheet['id']); ?>
+                <?php $UID = "pharma_" . $pcheck['id']; ?>
                 <tr>
                     <td class="text-right"><?= $batch['number'] ?></td>
                     <td class="text-center">
                         <input  type="number" min="0" class="text-center"
                                 value="<?= (is_numeric($pcheck['start']) ? $pcheck['start'] : '0') ?>"
-                                onchange="cellUpdate('<?= $UID ?>', 'start');"
-                                id="<?= $UID ?>start"
+                                onchange="cellUpdate('<?= $UID ?>', '_start');"
+                                id="<?= $UID ?>_start"
                                 <?= ($drugsheet['slug'] == "close") ? "readonly" : '' ?>
                         >
                     </td>
@@ -87,7 +87,7 @@ ob_start();
                         <td class="text-center">
                             <input type="number" min="0" class="<?= $UID ?> nova text-center"
                                     value="<?= (getRestockByDateAndDrug($date, $batch['id'], $nova['id']) + 0) //+0 auto converts to a number, even if null ?>"
-                                    onchange="cellUpdate('<?= $UID ?>')"
+                                    onchange="cellUpdate('<?= $UID ?>', '_nova_<?= $nova['id'] ?>')"
                                     <?= ($drugsheet['slug'] == "close") ? "readonly" : '' ?>
                             >
                         </td>
@@ -95,8 +95,8 @@ ob_start();
                     <td id="<?= $UID ?>" class="text-center">
                         <input  type="number" min="0" class="text-center"
                                 value="<?= is_numeric($pcheck['end']) ? $pcheck['end'] : '0'?>" class="text-center"
-                                onchange="cellUpdate('<?= $UID ?>', 'end');"
-                                id="<?= $UID ?>end"
+                                onchange="cellUpdate('<?= $UID ?>', '_end');"
+                                id="<?= $UID ?>_end"
                                 <?= ($drugsheet['slug'] == "close") ? "readonly" : '' ?>
                         >
                     </td>

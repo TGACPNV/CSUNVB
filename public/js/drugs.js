@@ -4,9 +4,9 @@
  **/
 
 
-function cellUpdate(UID, time = '') {
+function cellUpdate(UID, tag) {
     document.getElementById("save").removeAttribute("hidden");
-    document.cookie = "drug" + UID + time + "=" + document.getElementById(UID + time).value;
+    //document.cookie = "drug" + UID + tag + "=" + document.getElementById(UID + tag).value;
     drugCheck(UID);
 }
 
@@ -15,8 +15,8 @@ function sendData() {
 }
 
 function drugCheck(UID) {
-    let expectedAmount = Number(document.getElementById(UID + "start").value);
-    let endAmount = Number(document.getElementById(UID + "end").value);
+    let expectedAmount = Number(document.getElementById(UID + "_start").value);
+    let endAmount = Number(document.getElementById(UID + "_end").value);
 
     //pharmacheck?
     if(UID.indexOf("pharma") !== -1) {
