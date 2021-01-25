@@ -101,9 +101,9 @@ function showState($slug, $plural = 0)
 function listSheet($page, $sheets)
 {
     switch ($page) {
-        case "drugs":
+        case "drug":
         case "todo":
-            $function = "listTodoOrDrugsSheet";
+            $function = "listTodoOrDrugSheet";
             break;
         case "shift":
             $function = "listShiftSheet";
@@ -125,9 +125,9 @@ function listSheet($page, $sheets)
     return $html;
 }
 
-function listTodoOrDrugsSheet($slug, $sheets, $zone)
+function listTodoOrDrugSheet($slug, $sheets, $zone)
 {
-    if($zone == 'drugs'){
+    if($zone == 'drug'){
         $detailAction = "showDrugSheet";
     }else{
         $detailAction = "showtodo";
@@ -282,8 +282,8 @@ function checkOpen($page, $baseID){
     $count = 1;
 
     switch($page){
-        case 'drugs':
-            $openSheets = getOpenDrugsSheetNumber($baseID);
+        case 'drug':
+            $openSheets = getOpenDrugSheetNumber($baseID);
             break;
         case 'todo':
             $openSheets = getOpenTodoSheetNumber($baseID);

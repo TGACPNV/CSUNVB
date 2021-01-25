@@ -24,7 +24,7 @@ $title = "CSU-NVB - Drogues hebdomadaires";
     </div>
 </div>
 
-<?= listSheet('drugs', $drugSheetList) ?>
+<?= listSheet('drug', $drugSheetList) ?>
 
 <?php
 $content = ob_get_clean();

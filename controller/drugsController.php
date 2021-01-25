@@ -27,6 +27,11 @@ function showDrugSheet($drugSheetID) {
     }
     $drugs = getDrugsInDrugSheet($drugSheetID);
     $site = getbasebyid($drugsheet['base_id']);
+
+    //ici pour faire un check dès la generation de la page, systeme absolument affreux, a ameliorer
+    $cellType = ($drugsheet['slug'] == "close") ? "p" : "input";
+    $UIDs = array();
+
     require_once VIEW . 'drugs/show.php';
 }
 
@@ -42,18 +47,20 @@ function hasOpenDrugSheet($baseID) {
     return boolval(getOpenDrugSheet($baseID));
 }
 
-//TODO: replace with switch
-function openDrugSheet() {
-    updateSheetState($_POST["id"], "open");
+function drugsDeleteSheet($baseID = null) {
+    if (is_null($baseID))
+        $baseID = $_SESSION["base"]["id"];
+    removeDrugSheet($_POST['id']);
+    redirect("listDrugSheets", $baseID);
+}
+function drugSheetSwitchState() {
+    updateSheetState($_POST["id"], getStatusID($_POST['newSlug']));
     redirect("listDrugSheets", $_SESSION["base"]["id"]);
 }
 
-function closeDrugSheet() {
-    updateSheetState($_POST["id"], "close");
-    redirect("listDrugSheets", $_SESSION["base"]["id"]);
-}
-
-function reopenDrugSheet() {
-    updateSheetState($_POST["id"], "reopened");
-    redirect("listDrugSheets", $_SESSION["base"]["id"]);
+function updateDrugSheet() {
+    foreach ($_COOKIE as $cookie) {
+        if($cookie)
+    }
+    unset($COOKIE);
 }

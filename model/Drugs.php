@@ -75,7 +75,6 @@ function getBatchesForSheet($drugSheetID) {
  */
 function getPharmaCheckByDateAndBatch($date, $batch, $drugSheetID) {
     return selectOne("SELECT start,end FROM pharmachecks WHERE date=:batchdate AND batch_id=:batch AND drugsheet_id=:drugsheet", ['batchdate' => $date, 'batch' => $batch, 'drugsheet' => $drugSheetID]);
-
 }
 
 /**
@@ -101,7 +100,7 @@ function insertDrugSheet($base_id, $lastWeek) {
     //TODO: slug
     //magnifique, passe a la nouvelle annee grace a +48 si 52eme semaine
     (($lastWeek % 100) == 52) ? $lastWeek += 49 : $lastWeek++;
-    return insert("INSERT INTO drugsheets (base_id,state,week) VALUES (:base, 'blank', :lastweek)", ['base'=> $base_id, 'lastweek' => $lastWeek]);
+    return insert("INSERT INTO drugsheets (base_id,status_id,week) VALUES (:base, 1, :lastweek)", ['base'=> $base_id, 'lastweek' => $lastWeek]);
 }
 
 function cloneLatestDrugSheet($newSheetID, $oldSheetID) {
@@ -118,7 +117,7 @@ function cloneLatestDrugSheet($newSheetID, $oldSheetID) {
 }
 
 function updateSheetState($sheetID, $state) {
-    return execute("UPDATE drugsheets SET state='$state' WHERE id='$sheetID'");
+    return execute("UPDATE drugsheets SET status_id='$state' WHERE id='$sheetID'");
 }
 
 function getOpenDrugSheet($baseID) {
@@ -133,6 +132,14 @@ function getStateFromDrugs($id){
     return selectOne("SELECT status.slug FROM status LEFT JOIN drugsheets ON drugsheets.status_id = status.id WHERE drugsheets.id =:sheetID", ["sheetID"=>$id]);
 }
 
-function getOpenDrugsSheetNumber($baseID){
+function getOpenDrugSheetNumber($baseID){
     return selectOne("SELECT COUNT(drugsheets.id) as number FROM  drugsheets inner join status on status.id = drugsheets.status_id where status.slug = 'open' and drugsheets.base_id =:base_id", ['base_id' => $baseID])['number'];
+}
+function removeDrugSheet($sheetID) {
+	execute("DELETE FROM drugsheet_use_batch WHERE drugsheet_id =:sheet_id", ['sheet_id' => $sheetID]);
+	execute("DELETE FROM drugsheet_use_nova WHERE drugsheet_id =:sheet_id", ['sheet_id' => $sheetID]);
+	execute("DELETE FROM drugsheets WHERE id =:sheet_id", ['sheet_id' => $sheetID]);
+}
+function getStatusID($slug) {
+	return(selectOne("SELECT id FROM status WHERE slug =:slug", ['slug' => $slug])['id']);
 }

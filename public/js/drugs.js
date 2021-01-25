@@ -3,25 +3,33 @@
  * Date: Décembre 2020
  **/
 
-function novaCheck(novaID, drugID, dateID) {
-    divID = novaID + drugID + dateID;
-    let originalQuantity = document.getElementById(divID + "start").value;
-    let currentQuantity = document.getElementById(divID + "end").value;
-    quantityCheck(divID, originalQuantity, currentQuantity);
+
+function cellUpdate(UID, time = '') {
+    document.getElementById("save").removeAttribute("hidden");
+    document.cookie = "drug" + UID + time + "=" + document.getElementById(UID + time).value;
+    drugCheck(UID);
 }
 
-function pharmaCheck(drugID, dateID) {
-    divID = drugID + dateID;
-    let originalQuantity = document.getElementById(divID + "start").value;
-    let currentQuantity = document.getElementById(divID + "end").value; // + document.getElementById(divID + "day").value + document.getElementById(divID + "night").value;
-    quantityCheck(divID, originalQuantity, currentQuantity);
+function sendData() {
+    window.open("?action=updateDrugSheet", "_self");
 }
 
-function quantityCheck(divID, originalQuantity, currentQuantity) {
+function drugCheck(UID) {
+    let expectedAmount = Number(document.getElementById(UID + "start").value);
+    let endAmount = Number(document.getElementById(UID + "end").value);
 
-    if(Number(currentQuantity) !== Number(originalQuantity)) {
-        document.getElementById(divID).style = "background-color: orange;"
-    } else {
-        document.getElementById(divID).removeAttribute("style");
+    //pharmacheck?
+    if(UID.indexOf("pharma") !== -1) {
+        let novaCells = document.querySelectorAll("." + UID + ".nova");
+        //not cells.forEach because then no way to get value out of callback function
+        for(let i = 0; i < novaCells.length; i++) {
+            expectedAmount -= Number(novaCells[i].value);
+        }
+    }
+    if(endAmount !== expectedAmount) {
+        document.getElementById(UID).style = "background-color: orange;"
+    }
+    else {
+        document.getElementById(UID).removeAttribute("style");
     }
 }
