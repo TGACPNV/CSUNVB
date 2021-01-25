@@ -17,24 +17,28 @@ $title = "CSU-NVB - Tâches hebdomadaires";
             <h1 class="mr-3">Tâches hebdomadaires à </h1>
             <select onchange="this.form.submit()" name="id" size="1" class="bigfont mb-3">
                 <?php foreach ($baseList as $base) : ?>
-                    <option value="<?= $base['id'] ?>" <?= ($selectedBaseID == $base['id']) ? 'selected' : '' ?>
+                    <option value="<?= $base['id'] ?>" <?= ($baseID == $base['id']) ? 'selected' : '' ?>
                             name="base"><?= $base['name'] ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
     </form>
     <div class="newSheetZone"> <!-- Liste déroulante pour le choix du modèle et bouton de nouvelle semaine -->
-        <?php if (ican('createsheet') && ($_SESSION['base']['id'] == $selectedBaseID)) : ?>
+        <?php if (ican('createsheet') && ($_SESSION['base']['id'] == $baseID)) : ?>
             <form method="POST" action="?action=addWeek" class="float-right">
                 <select name="selectModel">
-                    <?php if (!is_null($maxID['id'])): ?>
-                        <option value='lastValue' selected=selected>Dernière semaine en date</option>
+                    <?php if (isset($lastClosedWeek['id'])): ?>
+                        <option value='lastValue' selected=selected>Dernière semaine clôturée</option>
                     <?php endif; ?>
                     <?php foreach ($templates as $template) : ?>
                         <option value='<?= $template['template_name'] ?>'><?= $template['template_name'] ?></option>
                     <?php endforeach; ?>
                 </select>
-                <button type="submit" class="btn btn-primary m-1 pull-right">Nouvelle semaine</button>
+                <?php if(!isset($lastClosedWeek['id']) && !isset($template[0]['template_name']) ): ?>
+                    <button type="submit" class="btn btn-primary m-1 pull-right" disabled>Nouvelle semaine</button>
+                <?php else: ?>
+                    <button type="submit" class="btn btn-primary m-1 pull-right">Nouvelle semaine</button>
+                <?php endif; ?>
             </form>
         <?php endif; ?>
     </div>
