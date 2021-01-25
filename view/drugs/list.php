@@ -23,14 +23,8 @@ $title = "CSU-NVB - Drogues hebdomadaires";
         <?php endif; ?>
     </div>
 </div>
-<div> <!-- Sections d'affichage des différentes feuilles -->
-    <?php foreach ($slugs as $slug) : ?>
-    <div> <!-- Feuilles ouvertes -->
-        <?= showDrugSheetsByStatus($slug['slug'], $drugSheetList[$slug['slug']]) ?>
-    </div>
-    <br>
-    <?php endforeach; ?>
-</div>
+
+<?= listSheet('drugs', $drugSheetList) ?>
 
 <?php
 $content = ob_get_clean();

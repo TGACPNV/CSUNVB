@@ -56,6 +56,6 @@ removeCarryOnBtn.forEach((item) => {
     }, false);
 })
 
-$( ".shiftInfo" ).change(function() {
-    $( "#updateShift").removeClass( "d-none" );
+$( ".SH_dropdownInfo" ).change(function() {
+    $( "#SH_updateInfoBtn").show();
 });

@@ -2,15 +2,18 @@
 
 setlocale(LC_ALL, 'fr_CH'); // pour les format de dates
 
+/**
+ * getVersion : show actual project version
+ */
 function getVersion()
 {
-    return "2/Sprint 3";
+    return "2/Sprint 4";
 }
 
 /**
- * Permet de renvoyer le navigateur à une route précise, avec un id en paramètre ou non
- * @param $action l'action à laquelle renvoyer
- * @param int $id paramètre facultatif
+ * redirect : send the browser to the desired location, depending on the action specified. It can have an id or not.
+ * @param $action : the action to specify to know what to show on screen
+ * @param int $id : the id of the page/element to show, not mandatory
  */
 function redirect ($action, $id=0)
 {
@@ -22,7 +25,7 @@ function redirect ($action, $id=0)
 }
 /**
  * inspired by source https://stackoverflow.com/questions/7447472/how-could-i-display-the-current-git-branch-name-at-the-top-of-the-page-of-my-de
- * @author Kevin Ridgway
+ * gitBranchTag : get the tag from the corresponding GitHub branch
  */
 function gitBranchTag()
 {
@@ -38,9 +41,9 @@ function gitBranchTag()
 }
 
 /**
- * Retourne un tableau des 7 dates de la semaine donnée
- * @param $weekNumber format AASS
- * @return array
+ * getDaysForWeekNumber : get the 7 dates for the selected week
+ * @param $weekNumber : format AASS
+ * @return array : contain the 7 days
  */
 function getDaysForWeekNumber($weekNumber){
     $year = 2000 + intdiv($weekNumber,100);
@@ -57,10 +60,10 @@ function getDaysForWeekNumber($weekNumber){
 }
 
 /**
- * Return the state of the sheet on the screen
+ * showSheetState : Return the state of the sheet on the screen
  * @param $id id of the pages on the screen
  * @param $zone name of the zone used (shift, drugs, todo)
- * @return $state
+ * @return $state : displayname of the sheet status
  */
 function showSheetState($id, $zone){
     if($zone == "shift"){
@@ -73,37 +76,19 @@ function showSheetState($id, $zone){
         /** $slug = getStateFromDrugs($id); */
         $slug = "tsers";
     }
-    else{
 
+    if(isset($slug['displayname'])){
+        $state = "[". $slug['displayname']."]";
     }
-    // todo (VB) : Utilisation de la base de données (displayname)
-    switch($slug){
-        case "blank":
-            $state = "[En préparation]";
-            break;
-        case "open":
-            $state = "[Active]";
-            break;
-        case "reopen":
-            $state = "[En correction]";
-            break;
-        case "close":
-            $state = "[Fermée]";
-            break;
-        case "archived":
-            $state = "[Archivée]";
-            break;
-        default:
-            $state = "[Non défini]";
-            break;
+    else {
+        $state = "[Non défini]";
     }
-
     return $state;
 }
 
 /**
  * Tells if the current user (logged in) can perform a certain action according to the policy
- * @param $action
+ * @param $action : the action to check if it is doable
  * @return bool
  */
 function ican ($action)

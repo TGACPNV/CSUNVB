@@ -1,73 +1,59 @@
-.visible{
-    visibility: visible ;
-}
-.hidden{
-    visibility: hidden;
-}
-.ok{
-    background-color: lightgreen;
-}
-.no{
-    background-color: lightcoral;
+/**
+ * Shift.php : all funtion pertaining to database request -> for shift
+ * Auteur: Gogniat Michael / Paola Costa
+ * Date: Decembre 2020
+ **/
+
+/** SH means styles are only used for Shift **/
+
+/** dropdowns for Info in the page showshift (at the top) **/
+.SH_dropdownInfo {
+    width: 80px;
+    margin: 3px 10px 3px 10px;
 }
 
-.sectiontitle{
-    padding: 5px;
+/** update button for Info in the page showshift (at the top) **/
+#SH_updateInfoBtn{
+    top: 50px;
+    display: none;
+}
+
+/** title for sections in the page showshift **/
+.SH_sectionName{
     font-size: x-large;
     font-weight: bold;
 }
 
-.table .actionname {
-    width: 200px;
+/** title for actions in the page showshift **/
+.SH_actionName{
+    display: inline;
 }
 
-.table .ackcell {
-    width: 40px;
+.SH_actionCase{
+    width: 300px;
+}
+
+.SH_checkCase{
+    width: 110px;
 }
 
 
-
-/** Ajouté par Paola Costa **/
-.formTeamNova {
-    width: 80px;
-}
-
-.rollingList {
-    padding-left:40px;
-    margin-right: 50px;
-}
-
-.flex{
-    display:flex;
-    align-content: space-between;
-    align-items: center;
-}
-
-/** ajouté par Michael Gogniat **/
-
+/** carryOn button for shiftcomment **/
 .carry .carried {
     display: inline;
 }
-
 .carry .addCarry {
     display: none;
 }
-
 .notCarry .carried {
     display: none;
 }
-
 .notCarry .addCarry {
     display: none;
 }
-
 .notCarry .addCarry:hover {
     display: inline;
 }
-
 .notCarry:hover .addCarry {
     display: inline;
 }
-
-
-

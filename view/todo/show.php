@@ -4,35 +4,49 @@ $title = "CSU-NVB - Tâches hebdomadaires";
 ?>
 <div>
     <h1>Tâches hebdomadaires</h1>
-    <h2>Semaine <?= $week['week'] ?> - Base de <?= $base['name']?> <?= showSheetState($week['id'], "todo") ?></h2>
-    <form>
-        <input type="hidden" name="action" value="listtodoforbase">
-        <input type="hidden" name="id" value="<?= $base['id'] ?>">
-        <button type="submit" class='btn btn-primary m-1 float-right'>Retour à la liste</button>
-    </form>
-</div>
-<div>
-    <div>
-        <?php if($_SESSION['user']['admin'] == 1 && is_null($template['template_name'])) : ?>
-            <form action="?action=modelWeek" method="POST">
-                <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
-                <input type="hidden" name="baseID" value="<?= $base['id'] ?>">
-                <input type="text" name="template_name" value="<?= $template['template_name']?>">
-                <button type="submit" class='btn btn-primary m-1 float-right'>Retenir comme modèle</button>
-            </form>
-        <?php elseif($_SESSION['user']['admin'] == 1 && !is_null($template['template_name'])): ?>
-            <form action="?action=deleteTemplate" method="POST">
-                <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
-                <button type="submit" class='btn btn-primary m-1 float-right'>Oublier le modèle</button>
-            </form>
-        <?php endif; ?>
+    <h2>Semaine <?= $week['week'] ?> - Base de <?= $base['name']?> [<?= $week['displayname'] ?>]</h2>
+    <div class="d-flex justify-content-end d-print-none">
+
+        <button type='submit' class='btn btn-primary m-1 float-right' onclick="window.print()" <?= !$edition ? '':'disabled'?> >Télécharger en PDF</button>
+        <form>
+            <input type="hidden" name="action" value="listtodoforbase">
+            <input type="hidden" name="id" value="<?= $base['id'] ?>">
+            <button type="submit" class='btn btn-primary m-1 float-right'>Retour à la liste</button>
+        </form>
     </div>
 </div>
-<div> <!-- Boutons relatifs à l'état de la feuille -->
-<?=  slugsButtonTodo($week['slug'], $week['id'])?>
-    <form  method='POST' action='?action=todoSheetToPDF&id=<?=$week['id']?>'>
-        <button type='submit' class='btn btn-primary'>Télécharger en PDF</button>
-    </form>
+<div class="d-flex justify-content-between d-print-none">
+    <div class="d-flex flex-row"> <!-- Boutons relatifs aux modèles -->
+        <?php if(ican ("createTemplate") && is_null($template['template_name'])) : ?>
+            <form action="?action=modelWeek" method="POST">
+                <button type="submit" class='btn btn-primary m-1'>Retenir comme modèle</button>
+                <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
+                <input type="hidden" name="baseID" value="<?= $base['id'] ?>">
+                <input type="text" name="template_name" value="" placeholder="Nom du modèle" required>
+            </form>
+        <?php elseif(ican ("deleteTemplate") && !is_null($template['template_name'])): ?>
+            <form action="?action=deleteTemplate" method="POST">
+                <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
+                <button type="submit" class='btn btn-primary m-1'>Oublier le modèle</button>
+            </form>
+            <div style="padding: 5px"> Nom du modèle : <?= $template['template_name'] ?></div>
+        <?php endif; ?>
+    </div>
+    <div class="d-flex flex-row"> <!-- If user is admin and sheet is "blank" then show modification button -->
+        <?php if(ican ("modifySheet") && $week['slug'] == "blank") : ?>
+            <?php if($edition) :
+                $text = "Quitter édition";
+            else:
+                 $text = "Mode édition";
+           endif; ?>
+            <form action="?action=todoEditionMode" method="POST">
+                <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
+                <input type="hidden" name="edition" value="<?= $edition ?>">
+                <button type="submit" class='btn btn-warning m-1 float-right'><?= $text ?></button>
+            </form>
+        <?php endif; ?>
+        <?=  slugButtons("todo", $week, $week['slug'])?>
+    </div>
 </div>
 <div>
     <div class="week text-center p-0">
@@ -48,7 +62,7 @@ $title = "CSU-NVB - Tâches hebdomadaires";
         <?php foreach ($dates as $index => $date) : ?>
             <div class="col p-1">
                 <?php foreach ($todoThings[1][$index + 1] as $todothing): ?>
-                    <?= buttonTask($todothing['initials'], $todothing['description'], $todothing['id'], $todothing['type'], $week['slug']) ?>
+                    <?= buttonTask($todothing['initials'], $todothing['description'], $todothing['id'], $todothing['type'], $week['slug'], $edition, $date) ?>
                 <?php endforeach; ?>
             </div>
         <?php endforeach; ?>
@@ -61,20 +75,20 @@ $title = "CSU-NVB - Tâches hebdomadaires";
         <?php foreach ($dates as $index => $date) : ?>
             <div class="col p-1">
                 <?php foreach ($todoThings[0][$index + 1] as $todothing): ?>
-                    <?= buttonTask($todothing['initials'], $todothing['description'], $todothing['id'], $todothing['type'], $week['slug']) ?>
+                    <?= buttonTask($todothing['initials'], $todothing['description'], $todothing['id'], $todothing['type'], $week['slug'], $edition, $date) ?>
                 <?php endforeach; ?>
             </div>
         <?php endforeach; ?>
     </div>
     <br>
 </div>
-<!-- Affichage de la pop-up pour les quittances -->
-<div class="modal fade" id="todoModal" tabindex="-1" role="dialog" aria-labelledby="modal-taskValidation"
-     aria-hidden="true">
+
+<!-- Pop-up pour les quittances de tâches -->
+<div class="modal fade" id="todoModal" tabindex="-1" role="dialog" aria-labelledby="modal-taskValidation" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-title"></h5>
+                <h5 class="modal-title" id="modal-validationTitle"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -85,8 +99,32 @@ $title = "CSU-NVB - Tâches hebdomadaires";
                 <input type="hidden" id="modal-todoID" name="modal-todoID" value="">
                 <input type="hidden" id="modal-todoStatus" name="modal-todoStatus" value="">
                 <div class="modal-body" >
-                    <div id="modal-content"></div>
+                    <div id="modal-validationContent"></div>
                     <input type="hidden" id="modal-todoValue" name="modal-todoValue">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Valider</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Pop up pour la suppression de tâches -->
+<div class="modal fade" id="deletingTaskModal" tabindex="-1" role="dialog" aria-labelledby="modal-taskDelete" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-deletingTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="?action=destroyTaskTodo">
+                <input type="hidden" name="todosheetID" value="<?= $week['id'] ?>">
+                <input type="hidden" id="modal-deletingTaskID" name="taskID" value="">
+                <div class="modal-body" >
+                    <div id="modal-deletingContent"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Valider</button>

@@ -14,7 +14,7 @@ $title = "CSU-NVB - Administration - Secouristes";
     <th>Nom</th>
     <th>Initiales</th>
     <th>Admin</th>
-    <th>Status</th>
+    <th>Statut</th>
     </thead>
     <tbody>
     <?php foreach ($users as $user) { ?>

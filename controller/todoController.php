@@ -12,11 +12,7 @@ function listtodo(){
 function listtodoforbase($selectedBaseID){
 
     // Récupération des semaines en fonction de leur état (slug) et de la base choisie
-    $openWeeks = getWeeksBySlugs($selectedBaseID, 'open');
-    $closeWeeks = getWeeksBySlugs($selectedBaseID, 'close');
-    $blankWeeks = getWeeksBySlugs($selectedBaseID, 'blank');
-    $reopenWeeks = getWeeksBySlugs($selectedBaseID, 'reopen');
-    //$archiveWeeks = getWeeksBySlugs($selectedBaseID, 'archive');
+    $sheets = getAllTodoSheetsForBase($selectedBaseID);
 
     $baseList = getbases();
     $templates = getAllTemplateNames();
@@ -29,11 +25,12 @@ function listtodoforbase($selectedBaseID){
  * Fonction qui affiche les tâches d'une semaine spécifique
  * @param $todo_id : l'ID de la feuille de tâche à afficher
  */
-function showtodo($todo_id){
+function showtodo($todo_id, $edition = false){
     $week = getTodosheetByID($todo_id);
     $base = getbasebyid($week['base_id']);
     $dates = getDaysForWeekNumber($week['week']);
     $template = getTemplateName($todo_id);
+
 
     for ($daynight=0; $daynight <= 1; $daynight++) {
         for ($dayofweek = 1; $dayofweek <= 7; $dayofweek++) {
@@ -112,6 +109,29 @@ function deleteTemplate(){
     header('Location: ?action=showtodo&id='.$todosheetID);
 }
 
+function todoEditionMode()
+{
+    $edition = $_POST['edition'];
+    $todosheetID = $_POST['todosheetID'];
+
+    if (!$edition){
+        $edition = true;
+        showtodo($todosheetID,$edition);
+    } else {
+        $edition = false;
+        header('Location: ?action=showtodo&id='.$todosheetID);
+    }
+}
+
+function destroyTaskTodo(){
+
+    $todosheetID = $_POST['todosheetID'];
+    $todoTaskID = $_POST['taskID'];
+    deletethingsID($todoTaskID);
+
+    showtodo($todosheetID,true);
+}
+
 function loadAModel($weekID, $template_name){
     $toDos = readTodoForASheet($week['id']);  // TODO (noté par XCL) : corriger ce code qui ne fait rien
 }
@@ -123,7 +143,7 @@ function switchTodoStatus(){
     $todoValue = $_POST['modal-todoValue'];
     $todosheetID = $_POST['todosheetID'];
 
-    if($status == 'open'){
+    if($status == 'unvalidate'){
         unvalidateTodo($todoID, $todoType);
     } else {
         validateTodo($todoID, $todoValue);
@@ -135,7 +155,7 @@ function switchTodoStatus(){
 /**
  * Fonction qui permet de changer l'état d'une feuille
  */
-function switchSheetState(){
+function todoSheetSwitchState(){
     $sheetID = $_POST['id'];
     $newSlug = $_POST['newSlug'];
 
@@ -144,7 +164,7 @@ function switchSheetState(){
     changeSheetState($sheetID, $newSlug);
     $message = "La semaine ".$sheet['week']." a été ";
 
-    switch($newSlug){
+    switch($newSlug){  /* todo : utiliser displayname */
         case "open":
             $message = $message."ouverte.";
             break;
@@ -165,22 +185,11 @@ function switchSheetState(){
     header('Location: ?action=listtodoforbase&id='.$sheet['base_id']);
 }
 
-function deleteSheet(){
+function todoDeleteSheet(){
     $sheetID = $_POST['id'];
     $sheet = getTodosheetByID($sheetID);
 
     deleteTodoSheet($sheetID);
     setFlashMessage("La semaine ".$sheet['week']." a correctement été supprimée.");
     header('Location: ?action=listtodoforbase&id='.$sheet['base_id']);
-}
-
-function todoSheetToPDF($id){
-
-    $week = getTodosheetByID($id);
-
-    $pdf = new FPDF();
-    $pdf->AddPage();
-    $pdf->SetFont('Arial','B',16);
-    $pdf->Cell(40,10,utf8_decode("PDF en préparation"));
-    $pdf->Output("","hebdomadaire_".$week['week'].".pdf");
 }

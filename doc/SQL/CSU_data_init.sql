@@ -21,7 +21,12 @@
 
 LOCK TABLES `bases` WRITE;
 /*!40000 ALTER TABLE `bases` DISABLE KEYS */;
-INSERT INTO `bases` VALUES (5,'La Vallée-de-Joux'),(4,'Payerne'),(3,'Saint-Loup'),(2,'Ste-Croix'),(1,'Yverdon');
+INSERT INTO `bases` VALUES 
+(5,'La Vallée-de-Joux'),
+(4,'Payerne'),
+(3,'Saint-Loup'),
+(2,'Ste-Croix'),
+(1,'Yverdon');
 /*!40000 ALTER TABLE `bases` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -31,7 +36,10 @@ UNLOCK TABLES;
 
 LOCK TABLES `drugs` WRITE;
 /*!40000 ALTER TABLE `drugs` DISABLE KEYS */;
-INSERT INTO `drugs` VALUES (1,'Fentanyl'),(2,'Morphine'),(3,'Temesta');
+INSERT INTO `drugs` VALUES 
+(1,'Fentanyl'),
+(2,'Morphine'),
+(3,'Temesta');
 /*!40000 ALTER TABLE `drugs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -44,7 +52,18 @@ UNLOCK TABLES;
 
 LOCK TABLES `novas` WRITE;
 /*!40000 ALTER TABLE `novas` DISABLE KEYS */;
-INSERT INTO `novas` VALUES (1,31),(2,32),(3,33),(4,35),(5,36),(11,43),(6,57),(7,58),(8,75),(9,76),(10,77);
+INSERT INTO `novas` VALUES 
+(1,31),
+(2,32),
+(3,33),
+(4,35),
+(5,36),
+(11,43),
+(6,57),
+(7,58),
+(8,75),
+(9,76),
+(10,77);
 /*!40000 ALTER TABLE `novas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -54,7 +73,27 @@ UNLOCK TABLES;
 
 LOCK TABLES `todothings` WRITE;
 /*!40000 ALTER TABLE `todothings` DISABLE KEYS */;
-INSERT INTO `todothings` VALUES (21,'Changer Bac chariot de nettoyage',1,1,5),(22,'Check Ambulance et Communication',1,1,2),(23,'Check bibliothèque',1,1,4),(24,'Check de nuit ',0,1,21),(25,'Commande mat et commande pharma.',1,1,6),(26,'Commande O2',0,1,25),(27,'Contrôle niveau véhicule',1,1,8),(28,'Contrôle stupéfiants + Date perf. Chaudes',1,1,3),(29,'Contrôle stupéfiants Nova .... (Morphine X4, Fentanyl X6)',0,2,22),(30,'Désinfection + Inventaire hebdo Nova ....',1,2,11),(31,'Tâches spécifiques de jour',1,1,13),(32,'Tâches spécifiques de nuit',0,1,23),(33,'Envoi feuille STUP hebdo à gt pharmacie',1,1,9),(34,'Fax 144 Transmission',1,1,1),(35,'Formation',1,1,14),(36,'Nettoyage centrale et garage',1,1,10),(37,'Rangement mat',1,1,7),(38,'Remise locaux ambulances ',1,1,15),(39,'Remise locaux Transmission',0,1,24),(40,'Tâches selon nécessité',1,1,12);
+INSERT INTO `todothings` VALUES 
+(21,'Changer Bac chariot de nettoyage',1,1,5),
+(22,'Check Ambulance et Communication',1,1,2),
+(23,'Check bibliothèque',1,1,4),
+(24,'Check de nuit ',0,1,21),
+(25,'Commande mat et commande pharma.',1,1,6),
+(26,'Commande O2',0,1,25),
+(27,'Contrôle niveau véhicule',1,1,8),
+(28,'Contrôle stupéfiants + Date perf. Chaudes',1,1,3),
+(29,'Contrôle stupéfiants Nova .... (Morphine X4, Fentanyl X6)',0,2,22),
+(30,'Désinfection + Inventaire hebdo Nova ....',1,2,11),
+(31,'Tâches spécifiques de jour',1,1,13),
+(32,'Tâches spécifiques de nuit',0,1,23),
+(33,'Envoi feuille STUP hebdo à gt pharmacie',1,1,9),
+(34,'Fax 144 Transmission',1,1,1),
+(35,'Formation',1,1,14),
+(36,'Nettoyage centrale et garage',1,1,10),
+(37,'Rangement mat',1,1,7),
+(38,'Remise locaux ambulances ',1,1,15),
+(39,'Remise locaux Transmission',0,1,24),
+(40,'Tâches selon nécessité',1,1,12);
 /*!40000 ALTER TABLE `todothings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -64,7 +103,8 @@ UNLOCK TABLES;
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Admin','istrateur','ANN','$2y$10$QFeM.bl6VdZdGXJaPvSodeCKPRvFJZgmYeU/ZVnYt0p/LbZDNuvhy',1,1); -- Password initial = 'Pa$$w0rd'
+INSERT INTO `users` VALUES 
+(1,'Admin','istrateur','ANN','$2y$10$QFeM.bl6VdZdGXJaPvSodeCKPRvFJZgmYeU/ZVnYt0p/LbZDNuvhy',1,1); -- Password initial = 'Pa$$w0rd'
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,7 +124,7 @@ UNLOCK TABLES;
 INSERT INTO `status` VALUES
 (1,'blank','En préparation'),
 (2,'open','Actif'),
-(3,'close','Fermé'),
+(3,'close','Clôturé'),
 (4,'reopen','En correction'),
 (5,'archive','Archivé');
 
@@ -119,10 +159,31 @@ INSERT INTO `shiftactions` VALUES
 
 -- table shiftmodels
 INSERT INTO `shiftmodels` VALUES
-(1,'Classic',1),
-(2,'',0);
+(1,'Vide',1),
+(2,'Classic',1),
+(3,'',0);
 
 -- table shiftmodel_has_shiftaction
 insert into shiftmodel_has_shiftaction VALUES
-(1,1,1),(2,2,1),(3,3,1),(4,4,1),(5,5,1),(6,6,1),(7,7,1),(8,8,1),(9,9,1),(10,10,1),(11,11,1),(12,12,1),(13,13,1),(14,14,1),(15,15,1),(16,16,1),(17,17,1),(18,18,1),(19,19,1),
-(20,1,2),(21,2,2),(22,3,2);
+(1,1,2),
+(2,2,2),
+(3,3,2),
+(4,4,2),
+(5,5,2),
+(6,6,2),
+(7,7,2),
+(8,8,2),
+(9,9,2),
+(10,10,2),
+(11,11,2),
+(12,12,2),
+(13,13,2),
+(14,14,2),
+(15,15,2),
+(16,16,2),
+(17,17,2),
+(18,18,2),
+(19,19,2),
+(20,1,3),
+(21,2,3),
+(22,3,3);

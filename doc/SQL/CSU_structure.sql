@@ -1,10 +1,11 @@
-
 -- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
+DROP DATABASE IF EXISTS `csunvb_csu`;
+CREATE DATABASE IF NOT EXISTS `csunvb_csu`; 
 
 -- -----------------------------------------------------
 -- Schema csunvb_csu
@@ -85,13 +86,27 @@ CREATE TABLE IF NOT EXISTS `csunvb_csu`.`users` (
   UNIQUE INDEX `initials_UNIQUE` (`initials` ASC) )
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `csunvb_csu`.`status`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `csunvb_csu`.`status` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `slug` VARCHAR(25) NOT NULL,
+  `displayname` VARCHAR(25) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `slug` (`slug` ASC) ,
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) )
+ENGINE = InnoDB;
+
+
 -- -----------------------------------------------------
 -- Table `csunvb_csu`.`drugsheets`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `csunvb_csu`.`drugsheets` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `week` INT NOT NULL,
-  `state` VARCHAR(45) NOT NULL,
+  `status_id` INT NOT NULL,
   `base_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `drugSHEETUNIQ` (`week` ASC, `base_id` ASC) ,
@@ -99,6 +114,11 @@ CREATE TABLE IF NOT EXISTS `csunvb_csu`.`drugsheets` (
   CONSTRAINT `fk_drugsheets_bases1`
     FOREIGN KEY (`base_id`)
     REFERENCES `csunvb_csu`.`bases` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_drugsheets_status1`
+    FOREIGN KEY (`status_id`)
+    REFERENCES `csunvb_csu`.`status` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -298,18 +318,6 @@ CREATE TABLE IF NOT EXISTS `csunvb_csu`.`drugsheet_use_batch` (
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `csunvb_csu`.`status`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `csunvb_csu`.`status` (
-     `id` INT NOT NULL AUTO_INCREMENT,
-     `slug` VARCHAR(25) NOT NULL,
-     `displayname` VARCHAR(25) NOT NULL,
-     PRIMARY KEY (`id`),
-     UNIQUE INDEX `slug` (`slug` ASC) ,
-     UNIQUE INDEX `id_UNIQUE` (`id` ASC) )
-    ENGINE = InnoDB;
-
--- -----------------------------------------------------
 -- Table `csunvb_csu`.`todosheets`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `csunvb_csu`.`todosheets` (
@@ -411,7 +419,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `csunvb_csu`.`shiftsheets` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `date` DATE NOT NULL DEFAULT CURDATE(),
+  `date` DATE NOT NULL DEFAULT (CURRENT_DATE),
   `shiftmodel_id` INT NOT NULL,
   `base_id` INT NOT NULL,
   `status_id` INT NOT NULL,
@@ -590,6 +598,7 @@ CREATE TABLE IF NOT EXISTS `csunvb_csu`.`shiftmodel_has_shiftaction` (
   INDEX `fk_shiftactions_has_shiftmodels_shiftactions1_idx` (`shiftaction_id` ASC) ,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `shiftmodelscol_has_shiftactions_UNIQUE` (`id` ASC) ,
+  UNIQUE INDEX `uniqueactionpermodel` (`shiftaction_id` ASC, `shiftmodel_id` ASC),
   CONSTRAINT `fk_shiftactions_has_shiftmodels_shiftactions1`
     FOREIGN KEY (`shiftaction_id`)
     REFERENCES `csunvb_csu`.`shiftactions` (`id`)

@@ -34,59 +34,29 @@ function getDrugSheetStateButton($state)
     }
 }
 
-function showDrugSheetsByStatus($slug, $sheets)
-{
-    $html = "<div class='slug" . ucwords($slug) . "'>";
 
-    $html .= "<h3>Semaine(s) " . showState($slug, count($sheets) - 1) . "</h3>
-                    <button class='btn dropdownButton'><i class='fas fa-caret-square-down' data-list='" . $slug . "' ></i></button>
-                    </div>";
 
-    if (!empty($sheets)) {
-        $html = $html . "<div class='" . $slug . "Sheets'><table style='margin-top: 0;' class='table table-bordered'>
-                        <thead class='thead-dark'><th>Semaine n°</th><th class='actions'>Actions</th></thead>
-                        <tbody>";
-
-        foreach ($sheets as $sheet) {
-            $html .= "<tr><td>Semaine " . $sheet['week'];
-
-            $html .= "<td><div class='d-flex justify-content-around'>
-                <form>
-                    <input type='hidden' name='action' value='showDrugSheet'>
-                    <input type='hidden' name='id' value='" . $sheet['id'] . "'>
-                    <button type='submit' class='btn btn-primary'>Détails</button>
-                </form>
-                            ";
-            if(!(hasOpenDrugSheet($sheet['base_id']) && $sheet['state'] == 'blank'))
-                $html .= generateSlugButtonDrugs($slug, $sheet['id']);
-
-            $html .= "</div></td>";
-        }
-
-        $html = $html . "</tr> </tbody> </table></div>";
-
-    } else {
-        $html = $html . "<div class='" . $slug . "Sheets'><p>Aucune feuille de tâche n'est actuellement " . showState($slug) . ".</p></div>";
-    }
-
-    return $html;
-}
-
-function buttonTask($initials, $desription, $taskID, $type, $slug)
+function buttonTask($initials, $desription, $taskID, $type, $slug, $edition, $day)
 {
     if ($slug == 'open' || $slug == 'reopen') {
         if (empty($initials)) {
             $messageQuittance = 'Vous êtes sur le point de quittancer la tâche suivante : <br> "' . $desription . '".';
-            return "<button type='button' class='btn btn-secondary toggleTodoModal btn-block m-1' data-title='Quittancer une tâche' data-id='" . $taskID . "' data-status='close' data-type='" . $type . "' data-content='" . $messageQuittance . "'>" . $desription . "<div class='bg-white rounded mt-1'><br></div></button>";
+            return "<button type='button' class='btn btn-secondary toggleTodoModal btn-block m-1 tasks' data-title='Quittancer une tâche' data-id='" . $taskID . "' data-status='validate' data-type='" . $type . "' data-content='" . $messageQuittance . "'>" . $desription . "<div class='bg-white rounded mt-1'><br></div></button>";
         } else {
             $messageQuittance = 'Vous êtes sur le point de retirer la quittance de la tâche suivante : <br> "' . $desription . '".';
-            return "<button type='button' class='btn btn-success toggleTodoModal btn-block m-1' data-title='Retirer une quittance' data-id='" . $taskID . "' data-status='open' data-type='" . $type . "' data-content='" . $messageQuittance . "'>" . $desription . "<div class='text-dark bg-white rounded mt-1'>" . $initials . "</div></button>";
+            return "<button type='button' class='btn btn-success toggleTodoModal btn-block m-1 tasks' data-title='Retirer une quittance' data-id='" . $taskID . "' data-status='unvalidate' data-type='" . $type . "' data-content='" . $messageQuittance . "'>" . $desription . "<div class='text-dark bg-white rounded mt-1'>" . $initials . "</div></button>";
         }
-    } else {
+    }elseif($slug == 'blank' && $edition)
+    {
+        $date = displayDate($day, 0);
+        $messageSuppression = 'Êtes-vous sûr(e) de vouloir supprimer la tâche  <br> "' . $desription . '" du '.$date.'?';
+        return "<button type='button' class='btn btn-secondary btn-block m-1 tasks' disabled >" . $desription . "<div class='rounded mt-1 trashButtons' data-title='Suppression de une tâche' data-id='" . $taskID . "' data-content='" . $messageSuppression . "'><i class='fas fa-trash'></i><br></div></button>";
+    }
+    else {
         if (empty($initials)) {
-            return "<button type='button' class='btn btn-warning btn-block m-1' disabled >" . $desription . "<div class='bg-white rounded mt-1'><br></div></button>";
+            return "<button type='button' class='btn btn-secondary btn-block m-1 tasks' disabled >" . $desription . "<div class='bg-white rounded mt-1'><br></div></button>";
         } else {
-            return "<button type='button' class='btn btn-success btn-block m-1' disabled >" . $desription . "<div class='text-dark bg-white rounded mt-1'>" . $initials . "</div></button>";
+            return "<button type='button' class='btn btn-success btn-block m-1 tasks' disabled >" . $desription . "<div class='text-dark bg-white rounded mt-1'>" . $initials . "</div></button>";
         }
     }
 }
@@ -106,34 +76,6 @@ function displayDate($date, $format)
     }
 }
 
-/**
- * Si l'utilisateur n'est pas administrateur, affiche une erreur et le redirige sur la page d'accueil
- */
-function isAdmin()
-{
-    if ($_SESSION['user']['admin'] == 0) {
-        setFlashMessage("Vous n'êtes pas autorisé à effectuer cette action !");
-        return false;
-    }
-    return true;
-}
-
-// todo (VB) : supprimer dès que les vues 'list' sont homogènes
-function actionForStatus($status)
-{
-    switch ($status) {
-        case "blank":
-            return "Activer";
-        case "open":
-            return "Fermer";
-        case "close":
-            return "Corriger";
-        case "reopen":
-            return "Refermer";
-        default:
-            return "Action indéterminée";
-    }
-}
 
 function showState($slug, $plural = 0)
 {
@@ -171,37 +113,51 @@ function showState($slug, $plural = 0)
     return $result;
 }
 
-function showSheetsTodoByStatus($slug, $sheets)
+
+function listSheet($page, $sheets)
 {
-    switch ($slug) {
-        case "blank":
-            $html = "<div class='slugBlank'>";
+    switch ($page) {
+        case "drugs":
+        case "todo":
+            $function = "listTodoOrDrugsSheet";
             break;
-        case "open":
-            $html = "<div class='slugOpen'>";
-            break;
-        case "reopen":
-            $html = "<div class='slugReopen'>";
-            break;
-        case "close":
-            $html = "<div class='slugClose'>";
-            break;
-        case "archive":
-            $html = "<div class='slugArchive'>";
+        case "shift":
+            $function = "listShiftSheet";
             break;
         default:
-            $html = "<div>";
             break;
     }
 
-    $html = $html . "<h3>Semaine(s) " . showState($slug, 1) . "</h3>
-                    <button class='btn dropdownButton'><i class='fas fa-caret-square-down' data-list='" . $slug . "' ></i></button>
+    $html = "<div> <!-- Sections d'affichage des différentes feuilles -->";
+    $html .= "<div> <!-- Feuilles ouvertes -->
+        <div class='slugBlank'>" . $function("open", $sheets["open"], $page) . "</div><br>";
+    $html .= "<div> <!-- Feuilles en préparation -->
+        <div class='slugOpen'> " . $function("blank", $sheets["blank"], $page) . "</div><br>";
+    $html .= "<div> <!-- Feuilles en correction -->
+        <div class='slugReopen'>" . $function("reopen", $sheets["reopen"], $page) . "</div><br>";
+    $html .= "<div> <!-- Feuilles fermées -->
+        <div class='slugClose'>" . $function("close", $sheets["close"], $page) . "</div>";
+
+    return $html;
+}
+
+function listTodoOrDrugsSheet($slug, $sheets, $zone)
+{
+    if($zone == 'drugs'){
+        $detailAction = "showDrugSheet";
+    }else{
+        $detailAction = "showtodo";
+    }
+
+
+    $html = "<h3>Semaine(s) " . showState($slug, 1) . "</h3>
+                        <button class='btn dropdownButton'><i class='fas fa-caret-square-down' data-list='" . $slug . "' ></i></button>
                     </div>";
 
     if (!empty($sheets)) {
         $html = $html . "<div class='" . $slug . "Sheets' style='margin-top: 0px;'><table class='table table-bordered' style='margin-top: 0px;'>
-                        <thead class='thead-dark'><th>Semaine n°</th><th class='actions'>Actions</th></thead>
-                        <tbody>";
+                            <thead class='thead-dark'><th>Semaine n°</th><th class='actions'>Actions</th></thead>
+                            <tbody>";
 
         foreach ($sheets as $sheet) {
 
@@ -212,12 +168,12 @@ function showSheetsTodoByStatus($slug, $sheets)
             }
 
             $html = $html . "<td><div class='d-flex justify-content-around'>
-                                <form>
-                                    <input type='hidden' name='action' value='showtodo'>
-                                    <input type='hidden' name='id' value='" . $sheet['id'] . "'>
-                                    <button type='submit' class='btn btn-primary'>Détails</button>
-                                </form>
-                            " . slugsButtonTodo($slug, $sheet['id']) . "</div></td>";
+                                        <form>
+                                            <input type='hidden' name='action' value='".$detailAction."'>
+                                            <input type='hidden' name='id' value='" . $sheet['id'] . "'>
+                                            <button type='submit' class='btn btn-primary m-1'>Détails</button>
+                                        </form>
+                                        " . slugButtons($zone, $sheet, $slug) . "</div></td>";
         }
 
         $html = $html . "</tr> </tbody> </table></div>";
@@ -229,113 +185,9 @@ function showSheetsTodoByStatus($slug, $sheets)
     return $html;
 }
 
-/**
- * @param $slug
- * @param $sheetID
- * @return string
- */
-function slugsButtonTodo($slug, $sheetID)
+function listShiftSheet($slug, $shiftList, $zone)
 {
-    $buttons = "";
-
-    switch ($slug) {
-        case "blank":
-            // Test pour vérifier si une autre feuille est déjà ouverte
-            $sheet = getTodosheetByID($sheetID);
-            $alreadyOpen = (empty(getWeeksBySlugs($sheet['base_id'], 'open'))) ? false : true;
-
-            if (ican('opensheet')) {
-                if (!$alreadyOpen) {
-                    $buttons = $buttons . "<form  method='POST' action='?action=switchSheetState'>
-                    <input type='hidden' name='id' value='" . $sheetID . "'>
-                    <input type='hidden' name='newSlug' value='open'>
-                    <button type='submit' class='btn btn-primary float-right'>Activer</button>
-                    </form>";
-                } else {
-                    $buttons = $buttons . "<form><button type='submit' class='btn btn-primary' disabled>Activer</button></form>";
-                }
-
-            }
-        case "archive":
-            if (ican('deletesheet')) { // TODO : ajouter une verification de la part de l'utilisateur (VB)
-                $buttons = $buttons . "<form  method='POST' action='?action=deleteSheet'>
-                    <input type='hidden' name='id' value='" . $sheetID . "'>
-                    <button type='submit' class='btn btn-primary'>Supprimer</button>
-                    </form>";
-            }
-            break;
-        case "open":
-            if (ican('closesheet')) {
-                $buttons = $buttons . "<form  method='POST' action='?action=switchSheetState'>
-                    <input type='hidden' name='id' value='" . $sheetID . "'>
-                    <input type='hidden' name='newSlug' value='close'>
-                    <button type='submit' class='btn btn-primary'>Fermer</button>
-                    </form>";
-            }
-            break;
-        case "reopen":
-            if (ican('closesheet')) {
-                $buttons = $buttons . "<form  method='POST' action='?action=switchSheetState'>
-                    <input type='hidden' name='id' value='" . $sheetID . "'>
-                    <input type='hidden' name='newSlug' value='close'>
-                    <button type='submit' class='btn btn-primary'>Refermer</button>
-                    </form>";
-            }
-            break;
-        case "close":
-            if (ican('opensheet')) {
-                $buttons = $buttons . "<form  method='POST' action='?action=switchSheetState'>
-                    <input type='hidden' name='id' value='" . $sheetID . "'>
-                    <input type='hidden' name='newSlug' value='reopen'>
-                    <button type='submit' class='btn btn-primary'>Corriger</button>
-                    </form>";
-            }
-            if (ican('archivesheet')) {
-                $buttons = $buttons . "<form  method='POST' action='?action=switchSheetState'>
-                    <input type='hidden' name='id' value='" . $sheetID . "'>
-                    <input type='hidden' name='newSlug' value='archive'>
-                    <button type='submit' class='btn btn-primary'>Archiver</button>
-                    </form>";
-            }
-            break;
-        default:
-            break;
-    }
-    return $buttons;
-}
-
-function listSheet($page, $sheets)
-{
-    switch ($page) {
-        case "shift":
-            $function = "listShiftSheet";
-            break;
-        default:
-            break;
-    }
-    $html = "<div> <!-- Sections d'affichage des différentes feuilles -->";
-    $html .= "<div> <!-- Feuilles ouvertes -->
-        <div class='slugBlank'>
-        " . $function("open", $sheets["open"]) . "
-    </div><br>";
-    $html .= "<div> <!-- Feuilles en préparation -->
-        <div class='slugOpen'>
-        " . $function("blank", $sheets["blank"]) . "
-    </div><br>";
-    $html .= "<div> <!-- Feuilles en correction -->
-        <div class='slugReopen'>
-        " . $function("reopen", $sheets["reopen"]) . "
-    </div><br>";
-    $html .= "<div> <!-- Feuilles fermées -->
-        <div class='slugClose'>
-        " . $function("close", $sheets["close"]) . "
-    </div>";
-    return $html;
-}
-
-function listShiftSheet($slug, $shiftList)
-{
-    $html = "<h3>Semaine(s) " . showState($slug, 1) . "</h3>
+    $html = "<h3>Rapport(s) " . showState($slug, 1) . "</h3>
                     <button class='btn dropdownButton'><i class='fas fa-caret-square-down' data-list='" . $slug . "' ></i></button>
                     </div>";
     if (count($shiftList) > 0) {
@@ -350,7 +202,11 @@ function listShiftSheet($slug, $shiftList)
         $body = "";
         foreach ($shiftList as $shift) {
             $body .= "<tr>
-                <td>" . date('d.m.Y', strtotime($shift['date'])) . "</td>
+                <td>" . date('d.m.Y', strtotime($shift['date']));
+            if(isset($shift["modelImage"])){
+                $body .= "<i class='fas fa-file-alt template' title='Modèle : " . $shift["modelImage"] . "'></i>";
+            }
+                $body .= "</td>
                 <td>Jour : " . $shift['novaDay'] . "<br>Nuit : " . $shift['novaNight'] . "</td>
                 <td>Jour : " . $shift['bossDay'] . "<br>Nuit : " . $shift['bossNight'] . "</td>
                 <td>Jour : " . $shift['teammateDay'] . "<br>Nuit : " . $shift['teammateNight'] . "</td>";
@@ -379,9 +235,9 @@ function slugButtons($page, $sheet, $slug)
         case "blank":
             if (ican('opensheet')) {
                 // Test pour vérifier si une autre feuille est déjà ouverte
-                if (!checkOpen($page, $sheet["base_id"])) {
+                if (!checkOpen($page, $sheet['base_id'])) {
                     $buttons .= "<form  method='POST' action='?action=" . $page . "SheetSwitchState'>
-                    <input type='hidden' name='id' value='" . $sheet["id"] . "'>
+                    <input type='hidden' name='id' value='" . $sheet['id'] . "'>
                     <input type='hidden' name='newSlug' value='open'>
                     <button type='submit' class='btn btn-primary m-1'>Activer</button>
                     </form>";
@@ -392,7 +248,7 @@ function slugButtons($page, $sheet, $slug)
         case "archive":
             if (ican('deletesheet')) { // TODO : ajouter une verification de la part de l'utilisateur (VB)
                 $buttons .= "<form  method='POST' action='?action=" . $page . "DeleteSheet'>
-                    <input type='hidden' name='id' value='" . $sheet["id"] . "'>
+                    <input type='hidden' name='id' value='" . $sheet['id'] . "'>
                     <button type='submit' class='btn btn-primary m-1'>Supprimer</button>
                     </form>";
             }
@@ -400,7 +256,7 @@ function slugButtons($page, $sheet, $slug)
         case "open":
             if (ican('closesheet')) {
                 $buttons .= "<form  method='POST' action='?action=" . $page . "SheetSwitchState'>
-                    <input type='hidden' name='id' value='" . $sheet["id"] . "'>
+                    <input type='hidden' name='id' value='" . $sheet['id'] . "'>
                     <input type='hidden' name='newSlug' value='close'>
                     <button type='submit' class='btn btn-primary m-1'>Clôturer</button>
                     </form>";
@@ -437,15 +293,29 @@ function slugButtons($page, $sheet, $slug)
     return $buttons;
 }
 
-function generateSlugButtonDrugs($slug, $sheetID) { //TODO: champ "action" dans la table status, pour remplacer slug dans le submit?
-    if (ican(getDrugSheetStateButton($slug) . "sheet")) {
-        return "<form method='POST' action=?action=".getDrugSheetStateButton($slug)."DrugSheet>
-                    <input type='hidden' name='id' value='" . $sheetID . "'>
-                    <button type='submit' class='btn btn-primary'>" . getDrugSheetStateButton($slug) . "</button>
-                    </form>";
+function checkOpen($page, $baseID){
+    $openSheets = 0;
+    $count = 1;
+
+    switch($page){
+        case 'drugs':
+            $openSheets = getOpenDrugsSheetNumber($baseID);
+            break;
+        case 'todo':
+            $openSheets = getOpenTodoSheetNumber($baseID);
+            break;
+        case 'shift':
+            $openSheets = getOpenShiftSheet($baseID);
+            break;
     }
-    return null;
+
+    if(!isset($openSheets) || $openSheets < $count){
+        return false; // A sheet can be open
+    }else{
+        return true; // Max number of sheets already open
+    }
 }
+
 
 /**
  * @param $page nom de la page ex. "shift"
@@ -454,7 +324,7 @@ function generateSlugButtonDrugs($slug, $sheetID) { //TODO: champ "action" dans 
  * @param $models liste des modèles, avec leur id ("id") et noms ("name")
  * @return string code html pour créer le header
  */
-function headerForList($page, $bases, $selectedBaseID, $models)
+function headerForList($page, $bases, $selectedBaseID, $models, $emptyBase)
 {
     switch ($page) {
         case "shift":
@@ -462,11 +332,13 @@ function headerForList($page, $bases, $selectedBaseID, $models)
             $switchBaseAction = "listshift";
             $newSheetAction = "?action=newShiftSheet&id=" . $selectedBaseID;
             $newSheetBtnName = "Nouvelle Feuille de garde";
+            $dateInput = "<input type='date' name='date' value='".getNextDateForShift($selectedBaseID)."'>";
+            // <input type="week" name="week" value="2017-W01"> exemple for week
             break;
         default:
             return "<h1>Header pour la page non défini</h1>";
     }
-    $header = "<div class='row''><h1 class='mr-3'>".$title."</h1>";
+    $header = "<div class='row'><h1 class='mr-3'>".$title."</h1>";
     //Liste déroulante pour le choix de la base
     $header .= "<form><input type='hidden' name='action' value='" . $switchBaseAction . "'><select onchange='this.form.submit()' name='id' size='1' class='bigfont mb-3'>";
     foreach ($bases as $base) {
@@ -480,11 +352,16 @@ function headerForList($page, $bases, $selectedBaseID, $models)
 
     //Création d'une nouvelle feuille
     if (ican('createsheet') && $_SESSION['base']['id'] == $selectedBaseID) {
-        $header .= "<div class='newSheetZone'><form method='POST' action='" . $newSheetAction . "' class='float-right'>Utiliser le modèle :<select name='selectedModel'><option value='lastModel' selected=selected>Dernier rapport en date</option>";
+        $header .= "<div class='newSheetZone'><form method='POST' action='" . $newSheetAction . "' class='float-right'>Utiliser le modèle :<select name='selectedModel'>";
+        if($emptyBase == false){
+            $header .= "<option value='lastModel' selected=selected>Dernier rapport clôturé</option>";
+        }
         foreach ($models as $model) {
             $header .= "<option value='" . $model['id'] . "'>" . $model['name'] . "</option>";
         }
-        $header .= "</select> <button class='btn btn-primary m-1'>" . $newSheetBtnName . "</button></form></div>";
+        $header .= "</select> <button class='btn btn-primary m-1'>" . $newSheetBtnName . "</button>";
+        $header .= $dateInput;
+        $header .= "</form></div>";
     }
     return $header;
 }
