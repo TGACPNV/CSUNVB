@@ -5,48 +5,45 @@ Documentation pour les éventuels nouveaux membres de l'équipe de développemen
 ### A quoi sert le site du CSU ? Qui l'utilise et pourquoi ?
 
 Le site internet actuellement en développement sera utilisé par les ambulanciers du CSU Nord Vaudois et Broye.
-Il sera utile aux ambulanciers afin de faciliter leures tâches administratives quotidienne qui jusqu'à aujourd'hui s'effectuent sur le papier.
+Il sera utile aux ambulanciers afin de faciliter leurs tâches administratives quotidiennes qui jusqu'à aujourd'hui s'effectuent sur le papier.
 
-Ce site fonctionnera en interne c'est à dire qu'uniquement les membres agréer auront le privilège d'utiliser le site internet CSUNVB, par membre agréer on entend les secouristes.
+Ce site fonctionnera en interne c'est à dire qu'uniquement les membres agréés auront la possibilité d'utiliser le site internet CSUNB. Par membre agréés,s'entend les secouristes.
 
 ### Dans quel contexte (technique) fonctionne ce site ?
 
-Le site sera hébérger par un hébérgeur qui est encore à définir, cepandant une connexion internet sera nécessaire pour accèder au site. On pourra y accèder avec un pc ou une tablette car le site est responsive.
+Le site sera hébérgé par un hébérgeur qui est encore à définir. Une connexion internet sera donc nécessaire pour accèder au site. Celui-ci sera accessible avec un pc ou une tablette, car le site, a terme, devra être entierement responsive.
+
 ### Qu'est-ce que je dois faire pour pouvoir essayer ce site ?
 
-Pour l'instant une version d'essai régulièrement mise à jour est disponible sur CSUNVB.mycpnv.ch
-Cependant il faudra demander un identifiant au chef de projet de manière à vous connecter et essayer le prototype vu qu'il faut être connecté pour accèder au contenu
+Pour l'instant, une version en développement, régulièrement mise à jour,  est disponible à l'adresse [csunvb.mycpnv.ch]. Cependant, il est nécessaire de posséder un identifiant pour s'y connecter. Pour le récupérer, il faut s'adresser au chef de projet, M. Carrel.
 
 ### Quelles sont les données / informations que ce site manipule ?
 
+Ce site internet est lié à une base de données qui contient toutes les données nécessaires pour la gestion administrative.
+#### Le site est composé de 4 grandes sections :
 
-Ce site internet est lié à une base de données qui contient toutes les donné nécessaire pour la gestion administratif.
+- Les taches hebdomadaires :
+-- Permet la gestion des tâches à effectuer au cours de la semaine
 
-#### Le site est composé de 4 grande section :
--	Grille des taches hebdomadaires: 
-     
-Montre toutes les taches à faire pendant la semaine, une table pour le jour et l’autre pour la nuit avec possibilité de valider les taches finies.
 
--	Grille des remises de garde: 
+- Les remises de garde : 
+-- Permet la gestion des gardes à bord des ambulances (matériel, équipage, remarques pour la garde ...)
 
-Montre les ambulances et leurs équipages et un rapport pour chaque garde.
 
--	Gestion des drogues hebdomadaires: 
-     
-Gestion des stockes de médicaments dans la base et dans les ambulances.
+- Les stups
+-- Permet la gestion des stocks de médicaments dans les ambulances et à la base
 
--	Administration: 
-     
-Administration du site
-
+- L’administration
+-- Permet l’administration du site (utilisateurs, stocks, …)
 
 
 ### De quels composants le site est-il fait ? 
 
--PHP, javascript
--MySQL
--html, css
-_(Comment est-ce qu'ils interagissent entre eux ?)_
+Le site est basé sur la méthode MVC (Model, vue, controleur).
+- Il y as un dossier Doc contenant la documentation
+- Il y as un dossier public qui contient l'index, le js, le CSS et les assets.
+- A la racine on trouve les fichiers globalhelpers.php (les fonctions communes a toutes les parties), path.php (les chemins), policies.php (les politiques d'accès)
+- Dans le dossier Vue on retrouve le gabarit et le fichier helpers.php (fonction général d'affichage)
 
 ### Quelles technologies est-ce que je dois connaître pour pouvoir développer ce site ? 
 
@@ -57,16 +54,26 @@ Il est aussi nécessaire de connaître le sql car il y aura plusieures requête 
 
 Le choix de ces languages paraissent évidents pour le développement d'un site internet.
 
-### Qu'est-ce que je dois installer sur mon poste de travail pour pouvoir commencer à bosser sur ce site ?
-Les logiciels suivant sont nécessaires pour pouvoir travailler:
+Résumé:
+-PHP, javascript
+-MySQL
+-html, css , bootstrap
 
-- Un environnement de développement: PhpStorm https://www.jetbrains.com/fr-fr/phpstorm/
-- Wampserver https://www.wampserver.com/en/download-wampserver-64bits/
-- 
+
+
+
+### Qu'est-ce que je dois installer sur mon poste de travail pour pouvoir commencer à bosser sur ce site ?
+Les logiciels suivant sont ceux que nous avaons utiliser pour travailler. Des alternatives sont possible mais attention à la compatibilité.
+
+
+- Un environnement de développement: PhpStorm 2019.3.x https://www.jetbrains.com/fr-fr/phpstorm/
+- PHP version 7.4.x dernière version
+- Serveur de base de données: MySQL Community Server 8.0.23 https://dev.mysql.com/downloads/mysql/
+- Client de base de données: MySQL Workbench (distribué avec MySQL serveur), Heidi SQL v11.2 https://www.heidisql.com/
 
 ### Est-ce qu'on a des conventions de codage ?
 
-Tout ce qui est de nature technique est rédigé en anglais: code, commentaires, noms de fonction, de fichiers, de variables, de base de données, de champs, ...
+La majorité de ce qui est de nature technique est rédigé en anglais: code, commentaires, noms de fonction, de fichiers, de variables, de base de données, de champs, ...
 
 Le formatage du code php suit ce [PhP Style Guide](https://gist.github.com/ryansechrest/8138375)
 
