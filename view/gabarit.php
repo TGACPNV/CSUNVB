@@ -23,11 +23,11 @@
 <body>
 <div class="d-print-none banner">
     <header>
-        <div class="row p-3">
-            <a href="?action=home" class="col-auto p-3">
-                <img class="logo ml-3" src="assets/images/logo.png">
+        <div class="row">
+            <a href="?action=home" class="col-auto">
+                <img class="logo m-3" src="assets/images/logo.png">
             </a>
-            <div class="title col text-center">
+            <div class="title col text-center mt-2">
                 Gestion des rapports
             </div>
             <?php if (isset($_SESSION['user'])) : ?>
