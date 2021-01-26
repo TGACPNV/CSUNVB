@@ -16,12 +16,12 @@ function newShiftSheet($baseID)
     } else {
         $modelID = $_POST["selectedModel"];
     }
-    
+
     $result = addNewShiftSheet($baseID, $modelID, $_POST["date"]);
     if ($result == false) {
-        setFlashMessage("Une erreur est survenue. Impossible d'ajouter la feuille de garde.");
+        setFlashMessage("Une erreur est survenue. Impossible d'ajouter le rapport de garde.");
     } else {
-        setFlashMessage("La feuille de garde a bien été créée !");
+        setFlashMessage("le rapport de garde a bien été créé !");
     }
     redirect("listshift", $baseID);
 }
@@ -96,7 +96,7 @@ function commentShift()
     if ($res == false) {
         setFlashMessage("Une erreur est survenue. Impossible d'ajouter le commentaire.");
     } else {
-        setFlashMessage("Le commentaire a bien été ajouté à la feuille !");
+        setFlashMessage("Le commentaire a bien été ajouté au rapport !");
     }
     redirect("showshift", $_POST["shiftSheet_id"]);
 }
@@ -128,7 +128,7 @@ function addActionForShift($sheetID)
     if ($res == false) {
         setFlashMessage("Une erreur est survenue. Impossible d'enregistrer les données.");
     } else {
-        setFlashMessage("L'action <strong>" . getShiftActionName($_POST["actionID"]) . "</strong> à été ajoutée à la feuille");
+        setFlashMessage("L'action <strong>" . getShiftActionName($_POST["actionID"]) . "</strong> à été ajoutée au rapport");
     }
     redirect("showshift", $sheetID);
 }
@@ -143,9 +143,9 @@ function creatActionForShift($sheetID)
     $actionID = getShiftActionID($_POST["actionToAdd"], $_POST["section"]);
     if ($actionID == null) {
         $actionID = creatShiftAction($_POST["actionToAdd"], $_POST["section"]);
-        setFlashMessage("Nouvelle action <strong>" . $_POST["actionToAdd"] . "</strong> créée et ajoutée à la feuille");
+        setFlashMessage("Nouvelle action <strong>" . $_POST["actionToAdd"] . "</strong> créée et ajoutée au rapport");
     } else {
-        setFlashMessage("L'action <strong>" . $_POST["actionToAdd"] . "</strong> à été ajoutée à la feuille");
+        setFlashMessage("L'action <strong>" . $_POST["actionToAdd"] . "</strong> à été ajoutée au rapport");
     }
     $modelID = configureModel($sheetID, $_POST["model"]);
     $res = addShiftAction($modelID, $actionID);
@@ -197,9 +197,9 @@ function shiftSheetSwitchState()
 {
     $res = setSlugForShift($_POST["id"], $_POST["newSlug"]);
     if ($res == false) {
-        setFlashMessage("Une erreur est survenue. Impossible de changer l'état de la feuille de garde.");
+        setFlashMessage("Une erreur est survenue. Impossible de changer l'état du rapport de garde.");
     } else {
-        setFlashMessage("L'état de la feuille de garde a été correctement modifiée.");
+        setFlashMessage("L'état du rapport de garde a été correctement modifié.");
     }
     redirect("listshift", getBaseIDForShift($_POST["id"]));
 }
@@ -212,9 +212,9 @@ function shiftDeleteSheet()
 {
     $res = shiftSheetDelete($_POST["id"]);
     if ($res == false) {
-        setFlashMessage("Une erreur est survenue. Impossible de supprimer la feuille de garde.");
+        setFlashMessage("Une erreur est survenue. Impossible de supprimer le rapport de garde.");
     } else {
-        setFlashMessage("La feuille de garde a été correctement supprimée.");
+        setFlashMessage("le rapport de garde a été correctement supprimé.");
     }
     redirect("listshift", getBaseIDForShift($_POST["id"]));
 }

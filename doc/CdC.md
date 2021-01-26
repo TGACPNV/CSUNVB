@@ -72,7 +72,7 @@ Pour les admins, un accès à la page d’administration est proposé.
 - S’il y a un actif, un bouton permet de créer un nouveau rapport 'En préparation'. Il sera basé sur le rapport actif
 - Chaque cellule est un input numérique si la journée n’a pas été clôturée
 - En bas de chaque jour, il y a un bouton qui permet de clore la journée. Ce bouton demande une confirmation
-- La feuille complète est clôturée quand chacun des jours a été clôturé
+- le rapport complet est clôturé quand chacun des jours a été clôturé
 
 ## Remplir un rapport Garde (secouriste, pour une base choisie)
 - Liste des rapports clôturés

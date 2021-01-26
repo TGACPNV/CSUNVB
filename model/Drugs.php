@@ -54,7 +54,7 @@ function getDrugSheets($base_id) {
 }
 
 /**
- * Retourne la liste des novas 'utilisées' par cette feuille
+ * Retourne la liste des novas 'utilisées' par ce rapport
  * Les données retournées sont dans un tableau indexé par id (i.e: [ 12 => [ "id" => 12, "value" => ...], 17 => [ "id" => 17, "value" => ...] ]
  */
 function getNovasForSheet($drugSheetID) {

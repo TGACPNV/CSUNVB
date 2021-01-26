@@ -21,7 +21,7 @@
 
 LOCK TABLES `bases` WRITE;
 /*!40000 ALTER TABLE `bases` DISABLE KEYS */;
-INSERT INTO `bases` VALUES 
+INSERT INTO `bases` VALUES
 (5,'La Vallée-de-Joux'),
 (4,'Payerne'),
 (3,'Saint-Loup'),
@@ -36,7 +36,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `drugs` WRITE;
 /*!40000 ALTER TABLE `drugs` DISABLE KEYS */;
-INSERT INTO `drugs` VALUES 
+INSERT INTO `drugs` VALUES
 (1,'Fentanyl'),
 (2,'Morphine'),
 (3,'Temesta');
@@ -52,7 +52,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `novas` WRITE;
 /*!40000 ALTER TABLE `novas` DISABLE KEYS */;
-INSERT INTO `novas` VALUES 
+INSERT INTO `novas` VALUES
 (1,31),
 (2,32),
 (3,33),
@@ -73,7 +73,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `todothings` WRITE;
 /*!40000 ALTER TABLE `todothings` DISABLE KEYS */;
-INSERT INTO `todothings` VALUES 
+INSERT INTO `todothings` VALUES
 (21,'Changer Bac chariot de nettoyage',1,1,5),
 (22,'Check Ambulance et Communication',1,1,2),
 (23,'Check bibliothèque',1,1,4),
@@ -86,7 +86,7 @@ INSERT INTO `todothings` VALUES
 (30,'Désinfection + Inventaire hebdo Nova ....',1,2,11),
 (31,'Tâches spécifiques de jour',1,1,13),
 (32,'Tâches spécifiques de nuit',0,1,23),
-(33,'Envoi feuille STUP hebdo à gt pharmacie',1,1,9),
+(33,'Envoi rapport STUP hebdo à gt pharmacie',1,1,9),
 (34,'Fax 144 Transmission',1,1,1),
 (35,'Formation',1,1,14),
 (36,'Nettoyage centrale et garage',1,1,10),
@@ -103,7 +103,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES 
+INSERT INTO `users` VALUES
 (1,'Admin','istrateur','ANN','$2y$10$QFeM.bl6VdZdGXJaPvSodeCKPRvFJZgmYeU/ZVnYt0p/LbZDNuvhy',1,1); -- Password initial = 'Pa$$w0rd'
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;

@@ -67,7 +67,7 @@ function showtodo($sheetID, $edition = false)
  */
 function addWeek()
 {
-    $baseID = $_SESSION['base']['id']; // On ne peut ajouter une feuille que dans la base où l'on se trouve
+    $baseID = $_SESSION['base']['id']; // On ne peut ajouter un rapport que dans la base où l'on se trouve
 
     $week = getLastWeek($baseID); // Récupère la dernière semaine
 
@@ -200,16 +200,16 @@ function todoSheetSwitchState()
 
     switch ($newSlug) {  /* todo : utilisation des displayname (base de donnée) possible ? */
         case "open":
-            $message = $message . "ouverte.";
+            $message = $message . "ouvert.";
             break;
         case "reopen":
-            $message = $message . "ré-ouverte.";
+            $message = $message . "ré-ouvert.";
             break;
         case "close":
-            $message = $message . "fermée.";
+            $message = $message . "fermé.";
             break;
         case "archive":
-            $message = $message . "archivée.";
+            $message = $message . "archivé.";
             break;
         default:
             break;

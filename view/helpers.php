@@ -112,14 +112,14 @@ function listSheet($page, $sheets)
             break;
     }
 
-    $html = "<div> <!-- Sections d'affichage des différentes feuilles -->";
-    $html .= "<div> <!-- Feuilles ouvertes -->
+    $html = "<div> <!-- Sections d'affichage des différents rapport -->";
+    $html .= "<div> <!-- rapports ouvertes -->
         <div class='slugBlank'>" . $function("open", $sheets["open"], $page) . "</div><br>";
-    $html .= "<div> <!-- Feuilles en préparation -->
+    $html .= "<div> <!-- rapports en préparation -->
         <div class='slugOpen'> " . $function("blank", $sheets["blank"], $page) . "</div><br>";
-    $html .= "<div> <!-- Feuilles en correction -->
+    $html .= "<div> <!-- rapports en correction -->
         <div class='slugReopen'>" . $function("reopen", $sheets["reopen"], $page) . "</div><br>";
-    $html .= "<div> <!-- Feuilles fermées -->
+    $html .= "<div> <!-- rapports fermés -->
         <div class='slugClose'>" . $function("close", $sheets["close"], $page) . "</div>";
 
     return $html;
@@ -163,7 +163,7 @@ function listTodoOrDrugSheet($slug, $sheets, $zone)
         $html = $html . "</tr> </tbody> </table></div>";
 
     } else {
-        $html = $html . "<div class='" . $slug . "Sheets'><p>Aucune feuille de tâche n'est actuellement " . showState($slug) . ".</p></div>";
+        $html = $html . "<div class='" . $slug . "Sheets'><p>Aucun rapport de tâche n'est actuellement " . showState($slug) . ".</p></div>";
     }
 
     return $html;
@@ -207,7 +207,7 @@ function listShiftSheet($slug, $shiftList, $zone)
         $table = $head . $body . $foot;
         $html .= $table;
     } else {
-        $html .= "<div class='" . $slug . "Sheets'><p>Aucune feuille de tâche n'est actuellement " . showState($slug) . ".</p></div>";
+        $html .= "<div class='" . $slug . "Sheets'><p>Aucun rapport de tâche n'est actuellement " . showState($slug) . ".</p></div>";
     }
     return $html;
 }
@@ -218,7 +218,7 @@ function slugButtons($page, $sheet, $slug)
     switch ($slug) {
         case "blank":
             if (ican('opensheet')) {
-                // Test pour vérifier si une autre feuille est déjà ouverte
+                // Test pour vérifier si un autre rapport est déjà ouverte
                 if (!checkOpen($page, $sheet['base_id'])) {
                     $buttons .= "<form  method='POST' action='?action=" . $page . "SheetSwitchState'>
                     <input type='hidden' name='id' value='" . $sheet['id'] . "'>
@@ -315,7 +315,7 @@ function headerForList($page, $bases, $selectedBaseID, $models, $emptyBase)
             $title = "Remise de Garde";
             $switchBaseAction = "listshift";
             $newSheetAction = "?action=newShiftSheet&id=" . $selectedBaseID;
-            $newSheetBtnName = "Nouvelle Feuille de garde";
+            $newSheetBtnName = "Nouveau Rapport de garde";
             $dateInput = "<input type='date' name='date' value='".getNextDateForShift($selectedBaseID)."'>";
             // <input type="week" name="week" value="2017-W01"> exemple for week
             break;
@@ -334,7 +334,7 @@ function headerForList($page, $bases, $selectedBaseID, $models, $emptyBase)
     }
     $header .= "</select></form></div>";
 
-    //Création d'une nouvelle feuille
+    //Création d'une nouveau rapport
     if (ican('createsheet') && $_SESSION['base']['id'] == $selectedBaseID) {
         $header .= "<div class='newSheetZone'><form method='POST' action='" . $newSheetAction . "' class='float-right'>Utiliser le modèle :<select name='selectedModel'>";
         if($emptyBase == false){
