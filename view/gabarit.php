@@ -21,24 +21,18 @@
     <script src="js/global.js" defer></script>
 </head>
 <body>
-<div class="container d-print-none">
+<div class="d-print-none banner">
     <header>
-        <div class="row banner">
-            <a href="?action=home" class="col-auto">
-                <img class="logo" src="assets/images/logo.png">
+        <div class="row p-3">
+            <a href="?action=home" class="col-auto p-3">
+                <img class="logo ml-3" src="assets/images/logo.png">
             </a>
             <div class="title col text-center">
                 Gestion des rapports
-                <?= gitBranchTag() ?>
             </div>
-        </div>
-        <div class="d-print-none">
-            <a href="?action=home" class="btn btn-primary m-1 float-right">Accueil</a>
             <?php if (isset($_SESSION['user'])) : ?>
-                <a href="?action=disconnect" class="btn btn-primary m-1 float-right">Se déconnecter</a>
-                <p>Connecté en tant que : <strong><?= $_SESSION['user']['initials'] ?></strong> à
-                    <strong><?= $_SESSION['base']['name'] ?></strong>
-                </p>
+                <a href="?action=disconnect" class="btn btn-primary m-1 float-right"><div class="font-weight-bold m-2">Déconnecter</div><div class="small"><?= $_SESSION['user']['initials'] ?>@<?= $_SESSION['base']['name'] ?></div></a><br>
+                <?= gitBranchTag() ?>
             <?php endif; ?>
         </div>
     </header>

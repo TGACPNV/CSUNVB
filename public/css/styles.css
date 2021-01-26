@@ -1,6 +1,7 @@
 .banner {
-    background-color: transparent;
+    background-color: lightblue;
     width: 100%;
+    border-bottom: 1px solid darkgrey;
 }
 
 textarea{
@@ -12,8 +13,15 @@ textarea{
     height: 81px;
 }
 
+@font-face {
+    font-family: comfortaa;
+    src: url('../assets/Comfortaa/Comfortaa-VariableFont_wght.ttf');
+}
+
 .title {
-    font-size: xx-large;
+    font-family: comfortaa;
+    font-size: 60px;
+    font-weight: bolder;
 }
 
 .bigfont {

@@ -37,7 +37,7 @@ function gitBranchTag()
     } else {
         $branchname = "production";
     }
-    return "<div style='clear: both; width: 100%; font-size: 14px; font-family: Helvetica; color: #8d8d8d; background: transparent; text-align: right;'>version " . getVersion() . " sur " . $branchname . "</div>"; //show it on the page
+    return "<div style='clear: both; width: 100%; font-size: 8px; font-family: Helvetica; color: #aaaaaa; background: transparent; text-align: right;'>version " . getVersion() . " sur " . $branchname . "</div>"; //show it on the page
 }
 
 /**
