@@ -79,6 +79,5 @@ Pour les admins, un accès à la page d’administration est proposé.
   - Date, responsable, équipiers, vehicules, pour le jour et pour la nuit
   - Clic -> Vue détaillée -> clic bouton download -> format pdf
 - Il ne peut pas y avoir plus d'un rapport 'Actif', mais il peut n'y en avoir aucun
-- S’il y a un actif, un bouton permet de créer un nouveau rapport 'En préparation'. Il sera basé sur le rapport actif
 
 
