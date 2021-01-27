@@ -25,13 +25,13 @@
     <header>
         <div class="row">
             <a href="?action=home" class="col-auto">
-                <img class="logo m-3" src="assets/images/logo.png">
+                <img class="logo m-3 justify-content-center" src="assets/images/logo.png">
             </a>
-            <div class="title col text-center mt-2">
+            <div class="title col mt-4">
                 Gestion des rapports
             </div>
             <?php if (isset($_SESSION['user'])) : ?>
-                <a href="?action=disconnect" class="btn btn-primary m-1 float-right"><div class="font-weight-bold m-2">Déconnecter</div><div class="small"><?= $_SESSION['user']['initials'] ?>@<?= $_SESSION['base']['name'] ?></div></a><br>
+                <a href="?action=disconnect" class="btn btn-primary mt-2 mr-5 float-right"><div class="font-weight-bold m-2">Déconnecter</div><div class="small"><?= $_SESSION['user']['initials'] ?>@<?= $_SESSION['base']['name'] ?></div></a><br>
                 <?= gitBranchTag() ?>
             <?php endif; ?>
         </div>
