@@ -38,7 +38,7 @@
     </header>
 </div>
 
-<div class="container">
+<div class="container p-4">
     <?= getFlashMessage() ?>
     <?= (isset($content)) ? $content : "page vide" ?>
 </div>
