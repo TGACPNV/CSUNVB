@@ -134,7 +134,7 @@ function listTodoOrDrugSheet($slug, $sheets, $zone)
     }
 
 
-    $html = "<h3>Semaine(s) " . showState($slug, 1) . "</h3>
+    $html = "<h3>Rapport(s) " . showState($slug, 1) . "</h3>
                         <button class='btn dropdownButton'><i class='fas fa-caret-square-down' data-list='" . $slug . "' ></i></button>
                     </div>";
 
