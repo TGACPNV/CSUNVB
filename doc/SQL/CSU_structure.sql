@@ -82,10 +82,11 @@ CREATE TABLE IF NOT EXISTS `csunvb_csu`.`users` (
   `password` VARCHAR(100) NOT NULL,
   `admin` TINYINT NOT NULL,
   `firstconnect` TINYINT NOT NULL,
+  `email` VARCHAR(254) NULL,
+  `mobileNumber` VARCHAR(20) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `initials_UNIQUE` (`initials` ASC) )
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `csunvb_csu`.`status`
