@@ -5,7 +5,7 @@
 
 function getUsers()     //Récupère tous les utilisateurs
 {
-    return selectMany("SELECT * FROM users", []);
+    return selectMany("SELECT * FROM users order by  initials ASC", []);
 }
 
 function addNewUser($prenomUser, $nomUser, $initialesUser, $hash, $admin, $firstconnect)
