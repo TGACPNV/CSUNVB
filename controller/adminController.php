@@ -54,12 +54,19 @@ function changeUserAdmin()
     $user = getUser($changeUser);
     if ($user['admin']) {
         $user['admin'] = 0;
-        setFlashMessage($user['initials'] . " est désormais un utilisateur.");
     } else {
         $user['admin'] = 1;
-        setFlashMessage($user['initials'] . " est désormais un administrateur.");
     }
-    SaveUser($user);
+    $res = SaveUser($user);
+    if($res == true){
+        if($user['admin']){
+            setFlashMessage($user['initials'] . " est désormais administrateur.");
+        }else{
+            setFlashMessage($user['initials'] . " est désormais utilisateur.");
+        }
+    }else{
+        setFlashMessage("Erreur de modification du rôle pour ".$user['initials']);
+    }
     adminCrew();
 }
 
