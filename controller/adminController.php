@@ -42,7 +42,7 @@ function saveNewUser()
             setFlashMessage("L'utilisateur a bien été ajouté !");
         }
     }
-    adminCrew();
+    redirect("adminCrew");
 }
 
 /**
@@ -67,7 +67,7 @@ function changeUserAdmin()
     }else{
         setFlashMessage("Erreur de modification du rôle pour ".$user['initials']);
     }
-    adminCrew();
+    redirect("adminCrew");
 }
 
 /**
@@ -78,7 +78,7 @@ function resetUserPassword()
 {
     $newpassword = changePwdState($_GET['idUser']);
     setFlashMessage("Le nouveau mot de passe est: $newpassword");
-    adminCrew();
+    redirect("adminCrew");
 }
 
 /** drugs Administration */
