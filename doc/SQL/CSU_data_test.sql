@@ -267,9 +267,9 @@ UNLOCK TABLES;
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` VALUES 
-(2,'John','Doe','JDE','$2y$10$ZplHbYimTZ5P1fQqYiFRwOOfxeivt.gFUvsm9v1cRR.ko72ApkY8y',1,0,'',''),
-(3,'Sheila','Compton','SCN','$2y$10$zcR7EZ4s4W4qpuWywd0oTOzFGJ..ja/Ev53HjqYSN6Kpp44pAEoty',0,0,'',''),
-(4,'Karly','Rush','KRH','$2y$10$aAyhXLKF.BwUstquUHBi7.Lj9Zbv7iUXfBfDVM4VJDtjBGQbNrAQ.',0,0,'',''),
+(2,'John','Doe','JDE','$2y$10$ZplHbYimTZ5P1fQqYiFRwOOfxeivt.gFUvsm9v1cRR.ko72ApkY8y',1,0,'mail1@csu.ch','011 111 11 11'),
+(3,'Sheila','Compton','SCN','$2y$10$zcR7EZ4s4W4qpuWywd0oTOzFGJ..ja/Ev53HjqYSN6Kpp44pAEoty',0,0,'mail2@csu.ch','022 222 22 22'),
+(4,'Karly','Rush','KRH','$2y$10$aAyhXLKF.BwUstquUHBi7.Lj9Zbv7iUXfBfDVM4VJDtjBGQbNrAQ.',0,0,'mail3@csu.ch','033 333 33 33'),
 (5,'Orli','Ryan','ORN','$2y$10$zJJgmAQYBl18XKvhhy1hg.TUPezSjzaKVxjjd1qxcd4UB8AG7bqHy',0,0,'',''),
 (6,'Kiayada','Stanley','KSY','$2y$10$8NGiiFMTRSFtDCAXVSPPAekPXQLyF4nBVDQOh2DR9161ykmsAwDei',0,0,'',''),
 (7,'Amaya','Vang','AVG','$2y$10$X0n6SXY9saZbwRq1DmeRludWmC3Qsa932UCUyAPAQ2hT9xrSwzU1a',0,0,'',''),
