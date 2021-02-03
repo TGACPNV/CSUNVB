@@ -40,7 +40,7 @@ $title = "CSU-NVB - Administration - Secouristes";
                 <i class="fas fa-pen modify" onclick="telForm(<?= $user['id'] ?>)"></i>
             </div>
             <div class="updateTel">
-                <input type="number" class="inputTel"><i class="fas fa-check" onclick="telUpdate(<?= $user['id'] ?>)"></i><i class="fas fa-times" onclick="resetTel(<?= $user['id'] ?>)"></i>
+                <input type="text" class="inputTel"><i class="fas fa-check" onclick="telUpdate(<?= $user['id'] ?>)"></i><i class="fas fa-times" onclick="resetTel(<?= $user['id'] ?>)"></i>
             </div>
         </td>
         <td><?php

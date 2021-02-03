@@ -6,24 +6,31 @@ function mailForm(id){
 
 function mailUpdate(id){
     var mail = $('#user-'+ id).find(".inputMail").val();
-    $.ajax({
-        type: "POST",
-        url: "?action=changeEmail",
-        data: {
-            userID: id,
-            mail: mail
-        },
-        cache: false,
-        success: function(data) {
-            $('#user-'+ id).find(".mail").html(mail);
-            $('#user-'+ id).find(".displayMail").show();
-            $('#user-'+ id).find(".updateMail").hide();
-        },
-        error: function(xhr, status, error) {
-            resetMail(id)
-            console.error(xhr);
-        }
-    });
+    var mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    if(mail.match(mailformat))
+    {
+        $.ajax({
+            type: "POST",
+            url: "?action=changeEmail",
+            data: {
+                userID: id,
+                mail: mail
+            },
+            cache: false,
+            success: function(data) {
+                $('#user-'+ id).find(".mail").html(mail);
+                $('#user-'+ id).find(".displayMail").show();
+                $('#user-'+ id).find(".updateMail").hide();
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr);
+            }
+        });
+    }
+    else
+    {
+        $('#user-'+ id).find(".inputMail").val($('#user-'+ id).find(".mail").html());
+    }
 }
 
 function resetMail(id){
@@ -39,24 +46,29 @@ function telForm(id){
 
 function telUpdate(id){
     var tel = $('#user-'+ id).find(".inputTel").val();
-    $.ajax({
-        type: "POST",
-        url: "?action=changeTel",
-        data: {
-            userID: id,
-            tel: tel
-        },
-        cache: false,
-        success: function(data) {
-            $('#user-'+ id).find(".tel").html(tel);
-            $('#user-'+ id).find(".displayTel").show();
-            $('#user-'+ id).find(".updateTel").hide();
-        },
-        error: function(xhr, status, error) {
-            resetTel(id)
-            console.error(xhr);
-        }
-    });
+    var telformat = /^[0-9 +-]{9,11}$/;
+    if(tel.match(telformat)){
+        $.ajax({
+            type: "POST",
+            url: "?action=changeTel",
+            data: {
+                userID: id,
+                tel: tel
+            },
+            cache: false,
+            success: function(data) {
+                $('#user-'+ id).find(".tel").html(tel);
+                $('#user-'+ id).find(".displayTel").show();
+                $('#user-'+ id).find(".updateTel").hide();
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr);
+            }
+        });
+    }else{
+        $('#user-'+ id).find(".inputTel").val($('#user-'+ id).find(".tel").html());
+    }
+
 }
 
 function resetTel(id){
