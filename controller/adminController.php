@@ -215,3 +215,11 @@ function changeEmail()
     $user['email'] = $_POST['mail'];
     SaveUser($user);
 }
+
+function changeTel()
+{
+    $changeUser = $_POST['userID'];
+    $user = getUser($changeUser);
+    $user['mobileNumber'] = $_POST['tel'];
+    SaveUser($user);
+}

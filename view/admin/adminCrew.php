@@ -34,7 +34,15 @@ $title = "CSU-NVB - Administration - Secouristes";
             </div>
 
         </td>
-        <td><?= $user['mobileNumber'] ?><i class="fas fa-pen modify"></i></td>
+        <td>
+            <div class="displayTel">
+                <div class="tel"><?= $user['mobileNumber'] ?></div>
+                <i class="fas fa-pen modify" onclick="telForm(<?= $user['id'] ?>)"></i>
+            </div>
+            <div class="updateTel">
+                <input type="number" class="inputTel"><i class="fas fa-check" onclick="telUpdate(<?= $user['id'] ?>)"></i><i class="fas fa-times" onclick="resetTel(<?= $user['id'] ?>)"></i>
+            </div>
+        </td>
         <td><?php
             if ($user['id'] != $_SESSION['user']['id']) { if ($user['admin'] == 1) { ?>
         <a href="?action=changeUserAdmin&idUser=<?= $user['id'] ?>" class="btn btn-primary">Changer en utilisateur</a><?php } else { ?>

@@ -131,7 +131,7 @@ table.table-bordered > tbody > tr > td{
 * Styles CSS utilisés pour l'affichage de la vue admin secouriste
  -------------------------------------------------------------- */
 
-.updateMail{
+.updateMail,.updateTel{
     display: none;
 }
 
@@ -141,6 +141,6 @@ tr .modify {
 tr:hover .modify {
     display: inline;
 }
-.mail{
+.mail, .tel{
     display: inline;
 }
