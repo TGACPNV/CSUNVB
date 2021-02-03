@@ -30,7 +30,7 @@ $title = "CSU-NVB - Administration - Secouristes";
                 <i class="fas fa-pen modify" onclick="mailForm(<?= $user['id'] ?>)"></i>
             </div>
             <div class="updateMail">
-                <input type="email" class="inputMail"><i class="fas fa-check" onclick="mailUpdate(<?= $user['id'] ?>)"></i><i class="fas fa-times" onclick="resetMail(<?= $user['id'] ?>)"></i>
+                <input type="email" class="inputMail"><i class="fas fa-check saveIcon" onclick="mailUpdate(<?= $user['id'] ?>)"></i><i class="fas fa-times cancelIcon" onclick="resetMail(<?= $user['id'] ?>)"></i>
             </div>
 
         </td>
@@ -40,7 +40,7 @@ $title = "CSU-NVB - Administration - Secouristes";
                 <i class="fas fa-pen modify" onclick="telForm(<?= $user['id'] ?>)"></i>
             </div>
             <div class="updateTel">
-                <input type="text" class="inputTel"><i class="fas fa-check" onclick="telUpdate(<?= $user['id'] ?>)"></i><i class="fas fa-times" onclick="resetTel(<?= $user['id'] ?>)"></i>
+                <input type="text" class="inputTel"><i class="fas fa-check saveIcon" onclick="telUpdate(<?= $user['id'] ?>)"></i><i class="fas fa-times cancelIcon" onclick="resetTel(<?= $user['id'] ?>)"></i>
             </div>
         </td>
         <td><?php

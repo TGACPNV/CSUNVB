@@ -144,3 +144,12 @@ tr:hover .modify {
 .mail, .tel{
     display: inline;
 }
+
+.saveIcon{
+    color: #218838;
+    margin-left: 5px;
+}
+.cancelIcon{
+    color: #a71d2a;
+    margin-left: 5px;
+}
