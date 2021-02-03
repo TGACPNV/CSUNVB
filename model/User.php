@@ -25,7 +25,7 @@ function SaveUser($user)
 {
     unset($user['password']);
     unset($user['firstconnect']);
-    return execute("UPDATE users SET firstname= :firstname, lastname= :lastname, initials = :initials, admin = :admin where id = :id", $user);
+    return execute("UPDATE users SET firstname= :firstname, lastname= :lastname, initials = :initials, admin = :admin, email = :email, mobileNumber = :mobileNumber where id = :id", $user);
 }
 
 /** return the user from database

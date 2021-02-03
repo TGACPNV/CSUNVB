@@ -126,3 +126,21 @@ table.table-bordered > tbody > tr > td{
     margin: 2px;
     border-style: solid;
 }
+
+/* ------------------------------------------------------------
+* Styles CSS utilisés pour l'affichage de la vue admin secouriste
+ -------------------------------------------------------------- */
+
+.updateMail{
+    display: none;
+}
+
+tr .modify {
+    display: none;
+}
+tr:hover .modify {
+    display: inline;
+}
+.mail{
+    display: inline;
+}

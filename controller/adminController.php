@@ -207,3 +207,11 @@ function updateNova()
         require_once VIEW . 'admin/updateNova.php';
     }
 }
+
+function changeEmail()
+{
+    $changeUser = $_POST['userID'];
+    $user = getUser($changeUser);
+    $user['email'] = $_POST['mail'];
+    SaveUser($user);
+}
