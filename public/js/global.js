@@ -18,3 +18,7 @@ dropdownButtons.forEach((item) => {
 function print_page(){
     window.print();
 }
+
+function flashMessage(message){
+    $("#flashMessage").html('<div class="alert alert-info">'+message+'</div>');
+}
