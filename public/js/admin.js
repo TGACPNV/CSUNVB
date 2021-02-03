@@ -21,6 +21,7 @@ function mailUpdate(id){
                 $('#user-'+ id).find(".mail").html(mail);
                 $('#user-'+ id).find(".displayMail").show();
                 $('#user-'+ id).find(".updateMail").hide();
+                flashMessage("Mail enregistré");
             },
             error: function(xhr, status, error) {
                 console.error(xhr);
@@ -29,6 +30,7 @@ function mailUpdate(id){
     }
     else
     {
+        flashMessage("Mauvais format de mail");
         $('#user-'+ id).find(".inputMail").val($('#user-'+ id).find(".mail").html());
     }
 }
@@ -60,6 +62,7 @@ function telUpdate(id){
                 $('#user-'+ id).find(".tel").html(tel);
                 $('#user-'+ id).find(".displayTel").show();
                 $('#user-'+ id).find(".updateTel").hide();
+                flashMessage("Numéro de téléphone enregistré");
             },
             error: function(xhr, status, error) {
                 console.error(xhr);
@@ -67,8 +70,8 @@ function telUpdate(id){
         });
     }else{
         $('#user-'+ id).find(".inputTel").val($('#user-'+ id).find(".tel").html());
+        flashMessage("Mauvais format de téléphone");
     }
-
 }
 
 function resetTel(id){
