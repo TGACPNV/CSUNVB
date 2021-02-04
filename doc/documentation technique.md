@@ -47,10 +47,12 @@ Le site est basé sur la méthode MVC (Model, vue, controleur).
 
 ### Quelles technologies est-ce que je dois connaître pour pouvoir développer ce site ? 
 
-Les languages PHP et javascripts sont indispensables pour travailler sur ce projet.
+Les languages PHP et javascripts (utilisant parfois JQuery) sont indispensables pour travailler sur ce projet.
+Ajax est aussi utilisé afin de réaliser des requêtes asyncrones au serveur.
+
 Il faut aussi être à l'aise avec le html et le css pour tout ce qui est de la mise en forme
 
-Il est aussi nécessaire de connaître le sql car il y aura plusieures requête SQL pour interroger la base de donnée.
+Il est aussi nécessaire de connaître mysql car il y aura plusieures requête MYSQL pour interroger la base de donnée.
 
 Le choix de ces languages paraissent évidents pour le développement d'un site internet.
 
@@ -67,9 +69,14 @@ Les logiciels suivant sont ceux que nous avaons utiliser pour travailler. Des al
 
 
 - Un environnement de développement: PhpStorm 2019.3.x https://www.jetbrains.com/fr-fr/phpstorm/
-- PHP version 7.4.x dernière version
+- PHP version 7.4.x
 - Serveur de base de données: MySQL Community Server 8.0.23 https://dev.mysql.com/downloads/mysql/
 - Client de base de données: MySQL Workbench (distribué avec MySQL serveur), Heidi SQL v11.2 https://www.heidisql.com/
+- une adresse gmail servant pour l'envoi de mail
+
+- créer le fichier .const.php dans le dossier model, et y ajouter les bons paramètres en se référrant à .const.example.php dans le même dossier
+- créer le fichier .mailconf.php dans le dossier PHPMAILER, et y ajouter les bons paramètres en se référrant à .mailconfexemple.php dans le même dossier
+- désactiver la double authentification sur le compte gmail utilisé pour l'envois de mail et activer l'accès mois sécursié des applications (dans sécurité)
 
 ### Est-ce qu'on a des conventions de codage ?
 
