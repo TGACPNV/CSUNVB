@@ -5,6 +5,13 @@
 
 
 /** Display Home page */
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+require '../PHPMailer/src/Exception.php';
+require '../PHPMailer/src/PHPMailer.php';
+require '../PHPMailer/src/SMTP.php';
+
 function home()
 {
     require VIEW . 'main/home.php';
@@ -117,3 +124,36 @@ function unknownPage(){
     require VIEW . 'main/unknownPage.php';
 }
 
+function sendmail(){
+    $mail = new PHPMailer();
+//Tell PHPMailer to use SMTP
+    $mail->isSMTP();
+//Set the hostname of the mail server
+    $mail->Host = 'smtp.gmail.com';
+//Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
+    $mail->Port = 587;
+//Set the encryption mechanism to use - STARTTLS or SMTPS
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+//Whether to use SMTP authentication
+    $mail->SMTPAuth = true;
+//Username to use for SMTP authentication - use full email address for gmail
+    $mail->Username = '*';
+//Password to use for SMTP authentication
+    $mail->Password = '*';
+
+//Set who the message is to be sent from
+    $mail->setFrom('*', 'CSU');
+
+//Set who the message is to be sent to
+    $mail->addAddress('*', 'Destinataire');
+
+//Set the subject line
+    $mail->Subject = 'Mail de Test';
+    $mail->Body ="aaaaa";
+//send the message, check for errors
+    if (!$mail->send()) {
+        echo 'Mailer Error: ' . $mail->ErrorInfo;
+    } else {
+        echo 'Message sent!';
+    }
+}
