@@ -41,6 +41,15 @@ require MODEL . ".const.php";
 require MODEL . "db_crud.php";
 
 /**
+ * Call database login details and functions
+ */
+require '../PHPMailer/src/Exception.php';
+require '../PHPMailer/src/PHPMailer.php';
+require '../PHPMailer/src/SMTP.php';
+require '../PHPMailer/.mailconf.php';
+
+
+/**
  * Call all model files
  */
 require MODEL . "Base.php";

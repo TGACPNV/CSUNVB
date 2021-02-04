@@ -8,9 +8,6 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
-require '../PHPMailer/src/Exception.php';
-require '../PHPMailer/src/PHPMailer.php';
-require '../PHPMailer/src/SMTP.php';
 
 function home()
 {
@@ -127,9 +124,10 @@ function unknownPage(){
 function sendmail(){
     $mail = new PHPMailer();
 //Tell PHPMailer to use SMTP
+    $mail->SMTPDebug = SMTP::DEBUG_SERVER;
     $mail->isSMTP();
 //Set the hostname of the mail server
-    $mail->Host = 'smtp.gmail.com';
+    $mail->Host = MAILHOST;
 //Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
     $mail->Port = 587;
 //Set the encryption mechanism to use - STARTTLS or SMTPS
@@ -137,15 +135,16 @@ function sendmail(){
 //Whether to use SMTP authentication
     $mail->SMTPAuth = true;
 //Username to use for SMTP authentication - use full email address for gmail
-    $mail->Username = '*';
+    $mail->Username = MAILSENDER;
+
 //Password to use for SMTP authentication
-    $mail->Password = '*';
+    $mail->Password = MAILPASS;
 
 //Set who the message is to be sent from
-    $mail->setFrom('*', 'CSU');
+    $mail->setFrom(MAILSENDER, 'CSUNVB');
 
 //Set who the message is to be sent to
-    $mail->addAddress('*', 'Destinataire');
+    $mail->addAddress('michael.gogniat@cpnv.ch', 'Destinataire');
 
 //Set the subject line
     $mail->Subject = 'Mail de Test';

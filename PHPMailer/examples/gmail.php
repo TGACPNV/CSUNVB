@@ -47,19 +47,19 @@ $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
 $mail->SMTPAuth = true;
 
 //Username to use for SMTP authentication - use full email address for gmail
-$mail->Username = 'csunvbtest@gmail.com';
+$mail->Username = '*';
 
 //Password to use for SMTP authentication
-$mail->Password = 'projettpi';
+$mail->Password = '*';
 
 //Set who the message is to be sent from
-$mail->setFrom('csunvbtest@gmail.com', 'First Last');
+$mail->setFrom('*', '*');
 
 //Set an alternative reply-to address
-$mail->addReplyTo('csunvbtest@gmail.com', 'First Last');
+$mail->addReplyTo('*', '*');
 
 //Set who the message is to be sent to
-$mail->addAddress('m.gogniat97@gmail.com', 'John Doe');
+$mail->addAddress('*', '*');
 
 //Set the subject line
 $mail->Subject = 'PHPMailer GMail SMTP test';
