@@ -12,6 +12,8 @@ session_start();
 /**
  * Call definition file pour paths
  */
+
+date_default_timezone_set('Europe/Paris');
 require "../path.php";
 
 /**
@@ -41,7 +43,7 @@ require MODEL . ".const.php";
 require MODEL . "db_crud.php";
 
 /**
- * Call database login details and functions
+ * Use for PHPMailer
  */
 require '../PHPMailer/src/Exception.php';
 require '../PHPMailer/src/PHPMailer.php';
