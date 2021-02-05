@@ -121,39 +121,6 @@ function unknownPage(){
     require VIEW . 'main/unknownPage.php';
 }
 
-function sendmail(){
-    $mail = new PHPMailer();
-    $mail->isSMTP();
-//Set the hostname of the mail server
-    $mail->Host = MAILHOST;
-//Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
-    $mail->Port = 587;
-//Set the encryption mechanism to use - STARTTLS or SMTPS
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-//Whether to use SMTP authentication
-    $mail->SMTPAuth = true;
-//Username to use for SMTP authentication - use full email address for gmail
-    $mail->Username = MAILSENDER;
-
-//Password to use for SMTP authentication
-    $mail->Password = MAILPASS;
-
-//Set who the message is to be sent from
-    $mail->setFrom(MAILSENDER, 'CSUNVB');
-
-//Set who the message is to be sent to
-    $mail->addAddress('michael.gogniat@cpnv.ch', 'Destinataire');
-
-//Set the subject line
-    $mail->Subject = 'Mail de Test';
-    $mail->Body ="aaaaa";
-//send the message, check for errors
-    if (!$mail->send()) {
-        setFlashMessage("Un Email vous a été envoyé pour réinitialiser votre mot de passe");
-    } else {
-        echo 'Message sent!';
-    }
-}
 
 function resetPass(){
     require VIEW . 'main/resetPass.php';
