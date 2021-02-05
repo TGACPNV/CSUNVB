@@ -64,7 +64,20 @@ require MODEL . "Todo.php";
  * Check if user logged in and perform requested action when true
  */
 if (!isset($_SESSION['user'])) {
-    login();
+    switch ($_GET['action']) {
+        case "resetPass":
+            resetPass();
+            break;
+        case "resetPassMail":
+            resetPassMail();
+            break;
+        case "newPass":
+            newPass($_GET['id']);
+            break;
+        default:
+            login();
+    }
+
 } else {
     if (isset($_GET['action'])) {
         $action = $_GET['action'];

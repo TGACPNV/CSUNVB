@@ -123,8 +123,6 @@ function unknownPage(){
 
 function sendmail(){
     $mail = new PHPMailer();
-//Tell PHPMailer to use SMTP
-    $mail->SMTPDebug = SMTP::DEBUG_SERVER;
     $mail->isSMTP();
 //Set the hostname of the mail server
     $mail->Host = MAILHOST;
@@ -151,8 +149,71 @@ function sendmail(){
     $mail->Body ="aaaaa";
 //send the message, check for errors
     if (!$mail->send()) {
-        echo 'Mailer Error: ' . $mail->ErrorInfo;
+        setFlashMessage("Un Email vous a été envoyé pour réinitialiser votre mot de passe");
     } else {
         echo 'Message sent!';
     }
+}
+
+function resetPass(){
+    require VIEW . 'main/resetPass.php';
+}
+
+function resetPassMail(){
+    $mail = newMail();
+    $user = getUserByMail($_POST["mail"]);
+    if($user==false){
+        setFlashMessage("Aucun compte n'est lié à ce mail");
+    }else{
+        $mail->addAddress($_POST["mail"], $user["initials"]);
+        $mail->Subject = utf8_decode('Réinitialiser votre mot de passe');;
+        $token = generateToken();
+        $url = "http://".$_SERVER[HTTP_HOST].'?action=newPass&id='.$token;
+        $link = '<a href="'.$url.'">CSUNVB</a>';
+        $mailContent = "<h2>Bonjour ".$user["initials"].",</h2>";
+        $mailContent .= "<p>Veuillez cliquer sur le lien ci-dessous si vous souhaiter changer votre mot de passe<br>Si vous n'avez pas fait cette demande, vous pouvez simplement ignorer ce mail</p>";
+        $mailContent .= $link;
+        $mail->msgHTML($mailContent);
+        if ($mail->send()) {
+            setFlashMessage("Le lien vous a été envoyé à l'adresse : ".$_POST["mail"]);
+        } else {
+            setFlashMessage("Erreur lors de l'envoi du mail");
+        }
+    }
+    redirect("resetPass");
+}
+
+function newMail(){
+    $mail = new PHPMailer();
+    $mail->isSMTP();
+//Set the hostname of the mail server
+    $mail->Host = MAILHOST;
+//Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
+    $mail->Port = 587;
+//Set the encryption mechanism to use - STARTTLS or SMTPS
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+//Whether to use SMTP authentication
+    $mail->SMTPAuth = true;
+//Username to use for SMTP authentication - use full email address for gmail
+    $mail->Username = MAILSENDER;
+//Password to use for SMTP authentication
+    $mail->Password = MAILPASS;
+//Set who the message is to be sent from
+    $mail->setFrom(MAILSENDER, 'CSUNVB');
+    return $mail;
+}
+
+function generateToken($length = 24) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
+
+function newPass($token){
+    echo $token;
+    //TODO
 }

@@ -57,3 +57,12 @@ function changePwdState($changeUser)
     execute("UPDATE users SET firstconnect= :firstconnect, password = :hash WHERE id= :id", ['firstconnect' => 1, 'id' => $changeUser, 'hash' => $hash]);
     return $newpassw;
 }
+
+/** return the user from database
+ * @param string $email
+ * @return array|mixed|null
+ */
+function getUserByMail($email)
+{
+    return selectOne("SELECT id,initials FROM users where email=:email", ['email' => $email]);
+}

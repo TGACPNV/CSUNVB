@@ -14,6 +14,7 @@ $title = "CSU-NVB - Login";
         <input id="initiales" type="text" class="form-group form-control" <?= (isset($_POST['username'])) ? "value ='".$_POST['username']."'" : "" ?> name="username" required>
         <label for="password">Mot de passe</label>
         <input id="password" type="password" class="form-group form-control" name="password" required>
+        <a href="?action=resetPass">Mot de passe oublié</a><br><br>
         <label>Quel site ?</label><br>
         <div class="form-check-inline">
             <?php foreach ($bases as $base): ?>
