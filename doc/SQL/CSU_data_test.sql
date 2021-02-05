@@ -366,7 +366,8 @@ INSERT INTO `users` VALUES
 (98,'Raya','Case','RCE','$2y$10$.KuVnnQQlBUwFR80LNNuueExPomsqXN2HrqBK0Me4qjpW0UZg7WKS',0,0,'',''),
 (99,'Charles','Delgado','CDO','$2y$10$sOSeVa9dTrAxMZiRZb5heOU5V/.7u9rgNvvK4aaD7TsHOVq0/Rkje',0,0,'',''),
 (100,'Michelle','Cash','MCH','$2y$10$i0cgyQlhtTl4Gp1eHX1GK.37umWwI9mqWsXHqTQLjFWIyt5e7J6nS',0,0,'',''),
-(101,'Antonio','Casaburi','ACI','$2y$10$glQgNSUGFJTKMK8vCLZK2OqPrbktyjXlHSca2zN7k.gM4ZWZ9l39y',0,0,'','');
+(101,'Antonio','Casaburi','ACI','$2y$10$glQgNSUGFJTKMK8vCLZK2OqPrbktyjXlHSca2zN7k.gM4ZWZ9l39y',0,0,'',''),
+(102,'Michael','Gogniat','MGT','$2y$10$i0cgyQlhtTl4Gp1eHX1GK.37umWwI9mqWsXHqTQLjFWIyt5e7J6nS',0,0,'michael.gogniat@cpnv.ch','');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
