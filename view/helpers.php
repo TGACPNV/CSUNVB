@@ -226,7 +226,7 @@ function slugButtons($page, $sheet, $slug)
                     <button type='submit' class='btn btn-primary m-1'>Activer</button>
                     </form>";
                 } else {
-                    $buttons .= "<form><button type='submit' class='btn btn-primary m-1' disabled>Activer</button></form>";
+                    $buttons .= "<form><span class='glyphicon glyphicon-question-sign' data-toggle='tooltip' data-placement='bottom' title='un autre rapport est déjà ouvert'><button type='submit' class='btn btn-primary m-1' disabled>Activer</button></span></form>";
                 }
             }
         case "archive":
@@ -276,6 +276,29 @@ function slugButtons($page, $sheet, $slug)
     }
     return $buttons;
 }
+
+function slugBtns($page, $sheet, $slug){
+    $buttonList ="";
+    switch ($slug) {
+        case "archive":
+            if (ican('deletesheet')) {
+                //... slugBtn()
+            }
+            break;
+    }
+}
+// possible action : SheetSwitchState ...
+
+function slugBtn($page, $id, $action, $actionName, $newSlug = 0){
+    $btn = "<form  method='POST' action='?action=" . $page . $action ."'>
+                    <input type='hidden' name='id' value='" . $id . "'>
+                    <input type='hidden' name='newSlug' value='.$newSlug.'>
+                    <button type='submit' class='btn btn-primary m-1'>".$actionName."</button>
+                    </form>";
+    return $btn;
+}
+
+
 
 function checkOpen($page, $baseID){
     $openSheets = 0;

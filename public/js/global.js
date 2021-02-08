@@ -22,3 +22,7 @@ function print_page(){
 function flashMessage(message){
     $("#flashMessage").html('<div class="alert alert-info">'+message+'</div>');
 }
+
+$(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+})

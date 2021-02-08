@@ -5,7 +5,6 @@ $title = "CSU-NVB - Remise de garde";
 <div>
     <?= headerForList("shift",$bases,$selectedBaseID,$suggestedModels,$emptyBase) ?>
 </div>
-
 <div>
     <?= listSheet("shift", $sheets) ?>
 </div>
