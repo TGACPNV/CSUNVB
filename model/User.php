@@ -66,3 +66,12 @@ function getUserByMail($email)
 {
     return selectOne("SELECT id,initials FROM users where email=:email", ['email' => $email]);
 }
+
+function newToken($token,$user_id)
+{
+    return execute("Insert into tokens (value,validity,user_id) values (:token,:validity,:user_id)", ['token' => $token,'user_id' => $user_id, 'validity' => date('Y-m-d H:i:s',time()+3600)]);
+}
+
+function checkToken($token){
+    return selectOne("SELECT user_id FROM tokens where value=:token and validity > :now", ['token' => $token,'now' => date('Y-m-d H:i:s',time())])["user_id"];
+}

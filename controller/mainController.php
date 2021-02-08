@@ -134,17 +134,21 @@ function resetPassMail(){
     }else{
         $mail->addAddress($_POST["mail"], $user["initials"]);
         $mail->Subject = utf8_decode('Réinitialiser votre mot de passe');;
-        $token = generateToken();
-        $url = "http://".$_SERVER[HTTP_HOST].'?action=newPass&id='.$token;
-        $link = '<a href="'.$url.'">CSUNVB</a>';
-        $mailContent = "<h2>Bonjour ".$user["initials"].",</h2>";
-        $mailContent .= "<p>Veuillez cliquer sur le lien ci-dessous si vous souhaiter changer votre mot de passe<br>Si vous n'avez pas fait cette demande, vous pouvez simplement ignorer ce mail</p>";
-        $mailContent .= $link;
-        $mail->msgHTML($mailContent);
-        if ($mail->send()) {
-            setFlashMessage("Le lien vous a été envoyé à l'adresse : ".$_POST["mail"]);
-        } else {
-            setFlashMessage("Erreur lors de l'envoi du mail");
+        $token = generateTokenNumber();
+        if(newToken($token,$user["id"])){
+            $url = "http://".$_SERVER[HTTP_HOST].'?action=newPass&id='.$token;
+            $link = '<a href="'.$url.'">CSUNVB</a>';
+            $mailContent = "<h2>Bonjour ".$user["initials"].",</h2>";
+            $mailContent .= "<p>Veuillez cliquer sur le lien ci-dessous si vous souhaiter changer votre mot de passe<br>Si vous n'avez pas fait cette demande, vous pouvez simplement ignorer ce mail</p>";
+            $mailContent .= $link;
+            $mail->msgHTML($mailContent);
+            if ($mail->send()) {
+                setFlashMessage("Le lien vous a été envoyé à l'adresse : ".$_POST["mail"]);
+            } else {
+                setFlashMessage("Erreur lors de l'envoi du mail");
+            }
+        }else{
+            setFlashMessage("Erreur lors de la création du token");
         }
     }
     redirect("resetPass");
@@ -170,7 +174,7 @@ function newMail(){
     return $mail;
 }
 
-function generateToken($length = 24) {
+function generateTokenNumber($length = 24) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
     $randomString = '';
@@ -181,6 +185,11 @@ function generateToken($length = 24) {
 }
 
 function newPass($token){
-    echo $token;
-    //TODO
+    $userID = checkToken($token);
+    if($userID == null){
+        setFlashMessage("Lien expiré ou invalide");
+        redirect("login");
+    }else{
+        require VIEW . 'main/newPass.php';
+    }
 }
