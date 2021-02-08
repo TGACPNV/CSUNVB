@@ -193,3 +193,16 @@ function newPass($token){
         require VIEW . 'main/newPass.php';
     }
 }
+
+function setNewPass($userID){
+    if($_POST["newPassword"]==$_POST["confirmPassword"]){
+        setFlashMessage("Mot de passe modifié avec succès");
+        $user = getUser($userID);
+        $hash =  password_hash($_POST["newPassword"], PASSWORD_DEFAULT);
+        SaveUserPassword($hash, $userID);
+        redirect("login");
+    }else{
+        setFlashMessage("Le mot de passe de confirmation n'est pas identique");
+        redirect('newPass&id='.$_POST["token"]);
+    }
+}

@@ -76,6 +76,9 @@ if (!isset($_SESSION['user'])) {
         case "newPass":
             newPass($_GET['id']);
             break;
+        case "setNewPass":
+            setNewPass($_GET['id']);
+            break;
         default:
             login();
     }
