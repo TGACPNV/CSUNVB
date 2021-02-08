@@ -52,6 +52,7 @@ ob_start();
                 <?php foreach ($novas as $nova): ?>
                     <?php $ncheck = getNovaCheckByDateAndDrug($date, $drug['id'], $nova['id'], $drugsheet['id']); // not great practice, but it spares repeated queries on the db ?>
                     <?php $UID = 'n' . $nova["number"] . 'd' . $drug["id"] . 'D' . $date ?>
+                    <?php if($drugsheet['slug'] != "close"):?>
                     <td id="<?= $UID ?>">
                         <input  type="number" min="0" class="text-center"
                                 value="<?= (is_numeric($ncheck["start"]) ? $ncheck["start"] : '0') ?>"
@@ -66,6 +67,11 @@ ob_start();
                                 <?= ($drugsheet['slug'] == "close") ? "readonly" : '' ?>
                     >
                     </td>
+                    <?php else: ?>
+                    <td id="<?= $UID ?>">
+                        <div id="<?= $UID ?>start"><?= (is_numeric($ncheck["start"]) ? $ncheck["start"] : '0') ?> </div> / <div id="<?= $UID ?>end"><?= (is_numeric($ncheck["end"]) ? $ncheck["end"] : '0') ?></div>
+                    </td>
+                    <?php endif; ?>
                 <?php array_push($UIDs, $UID); ?>
                 <?php endforeach; ?>
                 <td></td>

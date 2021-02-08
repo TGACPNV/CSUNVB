@@ -7,11 +7,12 @@
 function getPDO() {
     require_once ".const.php";
     $dbh = null;
+    $dbh = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USERNAME, DB_PASSWORD);/*
     try {
         $dbh = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USERNAME, DB_PASSWORD);
     } catch (Exception $e) {
         error_log($e->getMessage());
-    }
+    }*/
     $dbh->exec("set names utf8");
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $dbh;
